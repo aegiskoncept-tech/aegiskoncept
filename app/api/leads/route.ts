@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
 
     if (!result.success) {
       return NextResponse.json(
-        { error: 'Invalid input', details: result.error.errors },
+        { error: 'Invalid input', details: (result.error as any).issues || (result.error as any).errors },
         { status: 400 }
       );
     }

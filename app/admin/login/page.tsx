@@ -17,19 +17,26 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
+      const cleanEmail = email.trim().toLowerCase();
       const res = await signIn('credentials', {
-        email,
+        email: cleanEmail,
         password,
         redirect: false,
+        callbackUrl: '/admin',
       });
 
       if (res?.error) {
-        setError('Invalid email or password.');
-      } else {
-        router.push('/admin');
-        router.refresh();
+        console.error('[AdminLogin] signIn error:', res.error);
+        if (res.error === 'CredentialsSignin') {
+          setError('Invalid email or password. Use: admin@aegiskoncept.com / AegisAdmin2026!');
+        } else {
+          setError(`Login failed: ${res.error}`);
+        }
+      } else if (res?.ok) {
+        window.location.href = '/admin';
       }
-    } catch {
+    } catch (err: any) {
+      console.error('[AdminLogin] Exception during signIn:', err);
       setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);

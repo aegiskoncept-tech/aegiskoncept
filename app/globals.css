@@ -167,7 +167,7 @@ i.t1,i.t2,i.t3,i.t4,i.t5{display:block}
 .hero:not(.js) .hs:first-child .art{clip-path:none}
 .hero:not(.js) .hs:first-child .ring path{stroke-dashoffset:0}
 .hero:not(.js) .hs:not(:first-child){visibility:hidden}
-.hbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:0 14px;align-items:end;padding-bottom:28px;position:relative;z-index:3}
+.hbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:0 14px;align-items:flex-end;padding-bottom:28px;position:relative;z-index:3}
 .hbar button.t{background:none;border:0;color:var(--mute-d);font:500 14px var(--sans);text-align:left;padding:16px 0 0;cursor:pointer;position:relative;display:flex;gap:10px;align-items:baseline}
 .hbar button.t b{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--cream);opacity:.45}
 .hbar button.t::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--line-d)}
@@ -331,7 +331,7 @@ main.enter{animation:penter .65s var(--ease) both}
 /* pinned horizontal work */
 .hpin{position:relative}
 .pin-in{position:sticky;top:76px;height:calc(100vh - 76px);min-height:620px;display:flex;flex-direction:column;justify-content:center;gap:clamp(24px,4vh,48px);overflow:hidden}
-.pin-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:24px;width:100%}
+.pin-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;width:100%}
 .track{display:flex;gap:32px;padding-left:max(var(--gut),calc((100vw - 1440px)/2 + var(--gut)));padding-right:var(--gut);will-change:transform;width:max-content}
 .wcard{width:clamp(300px,34vw,520px);flex:none}
 .wcard .stage{aspect-ratio:4/3}

@@ -20,11 +20,13 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Please enter an email and password');
         }
 
+        const cleanEmail = credentials.email.toLowerCase().trim();
         const user = await db.user.findUnique({
-          where: { email: credentials.email.toLowerCase().trim() },
+          where: { email: cleanEmail },
         });
 
         if (!user || !user.passwordHash) {
+          console.warn(`[Auth] User not found for email: ${cleanEmail}`);
           throw new Error('Invalid email or password');
         }
 
@@ -34,6 +36,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!isMatch) {
+          console.warn(`[Auth] Password mismatch for user: ${cleanEmail}`);
           throw new Error('Invalid email or password');
         }
 

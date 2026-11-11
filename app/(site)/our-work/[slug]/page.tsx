@@ -26,13 +26,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const { slug } = await params;
   let cs = null;
   try {
-    cs = await db.caseStudy.findUnique({ where: { slug: params.slug } });
+    cs = await db.caseStudy.findUnique({ where: { slug } });
   } catch {}
-  if (!cs) cs = getFallbackCase(params.slug);
+  if (!cs) cs = getFallbackCase(slug);
   if (!cs) return { title: 'Our Work | AegisKoncept' };
 
   return {
@@ -47,18 +48,19 @@ export async function generateMetadata({
 export default async function CaseStudyDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   let cs: any = null;
   try {
     cs = await db.caseStudy.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
       include: { reviews: true },
     });
   } catch (err) {
-    console.warn(`Database query for case study ${params.slug} failed, falling back to static data:`, err);
+    console.warn(`Database query for case study ${slug} failed, falling back to static data:`, err);
   }
-  if (!cs) cs = getFallbackCase(params.slug);
+  if (!cs) cs = getFallbackCase(slug);
   if (!cs) notFound();
 
   // Parse services

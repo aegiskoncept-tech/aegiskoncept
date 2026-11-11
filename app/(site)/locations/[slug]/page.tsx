@@ -34,13 +34,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const { slug } = await params;
   let loc = null;
   try {
-    loc = await db.location.findUnique({ where: { slug: params.slug } });
+    loc = await db.location.findUnique({ where: { slug } });
   } catch {}
-  if (!loc) loc = getFallbackLocation(params.slug);
+  if (!loc) loc = getFallbackLocation(slug);
   if (!loc) return { title: 'Locations | AegisKoncept' };
 
   return {
@@ -55,17 +56,18 @@ export async function generateMetadata({
 export default async function LocationDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   let loc: any = null;
   try {
     loc = await db.location.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
     });
   } catch (err) {
-    console.warn(`Database query for location ${params.slug} failed, falling back to static data:`, err);
+    console.warn(`Database query for location ${slug} failed, falling back to static data:`, err);
   }
-  if (!loc) loc = getFallbackLocation(params.slug);
+  if (!loc) loc = getFallbackLocation(slug);
   if (!loc) notFound();
 
   // Parse JSON data safely

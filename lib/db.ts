@@ -10,9 +10,9 @@ if (process.env.DATABASE_URL && process.env.DATABASE_URL.startsWith('file:')) {
     const inPrisma = path.resolve(process.cwd(), 'prisma', cleanRel);
     const inRoot = path.resolve(process.cwd(), cleanRel);
 
-    if (fs.existsSync(inPrisma) && !fs.existsSync(inRoot)) {
+    if (fs.existsSync(inPrisma)) {
       process.env.DATABASE_URL = `file:${inPrisma}`;
-    } else if (fs.existsSync(inRoot) && !fs.existsSync(inPrisma)) {
+    } else if (fs.existsSync(inRoot)) {
       process.env.DATABASE_URL = `file:${inRoot}`;
     }
   }

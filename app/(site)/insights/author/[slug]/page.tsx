@@ -17,16 +17,17 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  if (params.slug !== 'ritesh-kumar') return { title: 'Author Not Found | AegisKoncept' };
+  const { slug } = await params;
+  if (slug !== 'ritesh-kumar') return { title: 'Author Not Found | AegisKoncept' };
 
   return {
     title: 'Ritesh Kumar | Founder & Growth Strategist at AegisKoncept',
     description:
       'Ritesh Kumar is the founder of AegisKoncept. He writes practical guides on SEO, search rankings, website development and digital marketing for Indian businesses.',
     alternates: {
-      canonical: `/insights/author/${params.slug}`,
+      canonical: `/insights/author/${slug}`,
     },
   };
 }
@@ -34,9 +35,10 @@ export async function generateMetadata({
 export default async function AuthorProfilePage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  if (params.slug !== 'ritesh-kumar') notFound();
+  const { slug } = await params;
+  if (slug !== 'ritesh-kumar') notFound();
 
   let posts: any[] = [];
   try {

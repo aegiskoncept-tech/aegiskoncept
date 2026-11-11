@@ -36,13 +36,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const { slug } = await params;
   let service = null;
   try {
-    service = await db.service.findUnique({ where: { slug: params.slug } });
+    service = await db.service.findUnique({ where: { slug } });
   } catch {}
-  if (!service) service = getFallbackService(params.slug);
+  if (!service) service = getFallbackService(slug);
   if (!service) return { title: 'Services | AegisKoncept' };
 
   return {
@@ -57,17 +58,18 @@ export async function generateMetadata({
 export default async function ServiceDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   let service: any = null;
   try {
     service = await db.service.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
     });
   } catch (err) {
-    console.warn(`Database query for service ${params.slug} failed, falling back to static data:`, err);
+    console.warn(`Database query for service ${slug} failed, falling back to static data:`, err);
   }
-  if (!service) service = getFallbackService(params.slug);
+  if (!service) service = getFallbackService(slug);
   if (!service) notFound();
 
   // Parse JSON data safely

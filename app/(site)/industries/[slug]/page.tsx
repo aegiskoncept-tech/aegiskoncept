@@ -28,13 +28,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const { slug } = await params;
   let ind = null;
   try {
-    ind = await db.industry.findUnique({ where: { slug: params.slug } });
+    ind = await db.industry.findUnique({ where: { slug } });
   } catch {}
-  if (!ind) ind = getFallbackIndustry(params.slug);
+  if (!ind) ind = getFallbackIndustry(slug);
   if (!ind) return { title: 'Industry Not Found | AegisKoncept' };
 
   return {
@@ -49,17 +50,18 @@ export async function generateMetadata({
 export default async function IndustryDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   let ind: any = null;
   try {
     ind = await db.industry.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
     });
   } catch (err) {
-    console.warn(`Database query for industry ${params.slug} failed, falling back to static data:`, err);
+    console.warn(`Database query for industry ${slug} failed, falling back to static data:`, err);
   }
-  if (!ind) ind = getFallbackIndustry(params.slug);
+  if (!ind) ind = getFallbackIndustry(slug);
   if (!ind) notFound();
 
   // Parse issues (FixRows)

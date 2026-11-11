@@ -27,16 +27,17 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const { slug } = await params;
   let post = null;
   try {
     post = await db.post.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
       include: { category: true },
     });
   } catch {}
-  if (!post) post = getFallbackPost(params.slug);
+  if (!post) post = getFallbackPost(slug);
   if (!post) return { title: 'Insights | AegisKoncept' };
 
   return {
@@ -51,18 +52,19 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   let post = null;
   try {
     post = await db.post.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
       include: { category: true },
     });
   } catch {}
 
   if (!post) {
-    post = getFallbackPost(params.slug);
+    post = getFallbackPost(slug);
   }
 
   if (!post) notFound();
