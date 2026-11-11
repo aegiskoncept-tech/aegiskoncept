@@ -144,3 +144,4 @@ If using Hostinger's Cloud/Business web hosting plan with the built-in Node.js s
 - [x] PM2 cluster mode configured for zero downtime restarts.
 - [x] Standalone output optimization enabled in `next.config.js`.
 - [x] Edge middleware handling canonical redirects and protected `/admin` paths.
+

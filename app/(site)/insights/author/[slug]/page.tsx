@@ -35,10 +35,13 @@ export default async function AuthorProfilePage({
 }) {
   if (params.slug !== 'ritesh-kumar') notFound();
 
-  const posts = await db.post.findMany({
-    orderBy: { publishAt: 'desc' },
-    include: { category: true },
-  });
+  let posts: any[] = [];
+  try {
+    posts = await db.post.findMany({
+      orderBy: { publishAt: 'desc' },
+      include: { category: true },
+    });
+  } catch {}
 
   const formattedArticles: ArtRowItem[] = posts.map((p) => ({
     slug: p.slug,

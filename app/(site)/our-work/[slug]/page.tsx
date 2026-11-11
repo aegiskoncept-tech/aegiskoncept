@@ -9,10 +9,18 @@ import { Vis } from '@/components/site/Mockups';
 import JsonLd from '@/components/seo/JsonLd';
 import { getCreativeWorkSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
+import { FALLBACK_CASES, getFallbackCase } from '@/lib/staticFallbacks';
 
 export async function generateStaticParams() {
-  const cases = await db.caseStudy.findMany({ select: { slug: true } });
-  return cases.map((c) => ({ slug: c.slug }));
+  try {
+    const cases = await db.caseStudy.findMany({ select: { slug: true } });
+    if (cases.length > 0) {
+      return cases.map((c) => ({ slug: c.slug }));
+    }
+  } catch (err) {
+    console.warn('generateStaticParams [cases] query failed, using static fallback:', err);
+  }
+  return FALLBACK_CASES.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -20,8 +28,12 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const cs = await db.caseStudy.findUnique({ where: { slug: params.slug } });
-  if (!cs) return { title: 'Case Study Not Found | AegisKoncept' };
+  let cs = null;
+  try {
+    cs = await db.caseStudy.findUnique({ where: { slug: params.slug } });
+  } catch {}
+  if (!cs) cs = getFallbackCase(params.slug);
+  if (!cs) return { title: 'Our Work | AegisKoncept' };
 
   return {
     title: `${cs.client} Case Study | AegisKoncept`,
@@ -37,11 +49,16 @@ export default async function CaseStudyDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const cs = await db.caseStudy.findUnique({
-    where: { slug: params.slug },
-    include: { reviews: true },
-  });
-
+  let cs: any = null;
+  try {
+    cs = await db.caseStudy.findUnique({
+      where: { slug: params.slug },
+      include: { reviews: true },
+    });
+  } catch (err) {
+    console.warn(`Database query for case study ${params.slug} failed, falling back to static data:`, err);
+  }
+  if (!cs) cs = getFallbackCase(params.slug);
   if (!cs) notFound();
 
   // Parse services
@@ -83,24 +100,33 @@ export default async function CaseStudyDetailPage({
   } catch {}
 
   // Videos shot for this client
-  const clientVideos = await db.video.findMany({
-    where: { posterMediaId: cs.slug },
-  });
+  let clientVideos: any[] = [];
+  try {
+    clientVideos = await db.video.findMany({
+      where: { posterMediaId: cs.slug },
+    });
+  } catch {}
 
   // Industry name
-  const industry = cs.industryId
-    ? await db.industry.findUnique({ where: { slug: cs.industryId } })
-    : null;
+  let industry: any = null;
+  try {
+    industry = cs.industryId
+      ? await db.industry.findUnique({ where: { slug: cs.industryId } })
+      : null;
+  } catch {}
 
   // More work (2 other cases)
-  const otherCases = await db.caseStudy.findMany({
-    where: { id: { not: cs.id } },
-    take: 2,
-    orderBy: { order: 'asc' },
-  });
+  let otherCases: any[] = [];
+  try {
+    otherCases = await db.caseStudy.findMany({
+      where: { id: { not: cs.id } },
+      take: 2,
+      orderBy: { order: 'asc' },
+    });
+  } catch {}
 
   // Check for approved review
-  const approvedReview = cs.reviews.find((r) => r.status === 'APPROVED');
+  const approvedReview = (cs.reviews || []).find((r: any) => r.status === 'APPROVED');
 
   const initials = cs.ownerName
     ? cs.ownerName
@@ -109,7 +135,7 @@ export default async function CaseStudyDetailPage({
         .split(' ')
         .filter(Boolean)
         .slice(0, 2)
-        .map((w) => w[0])
+        .map((w: string) => w[0])
         .join('')
     : 'AK';
 

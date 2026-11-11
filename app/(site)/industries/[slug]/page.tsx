@@ -11,10 +11,18 @@ import { Vis } from '@/components/site/Mockups';
 import JsonLd from '@/components/seo/JsonLd';
 import { getFaqSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
+import { FALLBACK_INDUSTRIES, getFallbackIndustry } from '@/lib/staticFallbacks';
 
 export async function generateStaticParams() {
-  const industries = await db.industry.findMany({ select: { slug: true } });
-  return industries.map((i) => ({ slug: i.slug }));
+  try {
+    const industries = await db.industry.findMany({ select: { slug: true } });
+    if (industries.length > 0) {
+      return industries.map((i) => ({ slug: i.slug }));
+    }
+  } catch (err) {
+    console.warn('generateStaticParams [industries] query failed, using static fallback:', err);
+  }
+  return FALLBACK_INDUSTRIES.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -22,7 +30,11 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const ind = await db.industry.findUnique({ where: { slug: params.slug } });
+  let ind = null;
+  try {
+    ind = await db.industry.findUnique({ where: { slug: params.slug } });
+  } catch {}
+  if (!ind) ind = getFallbackIndustry(params.slug);
   if (!ind) return { title: 'Industry Not Found | AegisKoncept' };
 
   return {
@@ -39,10 +51,15 @@ export default async function IndustryDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const ind = await db.industry.findUnique({
-    where: { slug: params.slug },
-  });
-
+  let ind: any = null;
+  try {
+    ind = await db.industry.findUnique({
+      where: { slug: params.slug },
+    });
+  } catch (err) {
+    console.warn(`Database query for industry ${params.slug} failed, falling back to static data:`, err);
+  }
+  if (!ind) ind = getFallbackIndustry(params.slug);
   if (!ind) notFound();
 
   // Parse issues (FixRows)
@@ -72,16 +89,22 @@ export default async function IndustryDetailPage({
   } catch {}
 
   // Cases derived from this industry
-  const matchingCases = await db.caseStudy.findMany({
-    where: { industryId: ind.slug },
-    orderBy: { order: 'asc' },
-  });
+  let matchingCases: any[] = [];
+  try {
+    matchingCases = await db.caseStudy.findMany({
+      where: { industryId: ind.slug },
+      orderBy: { order: 'asc' },
+    });
+  } catch {}
 
   // Other industries for chips
-  const otherIndustries = await db.industry.findMany({
-    where: { id: { not: ind.id } },
-    select: { slug: true, name: true },
-  });
+  let otherIndustries: any[] = [];
+  try {
+    otherIndustries = await db.industry.findMany({
+      where: { id: { not: ind.id } },
+      select: { slug: true, name: true },
+    });
+  } catch {}
 
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', url: '/' },

@@ -8,10 +8,18 @@ import CtaBand from '@/components/site/CtaBand';
 import JsonLd from '@/components/seo/JsonLd';
 import { getArticleSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
+import { FALLBACK_INSIGHTS } from '@/lib/staticFallbacks';
 
 export async function generateStaticParams() {
-  const posts = await db.post.findMany({ select: { slug: true } });
-  return posts.map((p) => ({ slug: p.slug }));
+  try {
+    const posts = await db.post.findMany({ select: { slug: true } });
+    if (posts.length > 0) {
+      return posts.map((p) => ({ slug: p.slug }));
+    }
+  } catch (err) {
+    console.warn('generateStaticParams [insights] query failed, using static fallback:', err);
+  }
+  return FALLBACK_INSIGHTS.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -19,11 +27,14 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const post = await db.post.findUnique({
-    where: { slug: params.slug },
-    include: { category: true },
-  });
-  if (!post) return { title: 'Article Not Found | AegisKoncept' };
+  let post = null;
+  try {
+    post = await db.post.findUnique({
+      where: { slug: params.slug },
+      include: { category: true },
+    });
+  } catch {}
+  if (!post) return { title: 'Insights | AegisKoncept' };
 
   return {
     title: `${post.title} | AegisKoncept`,
@@ -39,20 +50,26 @@ export default async function BlogPostPage({
 }: {
   params: { slug: string };
 }) {
-  const post = await db.post.findUnique({
-    where: { slug: params.slug },
-    include: { category: true },
-  });
+  let post = null;
+  try {
+    post = await db.post.findUnique({
+      where: { slug: params.slug },
+      include: { category: true },
+    });
+  } catch {}
 
   if (!post) notFound();
 
   // Related articles
-  const otherPosts = await db.post.findMany({
-    where: { id: { not: post.id } },
-    take: 3,
-    orderBy: { publishAt: 'desc' },
-    include: { category: true },
-  });
+  let otherPosts: any[] = [];
+  try {
+    otherPosts = await db.post.findMany({
+      where: { id: { not: post.id } },
+      take: 3,
+      orderBy: { publishAt: 'desc' },
+      include: { category: true },
+    });
+  } catch {}
 
   const formattedOthers: ArtRowItem[] = otherPosts.map((p) => ({
     slug: p.slug,

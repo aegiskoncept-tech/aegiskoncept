@@ -8,13 +8,37 @@ export const metadata: Metadata = {
   description: 'Complete directory of all pages across AegisKoncept website.',
 };
 
+import {
+  FALLBACK_SERVICES,
+  FALLBACK_CASES,
+  FALLBACK_INDUSTRIES,
+  FALLBACK_LOCATIONS,
+  getFallbackIndustry,
+  getFallbackLocation,
+  getFallbackCase,
+  getFallbackService,
+} from '@/lib/staticFallbacks';
+
 export default async function AllPages() {
-  const [services, cases, industries, locations] = await Promise.all([
-    db.service.findMany({ select: { slug: true, name: true }, orderBy: { order: 'asc' } }),
-    db.caseStudy.findMany({ select: { slug: true, client: true }, orderBy: { order: 'asc' } }),
-    db.industry.findMany({ select: { slug: true, name: true }, orderBy: { name: 'asc' } }),
-    db.location.findMany({ select: { slug: true, name: true }, orderBy: { name: 'asc' } }),
-  ]);
+  let services: any[] = [];
+  let cases: any[] = [];
+  let industries: any[] = [];
+  let locations: any[] = [];
+
+  try {
+    [services, cases, industries, locations] = await Promise.all([
+      db.service.findMany({ select: { slug: true, name: true }, orderBy: { order: 'asc' } }),
+      db.caseStudy.findMany({ select: { slug: true, client: true }, orderBy: { order: 'asc' } }),
+      db.industry.findMany({ select: { slug: true, name: true }, orderBy: { name: 'asc' } }),
+      db.location.findMany({ select: { slug: true, name: true }, orderBy: { name: 'asc' } }),
+    ]);
+  } catch (err) {
+    console.warn('AllPages database fetch failed, using static fallbacks:', err);
+    services = FALLBACK_SERVICES.map((s) => ({ slug: s, name: getFallbackService(s)?.name || s }));
+    cases = FALLBACK_CASES.map((c) => ({ slug: c, client: getFallbackCase(c)?.client || c }));
+    industries = FALLBACK_INDUSTRIES.map((i) => ({ slug: i, name: getFallbackIndustry(i)?.name || i }));
+    locations = FALLBACK_LOCATIONS.map((l) => ({ slug: l, name: getFallbackLocation(l)?.name || l }));
+  }
 
   const groups = [
     {

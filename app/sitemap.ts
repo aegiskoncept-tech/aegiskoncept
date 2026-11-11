@@ -1,17 +1,40 @@
 import { MetadataRoute } from 'next';
 import { db } from '@/lib/db';
+import {
+  FALLBACK_SERVICES,
+  FALLBACK_CASES,
+  FALLBACK_INDUSTRIES,
+  FALLBACK_LOCATIONS,
+  FALLBACK_INSIGHTS,
+} from '@/lib/staticFallbacks';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aegiskoncept.com';
 
-  const [services, cases, industries, locations, posts, sitemapEntries] = await Promise.all([
-    db.service.findMany({ select: { slug: true, updatedAt: true } }),
-    db.caseStudy.findMany({ where: { published: true }, select: { slug: true, updatedAt: true } }),
-    db.industry.findMany({ select: { slug: true, updatedAt: true } }),
-    db.location.findMany({ select: { slug: true, updatedAt: true } }),
-    db.post.findMany({ where: { status: 'PUBLISHED' }, select: { slug: true, updatedAt: true } }),
-    db.sitemapEntry.findMany(),
-  ]);
+  let services: any[] = [];
+  let cases: any[] = [];
+  let industries: any[] = [];
+  let locations: any[] = [];
+  let posts: any[] = [];
+  let sitemapEntries: any[] = [];
+
+  try {
+    [services, cases, industries, locations, posts, sitemapEntries] = await Promise.all([
+      db.service.findMany({ select: { slug: true, updatedAt: true } }),
+      db.caseStudy.findMany({ where: { published: true }, select: { slug: true, updatedAt: true } }),
+      db.industry.findMany({ select: { slug: true, updatedAt: true } }),
+      db.location.findMany({ select: { slug: true, updatedAt: true } }),
+      db.post.findMany({ where: { status: 'PUBLISHED' }, select: { slug: true, updatedAt: true } }),
+      db.sitemapEntry.findMany(),
+    ]);
+  } catch (err) {
+    console.warn('Sitemap database fetch failed, using static fallbacks:', err);
+    services = FALLBACK_SERVICES.map((s) => ({ slug: s, updatedAt: new Date() }));
+    cases = FALLBACK_CASES.map((c) => ({ slug: c, updatedAt: new Date() }));
+    industries = FALLBACK_INDUSTRIES.map((i) => ({ slug: i, updatedAt: new Date() }));
+    locations = FALLBACK_LOCATIONS.map((l) => ({ slug: l, updatedAt: new Date() }));
+    posts = FALLBACK_INSIGHTS.map((p) => ({ slug: p, updatedAt: new Date() }));
+  }
 
   const excludedPaths = new Set(
     sitemapEntries.filter((e) => !e.include).map((e) => e.path)

@@ -12,10 +12,18 @@ import { Vis } from '@/components/site/Mockups';
 import JsonLd from '@/components/seo/JsonLd';
 import { getServiceSchema, getFaqSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
+import { FALLBACK_SERVICES, getFallbackService } from '@/lib/staticFallbacks';
 
 export async function generateStaticParams() {
-  const services = await db.service.findMany({ select: { slug: true } });
-  return services.map((s) => ({ slug: s.slug }));
+  try {
+    const services = await db.service.findMany({ select: { slug: true } });
+    if (services.length > 0) {
+      return services.map((s) => ({ slug: s.slug }));
+    }
+  } catch (err) {
+    console.warn('generateStaticParams [services] query failed, using static fallback:', err);
+  }
+  return FALLBACK_SERVICES.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -23,8 +31,12 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const service = await db.service.findUnique({ where: { slug: params.slug } });
-  if (!service) return { title: 'Service Not Found | AegisKoncept' };
+  let service = null;
+  try {
+    service = await db.service.findUnique({ where: { slug: params.slug } });
+  } catch {}
+  if (!service) service = getFallbackService(params.slug);
+  if (!service) return { title: 'Services | AegisKoncept' };
 
   return {
     title: `${service.name} | AegisKoncept`,
@@ -40,10 +52,15 @@ export default async function ServiceDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const service = await db.service.findUnique({
-    where: { slug: params.slug },
-  });
-
+  let service: any = null;
+  try {
+    service = await db.service.findUnique({
+      where: { slug: params.slug },
+    });
+  } catch (err) {
+    console.warn(`Database query for service ${params.slug} failed, falling back to static data:`, err);
+  }
+  if (!service) service = getFallbackService(params.slug);
   if (!service) notFound();
 
   // Parse JSON data safely
@@ -139,21 +156,30 @@ export default async function ServiceDetailPage({
   } catch {}
 
   // Other services for bottom links
-  const otherServices = await db.service.findMany({
-    where: { id: { not: service.id } },
-    select: { slug: true, name: true },
-  });
+  let otherServices: any[] = [];
+  try {
+    otherServices = await db.service.findMany({
+      where: { id: { not: service.id } },
+      select: { slug: true, name: true },
+    });
+  } catch {}
 
   // Related cases
-  const allCases = await db.caseStudy.findMany({
-    take: 4,
-    orderBy: { order: 'asc' },
-  });
+  let allCases: any[] = [];
+  try {
+    allCases = await db.caseStudy.findMany({
+      take: 4,
+      orderBy: { order: 'asc' },
+    });
+  } catch {}
 
   // Industries related to this service
-  const industries = await db.industry.findMany({
-    select: { slug: true, name: true },
-  });
+  let industries: any[] = [];
+  try {
+    industries = await db.industry.findMany({
+      select: { slug: true, name: true },
+    });
+  } catch {}
 
   // Recent blog articles
   const articles: ArtRowItem[] = [

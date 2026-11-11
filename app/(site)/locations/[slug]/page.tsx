@@ -11,10 +11,18 @@ import { Stage, Serp } from '@/components/site/Mockups';
 import JsonLd from '@/components/seo/JsonLd';
 import { getLocalBusinessSchema, getFaqSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
+import { FALLBACK_LOCATIONS, getFallbackLocation } from '@/lib/staticFallbacks';
 
 export async function generateStaticParams() {
-  const locations = await db.location.findMany({ select: { slug: true } });
-  return locations.map((l) => ({ slug: l.slug }));
+  try {
+    const locations = await db.location.findMany({ select: { slug: true } });
+    if (locations.length > 0) {
+      return locations.map((l) => ({ slug: l.slug }));
+    }
+  } catch (err) {
+    console.warn('generateStaticParams [locations] query failed, using static fallback:', err);
+  }
+  return FALLBACK_LOCATIONS.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -22,8 +30,12 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const loc = await db.location.findUnique({ where: { slug: params.slug } });
-  if (!loc) return { title: 'Location Not Found | AegisKoncept' };
+  let loc = null;
+  try {
+    loc = await db.location.findUnique({ where: { slug: params.slug } });
+  } catch {}
+  if (!loc) loc = getFallbackLocation(params.slug);
+  if (!loc) return { title: 'Locations | AegisKoncept' };
 
   return {
     title: `Digital Marketing Agency in ${loc.name} | AegisKoncept`,
@@ -39,10 +51,15 @@ export default async function LocationDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const loc = await db.location.findUnique({
-    where: { slug: params.slug },
-  });
-
+  let loc: any = null;
+  try {
+    loc = await db.location.findUnique({
+      where: { slug: params.slug },
+    });
+  } catch (err) {
+    console.warn(`Database query for location ${params.slug} failed, falling back to static data:`, err);
+  }
+  if (!loc) loc = getFallbackLocation(params.slug);
   if (!loc) notFound();
 
   // Parse JSON data safely
@@ -83,9 +100,12 @@ export default async function LocationDetailPage({
   } catch {}
 
   // Featured case study
-  const featuredCase = loc.featuredCaseId
-    ? await db.caseStudy.findUnique({ where: { slug: loc.featuredCaseId } })
-    : null;
+  let featuredCase = null;
+  try {
+    featuredCase = loc.featuredCaseId
+      ? await db.caseStudy.findUnique({ where: { slug: loc.featuredCaseId } })
+      : null;
+  } catch {}
 
   // Local FAQs
   const localFaqs: FaqItem[] = loc.isOffice
@@ -119,9 +139,12 @@ export default async function LocationDetailPage({
       ];
 
   // All 5 services
-  const allServices = await db.service.findMany({
-    orderBy: { order: 'asc' },
-  });
+  let allServices: any[] = [];
+  try {
+    allServices = await db.service.findMany({
+      orderBy: { order: 'asc' },
+    });
+  } catch {}
 
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', url: '/' },
