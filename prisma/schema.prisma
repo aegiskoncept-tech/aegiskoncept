@@ -1,0 +1,285 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Service {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  nav          String
+  short        String
+  line         String
+  h1           String
+  sub          String
+  positioning  String
+  problems     String   // JSON string array or object
+  fixes        String   // JSON string array or object
+  subServices  String   // JSON string
+  included     String   // JSON string
+  signature    String   // JSON string
+  who          String   // JSON string
+  process      String   // JSON string
+  deliverables String   // JSON string
+  tools        String   // JSON string
+  proof        String   // JSON string
+  faqs         String   // JSON string
+  visualKind   String?
+  order        Int      @default(0)
+  seoTitle     String?
+  seoDesc      String?
+  canonical    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model CaseStudy {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  client        String
+  industryId    String?
+  location      String?
+  services      String   // JSON string array
+  oneLine       String
+  challenge     String
+  approach      String
+  did           String   // JSON string array
+  extra         String?
+  liveUrl       String?
+  logoMediaId   String?
+  coverMediaId  String?
+  shots         String?  // JSON string array of {shot, cap}
+  visualKind    String?
+  ownerName     String?
+  ownerRole     String?
+  results       String   // JSON string array of {num, lbl}
+  order         Int      @default(0)
+  published     Boolean  @default(true)
+  seoTitle      String?
+  seoDesc       String?
+  reviews       Review[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Review {
+  id          String     @id @default(cuid())
+  caseId      String?
+  caseStudy   CaseStudy? @relation(fields: [caseId], references: [id])
+  authorName  String
+  authorRole  String
+  text        String
+  status      String     @default("DRAFT") // DRAFT, APPROVED, REJECTED
+  approvedAt  DateTime?
+  approvedBy  String?
+  sourceNote  String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Industry {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  name       String
+  short      String
+  h1         String
+  sub        String
+  issues     String   // JSON string array of {problem, detail, fix, serviceSlug}
+  faqs       String   // JSON string array of {q, a}
+  visualKind String?
+  order      Int      @default(0)
+  seoTitle   String?
+  seoDesc    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Location {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  zone           String?
+  parentId       String?
+  isOffice       Boolean  @default(false)
+  h1             String
+  sub            String
+  land           String?  // Doing business in X text
+  businesses     String   // JSON string array of chips
+  challenges     String   // JSON string array of challenges
+  searches       String   // JSON string array of what people search
+  nearbyIds      String   // JSON string array of nearby slugs
+  featuredCaseId String?
+  inFooter       Boolean  @default(false)
+  status         String   @default("PUBLISHED")
+  order          Int      @default(0)
+  seoTitle       String?
+  seoDesc        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Video {
+  id             String   @id @default(cuid())
+  vimeoId        String
+  title          String
+  label          String?
+  client         String?
+  category       String?
+  posterMediaId  String?
+  showOnHome     Boolean  @default(false)
+  showOnVideos   Boolean  @default(true)
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Post {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  excerpt         String
+  bodyHtml        String
+  bodyJson        String?
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id])
+  tags            String?   // JSON string array of tag names
+  authorId        String?
+  status          String    @default("DRAFT") // DRAFT, PUBLISHED, SCHEDULED
+  publishAt       DateTime?
+  focusKeyword    String?
+  seoTitle        String?
+  seoDescription  String?
+  canonical       String?
+  robots          String?   @default("index,follow")
+  schemaType      String?   @default("BlogPosting")
+  featuredMediaId String?
+  ogTitle         String?
+  ogDescription   String?
+  readMinutes     Int       @default(4)
+  seoScore        Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Page {
+  id             String   @id @default(cuid())
+  path           String   @unique
+  title          String
+  type           String   // Core, Service, Industry, Location, Case study, Blog, Utility
+  h1             String?
+  intro          String?
+  sections       String?  // JSON array of {name, order, visible}
+  seoTitle       String?
+  seoDescription String?
+  canonical      String?
+  robots         String?  @default("index,follow")
+  ogMediaId      String?
+  inMenu         Boolean  @default(false)
+  inFooter       Boolean  @default(false)
+  status         String   @default("PUBLISHED")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  file      String   // Path or URL to file
+  name      String
+  alt       String?
+  caption   String?
+  folder    String   @default("Uploads") // Client logos, Screenshots, Uploads
+  width     Int?
+  height    Int?
+  sizeKb    Float?
+  mime      String?
+  usages    String?  // JSON string array of page/item references
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Redirect {
+  id        String   @id @default(cuid())
+  from      String   @unique
+  to        String
+  type      Int      @default(301)
+  hits      Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SitemapEntry {
+  id         String   @id @default(cuid())
+  path       String   @unique
+  include    Boolean  @default(true)
+  priority   Float    @default(0.7)
+  changefreq String   @default("monthly")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   // JSON string
+  updatedAt DateTime @updatedAt
+}
+
+model Integration {
+  id          String    @id @default(cuid())
+  key         String    @unique // gsc, ga4, gtm, ads, gbp, recaptcha, looker, pixel, bing, clarity, indexnow, whatsapp
+  connected   Boolean   @default(false)
+  config      String    // JSON string (credentials encrypted)
+  connectedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  name        String
+  phone       String
+  email       String?
+  business    String?
+  service     String?
+  budget      String?
+  message     String?
+  sourcePage  String?
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  status      String   @default("NEW") // NEW, CONTACTED, PROPOSAL, WON, LOST
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("EDITOR") // ADMIN, EDITOR
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+

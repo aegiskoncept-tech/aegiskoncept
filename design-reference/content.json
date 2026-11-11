@@ -1,0 +1,3695 @@
+{
+ "SVC": [
+  {
+   "id": "website-development-design",
+   "short": "Website",
+   "nav": "Websites",
+   "name": "Website Design & Development",
+   "vis": "site",
+   "line": "Good-looking websites that bring you enquiries.",
+   "h1": "A Website That Brings You Customers.",
+   "sub": "We plan, design and build your website. It looks great, loads fast on phones, and makes it easy for people to contact you.",
+   "pos": "Your website is often the first thing people see. If it looks old or confusing, they leave. We make sure they stay and get in touch.",
+   "probs": [
+    "Our website looks old.",
+    "People visit but nobody contacts us.",
+    "It's slow on phones.",
+    "We need a developer for every small change.",
+    "We can't find ourselves on Google.",
+    "It doesn't show what we're good at."
+   ],
+   "inc": [
+    [
+     "Planning",
+     "We decide what pages you need and what each page should say."
+    ],
+    [
+     "Design",
+     "A custom look that matches your brand. Mobile first."
+    ],
+    [
+     "Building",
+     "Fast websites on Next.js, WordPress or Shopify. You can edit them yourself."
+    ],
+    [
+     "Launch + support",
+     "Google setup, tracking and help after launch."
+    ]
+   ],
+   "sig_t": "Every page is made to get you enquiries.",
+   "sig": [
+    [
+     "Clear message",
+     "People understand what you do in 5 seconds."
+    ],
+    [
+     "Proof early",
+     "Your work and reviews show up near the top."
+    ],
+    [
+     "Easy to contact",
+     "A form or WhatsApp button on every page."
+    ],
+    [
+     "Fast loading",
+     "We test speed before we launch."
+    ],
+    [
+     "Tracking from day one",
+     "You'll know where every enquiry came from."
+    ]
+   ],
+   "who": [
+    [
+     "Local businesses",
+     "You need a site that brings calls and enquiries."
+    ],
+    [
+     "Online brands",
+     "You need a fast Shopify store that sells."
+    ],
+    [
+     "Growing companies",
+     "Your business has grown. Your website hasn't."
+    ]
+   ],
+   "proc": [
+    "Talk",
+    "Plan",
+    "Design",
+    "Build",
+    "Launch"
+   ],
+   "deliv": [
+    [
+     "Page plan and layout",
+     "Before design"
+    ],
+    [
+     "Custom design for all pages",
+     "Phone + desktop"
+    ],
+    [
+     "Website you can edit yourself",
+     "Next.js, WordPress or Shopify"
+    ],
+    [
+     "Google, speed and tracking setup",
+     "At launch"
+    ],
+    [
+     "Training for your team",
+     "At handover"
+    ],
+    [
+     "Monthly care plan",
+     "Optional"
+    ]
+   ],
+   "faqs": [
+    [
+     "How long does a website take?",
+     "Usually 4 to 8 weeks. Bigger sites and online stores can take longer. We'll give you a timeline before we start."
+    ],
+    [
+     "Which platform will you use?",
+     "Next.js for speed, WordPress for blogs and content, Shopify for online stores. We'll suggest what fits you."
+    ],
+    [
+     "Can we make changes ourselves?",
+     "Yes. You get an easy editor and a training session."
+    ],
+    [
+     "Do you write the text?",
+     "Yes, we can. It's included or priced separately, depending on the number of pages."
+    ],
+    [
+     "Will it show up on Google?",
+     "We set up everything Google needs before launch: titles, speed, sitemap and more."
+    ],
+    [
+     "Do you look after it later?",
+     "Yes, with an optional monthly plan for updates, backups and small changes."
+    ]
+   ],
+   "arts": [
+    "Common Website Mistakes That Reduce Enquiries",
+    "How Startups Can Build Their Digital Presence",
+    "How to Choose the Right Digital Marketing Agency in India"
+   ],
+   "fixes": [
+    "We redesign it with a modern look that matches your brand today.",
+    "Clear message, proof near the top and a contact button on every screen.",
+    "We build it light and test it on real phones before launch.",
+    "You get an easy editor and training, so small changes are yours.",
+    "Google-friendly setup from day one: titles, speed, sitemap, schema.",
+    "Project pages, reviews and photos that show your best work."
+   ],
+   "subs": [
+    [
+     "Business websites",
+     "Websites for local businesses and service companies that bring calls and enquiries."
+    ],
+    [
+     "Online stores (Shopify)",
+     "Fast stores with good product pages, simple checkout and WhatsApp support."
+    ],
+    [
+     "Landing pages",
+     "One focused page for one ad or offer, made to turn visitors into leads."
+    ],
+    [
+     "Website redesign",
+     "We keep what's working (and your Google rankings) and fix the rest."
+    ],
+    [
+     "Web apps + CRM",
+     "Booking systems, admin panels and lead dashboards, built for your team."
+    ]
+   ],
+   "tools": [
+    "Next.js",
+    "WordPress",
+    "Shopify",
+    "PHP",
+    "Node.js",
+    "Figma",
+    "Google Search Console",
+    "GA4"
+   ],
+   "proof": [
+    [
+     "Fast",
+     "10Q Challenge website rebuilt for speed and SEO",
+     "10q-challenge"
+    ],
+    [
+     "UK",
+     "West Coast Services site built for UK searches",
+     "west-coast-services"
+    ],
+    [
+     "CRM",
+     "Booking + staff system for The Drive Clinic",
+     "the-drive-clinic"
+    ]
+   ],
+   "pf": [
+    [
+     "Our website looks old.",
+     "We redesign it with a modern look that matches your brand today."
+    ],
+    [
+     "People visit but nobody contacts us.",
+     "Clear message, proof near the top and a contact button on every screen."
+    ],
+    [
+     "It's slow on phones.",
+     "We build it light and test it on real phones before launch."
+    ],
+    [
+     "We need a developer for every small change.",
+     "You get an easy editor and training, so small changes are yours."
+    ],
+    [
+     "We can't find ourselves on Google.",
+     "Google-friendly setup from day one: titles, speed, sitemap, schema."
+    ],
+    [
+     "It doesn't show what we're good at.",
+     "Project pages, reviews and photos that show your best work."
+    ]
+   ]
+  },
+  {
+   "id": "seo",
+   "short": "SEO",
+   "nav": "SEO",
+   "name": "SEO",
+   "vis": "seo",
+   "line": "Show up on Google when people search for you.",
+   "h1": "Show Up First When People Search.",
+   "sub": "We help your business appear on Google and Google Maps for the searches that bring real customers. And we explain what we did, every month, in simple words.",
+   "pos": "People search before they buy. If they can't find you, they find someone else. SEO fixes that, step by step.",
+   "probs": [
+    "Our competitors show up before us.",
+    "We get visitors but no enquiries.",
+    "Our Google Maps listing gets ignored.",
+    "We don't know what people search for.",
+    "SEO reports we don't understand.",
+    "Our rankings dropped and nobody told us why."
+   ],
+   "inc": [
+    [
+     "Website fixes",
+     "Speed, structure and technical fixes so Google understands your site."
+    ],
+    [
+     "Pages + blogs",
+     "Better pages and useful articles for the right searches."
+    ],
+    [
+     "Google Maps",
+     "Your Google Business Profile, kept active and complete."
+    ],
+    [
+     "Monthly report",
+     "What changed, why, and what's next. Short and clear."
+    ]
+   ],
+   "sig_t": "Rankings, explained in plain words.",
+   "sig": [
+    [
+     "Right searches, right pages",
+     "Each important search gets a page made for it."
+    ],
+    [
+     "Google Maps sorted",
+     "Photos, posts and reviews kept active."
+    ],
+    [
+     "Big wins first",
+     "We fix what brings enquiries before small stuff."
+    ],
+    [
+     "Easy reports",
+     "No confusing charts. Just what matters."
+    ],
+    [
+     "No shortcuts",
+     "No fake links or tricks that can get you penalised."
+    ]
+   ],
+   "who": [
+    [
+     "Local businesses",
+     "You want to show up in \"near me\" searches."
+    ],
+    [
+     "Online stores",
+     "You want sales from Google without paying for every click."
+    ],
+    [
+     "Experts + B2B",
+     "You want articles that bring the right leads."
+    ]
+   ],
+   "proc": [
+    "Keyword mapping",
+    "Page restructuring",
+    "Content engine",
+    "GEO / AEO + Local",
+    "Monthly report"
+   ],
+   "deliv": [
+    [
+     "Full website check",
+     "Month 1"
+    ],
+    [
+     "Search and page plan",
+     "Month 1"
+    ],
+    [
+     "Website fixes and page updates",
+     "Every month"
+    ],
+    [
+     "Google Maps profile care",
+     "Every month"
+    ],
+    [
+     "Blog articles",
+     "[Number per plan]"
+    ],
+    [
+     "Simple monthly report",
+     "Every month"
+    ]
+   ],
+   "faqs": [
+    [
+     "How long does SEO take?",
+     "You'll usually see early movement in 2–3 months. Bigger results take 6 months or more."
+    ],
+    [
+     "Can you guarantee the #1 spot?",
+     "No one can, because Google decides. We promise the work, the plan and honest reports."
+    ],
+    [
+     "Do you do local SEO in Delhi NCR?",
+     "Yes. Google Maps and local search are a big part of what we do."
+    ],
+    [
+     "Do you write the blogs?",
+     "Yes. Our team writes them, and you approve them before they go live."
+    ],
+    [
+     "What's in the report?",
+     "Where you rank, how many people visited, how many contacted you, and what we'll do next."
+    ]
+   ],
+   "arts": [
+    "How Much Does SEO Cost in India?",
+    "Local SEO Strategies for Businesses in Delhi",
+    "SEO vs Paid Advertising: What Should Your Business Invest In?"
+   ],
+   "fixes": [
+    "We find why they rank, then beat them page by page.",
+    "We fix the pages so visitors know what to do next and contact you.",
+    "We complete and update your profile and help you get real reviews.",
+    "We research the exact words your customers type, in Hindi and English too.",
+    "One short monthly report: what we did, what moved, what's next.",
+    "We check every change and tell you what happened, in plain words."
+   ],
+   "subs": [
+    [
+     "Local SEO + Google Maps",
+     "Show up in \"near me\" searches and the Google Maps top 3 in your area."
+    ],
+    [
+     "Technical SEO",
+     "Speed, indexing, structure and fixes so Google can read your whole site."
+    ],
+    [
+     "Content + blog SEO",
+     "Pages and articles written for the searches that bring buyers."
+    ],
+    [
+     "AI search (GEO)",
+     "Get quoted in Google AI Overviews, ChatGPT and other AI answers."
+    ],
+    [
+     "E-commerce SEO",
+     "Category and product pages that rank and sell without paying per click."
+    ]
+   ],
+   "tools": [
+    "Google Search Console",
+    "GA4",
+    "Ahrefs",
+    "Semrush",
+    "Screaming Frog",
+    "Google Business Profile",
+    "PageSpeed Insights"
+   ],
+   "proof": [
+    [
+     "3.51M",
+     "Google impressions for 10Q Challenge",
+     "10q-challenge"
+    ],
+    [
+     "27.3K",
+     "organic clicks for 10Q Challenge",
+     "10q-challenge"
+    ],
+    [
+     "9,873",
+     "Maps actions for a healthcare clinic",
+     "healthcare-clinic"
+    ],
+    [
+     "Position 0",
+     "Google's answer for Shigeru Beauty",
+     "shigeru-beauty"
+    ]
+   ],
+   "pf": [
+    [
+     "Our competitors show up before us.",
+     "We find why they rank, then beat them page by page."
+    ],
+    [
+     "We get visitors but no enquiries.",
+     "We fix the pages so visitors know what to do next and contact you."
+    ],
+    [
+     "Our Google Maps listing gets ignored.",
+     "We complete and update your profile and help you get real reviews."
+    ],
+    [
+     "We don't know what people search for.",
+     "We research the exact words your customers type, in Hindi and English too."
+    ],
+    [
+     "SEO reports we don't understand.",
+     "One short monthly report: what we did, what moved, what's next."
+    ],
+    [
+     "Our rankings dropped and nobody told us why.",
+     "We check every change and tell you what happened, in plain words."
+    ]
+   ]
+  },
+  {
+   "id": "performance-marketing",
+   "short": "Ads",
+   "nav": "Google + Meta Ads",
+   "name": "Google & Meta Ads",
+   "vis": "ads",
+   "line": "Ads on Google, Instagram and Facebook that bring real leads.",
+   "h1": "Ads That Bring Real Customers.",
+   "sub": "We run your Google, Instagram and Facebook ads. We set up tracking first, so you know exactly what each lead costs.",
+   "pos": "Getting clicks is easy. Getting the right people to call or message you is the real job. That's what we focus on.",
+   "probs": [
+    "We spend on ads but get bad leads.",
+    "We don't know what one lead costs.",
+    "Our ads stop working after a few weeks.",
+    "WhatsApp leads get lost.",
+    "Our reports only show clicks.",
+    "We don't know if Google or Instagram is better for us."
+   ],
+   "inc": [
+    [
+     "Plan + tracking",
+     "Goals, budget, audience and tracking, set up properly."
+    ],
+    [
+     "Google Ads",
+     "Ads for people already searching for what you sell."
+    ],
+    [
+     "Instagram + Facebook Ads",
+     "Lead forms, WhatsApp ads and ads to win back past visitors."
+    ],
+    [
+     "Creative + reports",
+     "New ad designs, weekly tweaks and a monthly report."
+    ]
+   ],
+   "sig_t": "We count leads, not clicks.",
+   "sig": [
+    [
+     "Tracking first",
+     "Every form, call and WhatsApp lead is counted."
+    ],
+    [
+     "We check lead quality",
+     "We ask your team which leads were real."
+    ],
+    [
+     "Fresh ads monthly",
+     "New ideas so results don't fade."
+    ],
+    [
+     "Your account, your data",
+     "Ad accounts stay in your name."
+    ],
+    [
+     "Clear budget",
+     "You pay Google and Meta directly. Our fee is separate."
+    ]
+   ],
+   "who": [
+    [
+     "Local businesses",
+     "You want calls and WhatsApp messages this month."
+    ],
+    [
+     "Online brands",
+     "You want sales at a cost that makes sense."
+    ],
+    [
+     "Service companies",
+     "You want good-quality leads, not just numbers."
+    ]
+   ],
+   "proc": [
+    "Check",
+    "Track",
+    "Launch",
+    "Improve",
+    "Report"
+   ],
+   "deliv": [
+    [
+     "Account and tracking setup",
+     "Month 1"
+    ],
+    [
+     "Campaign plan and audiences",
+     "Month 1"
+    ],
+    [
+     "Ad designs and text",
+     "[Number per plan]"
+    ],
+    [
+     "Weekly improvements",
+     "Ongoing"
+    ],
+    [
+     "Lead quality check with your team",
+     "Every month"
+    ],
+    [
+     "Monthly report and next steps",
+     "Every month"
+    ]
+   ],
+   "faqs": [
+    [
+     "How much should we spend on ads?",
+     "It depends on your goal and your city. After a quick check, we'll suggest a starting budget so you can test without overspending."
+    ],
+    [
+     "Is the ad budget part of your fee?",
+     "No. You pay Google and Meta directly. Our fee covers planning, setup, design and management."
+    ],
+    [
+     "How fast will we get leads?",
+     "Usually in the first few weeks. The first month also teaches us what works best for you."
+    ],
+    [
+     "Who owns the ad account?",
+     "You do. Everything stays in your business's name."
+    ],
+    [
+     "Can you run WhatsApp ads?",
+     "Yes. We set up click-to-WhatsApp ads and help your team handle the chats."
+    ]
+   ],
+   "arts": [
+    "Google Ads vs Meta Ads for Indian Businesses",
+    "SEO vs Paid Advertising: What Should Your Business Invest In?",
+    "How Startups Can Build Their Digital Presence"
+   ],
+   "fixes": [
+    "We tighten targeting and add questions that filter out time-wasters.",
+    "We track every form, call and WhatsApp chat so you see cost per lead.",
+    "We refresh ads every month before they get tired.",
+    "Leads go straight to your team's WhatsApp, with a reply script.",
+    "We report leads, cost per lead and sales, not just clicks.",
+    "We test both with a small budget and move money to what works."
+   ],
+   "subs": [
+    [
+     "Google Search Ads",
+     "Show up when people are already searching for what you sell."
+    ],
+    [
+     "Meta lead ads",
+     "Instagram and Facebook lead forms with smart questions to filter quality."
+    ],
+    [
+     "Click-to-WhatsApp ads",
+     "Ads that open a WhatsApp chat, the way most Indians prefer to talk."
+    ],
+    [
+     "Retargeting",
+     "Win back people who visited your site or engaged with your page."
+    ],
+    [
+     "B2B reach campaigns",
+     "Get in front of business owners and decision makers at a low cost."
+    ]
+   ],
+   "tools": [
+    "Google Ads",
+    "Meta Ads Manager",
+    "Meta Pixel + CAPI",
+    "Google Tag Manager",
+    "GA4",
+    "WhatsApp Business",
+    "Looker Studio"
+   ],
+   "proof": [
+    [
+     "₹4.99",
+     "record cost per WhatsApp lead on Meta",
+     null
+    ],
+    [
+     "2.02M",
+     "B2B reach for Allied Industrial Park",
+     "allied-industrial-park"
+    ],
+    [
+     "₹3.75",
+     "CPM for Allied's B2B audience",
+     "allied-industrial-park"
+    ]
+   ],
+   "pf": [
+    [
+     "We spend on ads but get bad leads.",
+     "We tighten targeting and add questions that filter out time-wasters."
+    ],
+    [
+     "We don't know what one lead costs.",
+     "We track every form, call and WhatsApp chat so you see cost per lead."
+    ],
+    [
+     "Our ads stop working after a few weeks.",
+     "We refresh ads every month before they get tired."
+    ],
+    [
+     "WhatsApp leads get lost.",
+     "Leads go straight to your team's WhatsApp, with a reply script."
+    ],
+    [
+     "Our reports only show clicks.",
+     "We report leads, cost per lead and sales, not just clicks."
+    ],
+    [
+     "We don't know if Google or Instagram is better for us.",
+     "We test both with a small budget and move money to what works."
+    ]
+   ]
+  },
+  {
+   "id": "social-media-marketing-management",
+   "short": "Social Media",
+   "nav": "Social Media",
+   "name": "Social Media Management",
+   "vis": "dm",
+   "line": "We post, we reply to your DMs, and we grow your page.",
+   "h1": "We Post. We Reply. You Grow.",
+   "sub": "We plan your content, make it, post it, and reply to your DMs and comments. You focus on your business. We handle your Instagram and Facebook.",
+   "pos": "Most agencies just post. We also talk to your customers: we reply to DMs and comments in your brand's voice, so no enquiry gets missed.",
+   "probs": [
+    "We only post when we remember.",
+    "DMs stay unanswered for days.",
+    "Our posts don't look like us.",
+    "We don't know what's working.",
+    "Nobody replies to comments.",
+    "No time to plan a whole month."
+   ],
+   "inc": [
+    [
+     "Plan",
+     "Who to talk to, what to post and how your brand should sound."
+    ],
+    [
+     "Make",
+     "Monthly calendar, posts, carousels, reels, video and captions."
+    ],
+    [
+     "Manage",
+     "We post on time and reply to DMs and comments."
+    ],
+    [
+     "Report",
+     "What worked, what didn't, and next month's plan."
+    ]
+   ],
+   "sig_t": "More than just posting.",
+   "sig": [
+    [
+     "DMs answered",
+     "Replies in your brand's voice, within agreed hours."
+    ],
+    [
+     "Comments handled",
+     "Every conversation gets a reply."
+    ],
+    [
+     "Leads passed on",
+     "Serious enquiries go straight to your team."
+    ],
+    [
+     "What people asked",
+     "A monthly list of common questions."
+    ],
+    [
+     "Clear rules",
+     "Reply hours and rules are set before we start."
+    ]
+   ],
+   "who": [
+    [
+     "Busy business owners",
+     "You need posts that go out on time, every week."
+    ],
+    [
+     "Online brands",
+     "You need content and DMs that turn into orders."
+    ],
+    [
+     "Bigger companies",
+     "You need every reply to sound like your brand."
+    ]
+   ],
+   "proc": [
+    "Plan",
+    "Make",
+    "You approve",
+    "Post + reply",
+    "Report"
+   ],
+   "deliv": [
+    [
+     "Monthly content calendar",
+     "Every month"
+    ],
+    [
+     "Posts, carousels and reels",
+     "[Number per plan]"
+    ],
+    [
+     "Captions and hashtags",
+     "Every post"
+    ],
+    [
+     "DM and comment replies",
+     "Agreed hours"
+    ],
+    [
+     "Stories and engagement",
+     "Ongoing"
+    ],
+    [
+     "Monthly report and plan",
+     "Every month"
+    ]
+   ],
+   "faqs": [
+    [
+     "How many posts do we get?",
+     "It depends on your plan. A normal month mixes reels, carousels, posts and stories. Exact numbers are in your proposal."
+    ],
+    [
+     "Do you really reply to DMs?",
+     "Yes. That's a big part of what we do. We agree reply hours and rules with you first."
+    ],
+    [
+     "Who checks posts before they go live?",
+     "You do. You approve the calendar and the content before anything is posted."
+    ],
+    [
+     "Can you make photos and videos?",
+     "Yes. Our team handles content and creative production, from ideas and scripts to editing."
+    ],
+    [
+     "How do you show results?",
+     "A monthly report: reach, likes, followers, enquiries from DMs, and what we'll change next."
+    ]
+   ],
+   "arts": [
+    "How to Build a Social Media Content Calendar",
+    "How Social Media Management Helps Businesses Build Trust",
+    "How Startups Can Build Their Digital Presence"
+   ],
+   "fixes": [
+    "A monthly calendar you approve once, then we post on time.",
+    "We reply to DMs within agreed hours, in your brand's voice.",
+    "Templates, colours and a style that's clearly yours.",
+    "Monthly report on what got reach, saves and enquiries.",
+    "Every comment gets a reply, so people feel heard.",
+    "We plan the whole month for you. You just approve."
+   ],
+   "subs": [
+    [
+     "Content calendar",
+     "A month of posts, reels and stories, planned around your goals."
+    ],
+    [
+     "Reels + carousels",
+     "Designed, edited and captioned by our team."
+    ],
+    [
+     "DM + comment replies",
+     "We answer customers in your voice and pass leads to you."
+    ],
+    [
+     "Page growth",
+     "Hashtags, collabs and stories that bring the right followers."
+    ],
+    [
+     "Monthly reporting",
+     "Reach, saves, followers and DM enquiries, explained simply."
+    ]
+   ],
+   "tools": [
+    "Meta Business Suite",
+    "Instagram",
+    "Facebook",
+    "Canva",
+    "Adobe Premiere",
+    "CapCut",
+    "WhatsApp Business"
+   ],
+   "proof": [
+    [
+     "30",
+     "reel ideas planned for The Attic Storey",
+     "the-attic-storey"
+    ],
+    [
+     "Weekly",
+     "reels + daily stories for Thrive Gym",
+     "thrive-gym"
+    ],
+    [
+     "Festive",
+     "campaign content for Luxury Club",
+     "luxury-club"
+    ]
+   ],
+   "pf": [
+    [
+     "We only post when we remember.",
+     "A monthly calendar you approve once, then we post on time."
+    ],
+    [
+     "DMs stay unanswered for days.",
+     "We reply to DMs within agreed hours, in your brand's voice."
+    ],
+    [
+     "Our posts don't look like us.",
+     "Templates, colours and a style that's clearly yours."
+    ],
+    [
+     "We don't know what's working.",
+     "Monthly report on what got reach, saves and enquiries."
+    ],
+    [
+     "Nobody replies to comments.",
+     "Every comment gets a reply, so people feel heard."
+    ],
+    [
+     "No time to plan a whole month.",
+     "We plan the whole month for you. You just approve."
+    ]
+   ]
+  },
+  {
+   "id": "video-production",
+   "short": "Video",
+   "nav": "Shoots + Video",
+   "name": "Shoots & Video Production",
+   "vis": "vid",
+   "line": "Reels, ad films and product shoots, made by our own crew.",
+   "h1": "Videos That Make People Stop Scrolling.",
+   "sub": "We plan, shoot and edit reels, ad films and product videos. Our own crew, 4K cameras, lights and models when you need them.",
+   "pos": "On Instagram, the video is the ad. A phone clip from your counter won't beat a brand that shot it properly. We give you videos that look premium and are cut to sell.",
+   "probs": [
+    "Our videos look homemade.",
+    "We post the same 5 photos again and again.",
+    "Ads made from stock footage don't feel real.",
+    "We don't know what to shoot.",
+    "Shoots cost too much and take too long.",
+    "We got footage, but nobody edited it into ads."
+   ],
+   "inc": [
+    [
+     "Idea + script",
+     "Hooks, script, shot list and mood board before the shoot."
+    ],
+    [
+     "Shoot day",
+     "Our crew, Sony FX3 cameras, lights, set and models if needed."
+    ],
+    [
+     "Edit",
+     "Reels, ad cuts, captions, colour grade and music."
+    ],
+    [
+     "Ready-to-post files",
+     "9:16, 4:5 and 16:9 versions for every platform."
+    ]
+   ],
+   "sig_t": "Shot to sell, not just to look nice.",
+   "sig": [
+    [
+     "Hook in 2 seconds",
+     "Every video opens with a reason to keep watching."
+    ],
+    [
+     "Many cuts from one shoot",
+     "One day of shooting gives you a month of content."
+    ],
+    [
+     "Made for ads",
+     "Versions sized and timed for Meta and YouTube ads."
+    ],
+    [
+     "Real people",
+     "Your team, your space, real customers or our models."
+    ],
+    [
+     "Fast delivery",
+     "First edits usually within a week of the shoot."
+    ]
+   ],
+   "who": [
+    [
+     "Gyms + studios",
+     "You want energy on screen that brings walk-ins."
+    ],
+    [
+     "Online brands",
+     "You need product videos and ad creatives every month."
+    ],
+    [
+     "Spaces + B2B",
+     "You want people to see your space before they visit."
+    ]
+   ],
+   "proc": [
+    "Brief",
+    "Script",
+    "Shoot",
+    "Edit",
+    "Deliver"
+   ],
+   "deliv": [
+    [
+     "Concept, script and shot list",
+     "Before the shoot"
+    ],
+    [
+     "Shoot day with crew and gear",
+     "Half or full day"
+    ],
+    [
+     "Models and location",
+     "If needed"
+    ],
+    [
+     "Edited reels and ad cuts",
+     "[Number per plan]"
+    ],
+    [
+     "Captions, colour grade and music",
+     "Every video"
+    ],
+    [
+     "All sizes for every platform",
+     "At delivery"
+    ]
+   ],
+   "faqs": [
+    [
+     "Do you shoot outside Delhi?",
+     "Yes. Most shoots are in Delhi NCR, but we travel for bigger projects."
+    ],
+    [
+     "Can you provide models?",
+     "Yes. We cast models and athletes to fit your brand, or we can film your team."
+    ],
+    [
+     "How many videos from one shoot?",
+     "Usually 6–15 edits from one day, depending on the plan."
+    ],
+    [
+     "What camera do you use?",
+     "Sony FX3 cinema cameras in 4K, with proper lighting. Phone-native looks too, when that works better for ads."
+    ],
+    [
+     "Can you also run the ads?",
+     "Yes. Our ads team can run the videos on Instagram, Facebook and YouTube."
+    ]
+   ],
+   "arts": [
+    "How to Build a Social Media Content Calendar",
+    "Google Ads vs Meta Ads for Indian Businesses",
+    "How Social Media Management Helps Businesses Build Trust"
+   ],
+   "fixes": [
+    "A proper crew, cinema cameras and lights. It shows.",
+    "One shoot day gives you a month of fresh posts and reels.",
+    "We film your real space, team and product, so it feels true.",
+    "We write the idea, hook and shot list before anyone picks up a camera.",
+    "Half-day or full-day shoots, planned so nothing is wasted.",
+    "We edit every shoot into reels and ad cuts, ready to post."
+   ],
+   "subs": [
+    [
+     "Brand + commercial reels",
+     "Short films that show who you are and why people should care."
+    ],
+    [
+     "Product videos",
+     "Clean, cinematic product shots for your store and ads."
+    ],
+    [
+     "Gym + athlete shoots",
+     "High-energy fitness content with real athletes and models."
+    ],
+    [
+     "Ad creatives",
+     "Hooks and cuts made for Meta and YouTube ads."
+    ],
+    [
+     "Space + B2B films",
+     "Show your office, coworking space or factory before people visit."
+    ]
+   ],
+   "tools": [
+    "Sony FX3",
+    "4K cinema lenses",
+    "Lighting rig",
+    "DaVinci Resolve",
+    "Adobe Premiere",
+    "After Effects",
+    "Models + casting"
+   ],
+   "proof": [
+    [
+     "7",
+     "commercial reels shot for clients",
+     null
+    ],
+    [
+     "4K",
+     "cinema production on every shoot",
+     null
+    ],
+    [
+     "3",
+     "brands: fitness, lifestyle and B2B spaces",
+     null
+    ]
+   ],
+   "pf": [
+    [
+     "Our videos look homemade.",
+     "A proper crew, cinema cameras and lights. It shows."
+    ],
+    [
+     "We post the same 5 photos again and again.",
+     "One shoot day gives you a month of fresh posts and reels."
+    ],
+    [
+     "Ads made from stock footage don't feel real.",
+     "We film your real space, team and product, so it feels true."
+    ],
+    [
+     "We don't know what to shoot.",
+     "We write the idea, hook and shot list before anyone picks up a camera."
+    ],
+    [
+     "Shoots cost too much and take too long.",
+     "Half-day or full-day shoots, planned so nothing is wasted."
+    ],
+    [
+     "We got footage, but nobody edited it into ads.",
+     "We edit every shoot into reels and ad cuts, ready to post."
+    ]
+   ]
+  }
+ ],
+ "CASES": [
+  {
+   "id": "10q-challenge",
+   "client": "10Q Challenge",
+   "ind": "education",
+   "loc": "India (online)",
+   "svcs": [
+    "SEO",
+    "Website"
+   ],
+   "logo": "e0c7efa9",
+   "url": "https://10qchallenge.in/",
+   "one": "From about 20 Google clicks a day to 1,000+ at exam-season peak.",
+   "ch": "10Q Challenge helps students prepare for BITSAT and JEE online. Big coaching brands take up most of Google's first page, so a smaller brand was hard to find.",
+   "ap": "We mapped every high-intent search students make, like \"bitsat mentorship program 2027\" and \"bitsat crash course\". Then we rebuilt the pages so each one answers one search, kept the old links that were already ranking, and wrote guides and quizzes in an answer-first style that Google's AI Overviews like to quote.",
+   "did": [
+    "Keyword mapping",
+    "Page restructuring",
+    "Guides + quizzes",
+    "AI search (GEO)",
+    "Monthly report"
+   ],
+   "res": [
+    [
+     "27.3K",
+     "organic clicks"
+    ],
+    [
+     "3.51M",
+     "Google search impressions"
+    ],
+    [
+     "6.9",
+     "average Google position"
+    ],
+    [
+     "134K",
+     "AI Overview impressions in 3 months"
+    ],
+    [
+     "#1",
+     "\"bitsat mentorship program 2027\""
+    ],
+    [
+     "#2",
+     "\"jee mentorship program 2027\" and \"bitsat crash course\""
+    ]
+   ],
+   "extra": "Google's AI Overview lists 10Q Challenge first for BITSAT mentorship, and names it next to Physics Wallah for JEE mentorship.",
+   "cover": "s01",
+   "shots": [
+    [
+     "s00",
+     "Google Search Console, Jan–Jul 2026: 27.3K clicks, 3.51M impressions. Peak in BITSAT / JEE exam season."
+    ],
+    [
+     "s01",
+     "\"bitsat mentorship program 2027\": 10Q listed first in the AI Overview and #1 in the results."
+    ],
+    [
+     "s02",
+     "\"jee mentorship 2027\": 10Q named next to Physics Wallah in Google's AI answer."
+    ],
+    [
+     "s03",
+     "134K impressions inside Google's AI features in 3 months."
+    ],
+    [
+     "s05",
+     "#2 for \"bitsat crash course\"."
+    ],
+    [
+     "s06",
+     "#2 for \"jee mentorship program 2027\" (keyword difficulty 43%)."
+    ],
+    [
+     "s07",
+     "#3 for a BITSAT logical reasoning quiz (keyword difficulty 72%)."
+    ],
+    [
+     "s04",
+     "#6 for \"jee advanced syllabus 2027\"."
+    ]
+   ],
+   "quote": "AegisKoncept rebuilt our site and SEO. We now rank #1 for BITSAT mentorship, and Google’s AI answers recommend us. Daily clicks went from about 20 to over 1,000 in exam season.",
+   "qok": false,
+   "owner": [
+    "Harshal Jain",
+    "Owner"
+   ]
+  },
+  {
+   "id": "healthcare-clinic",
+   "client": "Healthcare Clinic",
+   "ind": "healthcare-wellness",
+   "loc": "India",
+   "svcs": [
+    "SEO"
+   ],
+   "logo": null,
+   "one": "9,873 actions from Google Maps in 6 months: directions, calls and website visits.",
+   "ch": "A healthcare clinic wanted more patients from people searching nearby. Its Google profile was there, but it wasn't bringing steady calls and visits.",
+   "ap": "We completed and optimised the Google Business Profile, kept it active with posts and photos, built local pages on the website, and helped the clinic collect real reviews. Then we tracked every call, direction request and website click.",
+   "did": [
+    "Google Business Profile",
+    "Local pages",
+    "Reviews",
+    "Monthly tracking"
+   ],
+   "res": [
+    [
+     "9,873",
+     "Business Profile actions"
+    ],
+    [
+     "6,361",
+     "direction requests"
+    ],
+    [
+     "3,761",
+     "website clicks"
+    ],
+    [
+     "1,376",
+     "phone calls"
+    ]
+   ],
+   "extra": "About 1,600 actions every month, steady for 6 months (Feb–Jul 2026). Client name kept private on request.",
+   "cover": "s08",
+   "shots": [
+    [
+     "s08",
+     "9,873 Business Profile interactions, Feb–Jul 2026."
+    ],
+    [
+     "s09",
+     "6,361 direction requests."
+    ],
+    [
+     "s10",
+     "3,761 website clicks from the profile."
+    ],
+    [
+     "s11",
+     "1,376 phone calls from the profile."
+    ]
+   ],
+   "owner": null
+  },
+  {
+   "id": "allied-industrial-park",
+   "client": "Allied Industrial Park",
+   "ind": "real-estate",
+   "loc": "Alwar, Rajasthan",
+   "svcs": [
+    "Ads",
+    "Website"
+   ],
+   "logo": "2306283a",
+   "url": "https://alliedindustrialpark.in/",
+   "one": "Every industrial and residential plot sold, with Meta ads and a proper retargeting plan.",
+   "ch": "Allied Industrial Park had industrial plots (500 to 1,800 sq. m.) and residential plots to sell in its township on the Bhiwadi–Alwar corridor. Buyers are factory owners, investors and families: a small audience that takes time to decide.",
+   "ap": "We built the website around what buyers check first: plot sizes, location on SH-25, security and the investment case. Then we ran Meta ads in stages. First, wide reach to business owners and investors at a low cost. Next, retargeting ads with plot details, prices and site-visit offers to everyone who watched the videos or visited the site. Finally, lead forms and WhatsApp for people ready to visit. Every week we moved budget to the ads bringing real enquiries.",
+   "did": [
+    "Meta Ads",
+    "Retargeting funnel",
+    "B2B audiences",
+    "Ad videos + creatives",
+    "Lead forms + WhatsApp",
+    "Website"
+   ],
+   "res": [
+    [
+     "100%",
+     "industrial and residential plots sold"
+    ],
+    [
+     "2.02M",
+     "people reached"
+    ],
+    [
+     "₹3.75",
+     "cost per 1,000 views (CPM)"
+    ]
+   ],
+   "quote": "Their Meta ads and retargeting helped us sell every industrial and residential plot. They reached the right business owners at a very low cost and kept improving the ads every week.",
+   "qok": false,
+   "owner": [
+    "Jeevan Singh",
+    "Owner"
+   ]
+  },
+  {
+   "id": "pot-and-bloom",
+   "client": "Pot & Bloom",
+   "ind": "ecommerce-d2c",
+   "loc": "India",
+   "svcs": [
+    "Website",
+    "Video"
+   ],
+   "logo": "88f9434f",
+   "url": "https://www.potandbloom.com/",
+   "one": "A fresher Shopify store, plus product photos and videos.",
+   "ch": "Pot & Bloom sells grow kits, plant care, self-watering pots, gardening tools and corporate gifts across India. The store needed a better homepage and better product visuals.",
+   "ap": "We redesigned the Shopify homepage (\"Grow something beautiful.\"), organised the shop into clear collections, made product images and videos, and created promo videos for new launches. We now look after the site every month.",
+   "did": [
+    "Shopify homepage",
+    "Collections",
+    "Product images",
+    "Promo videos",
+    "Monthly care"
+   ],
+   "quote": "They redesigned our Shopify homepage, made our product photos and videos, and look after the site every month. Always quick to make changes.",
+   "qok": false,
+   "owner": [
+    "Anit Singh",
+    "Business Head"
+   ]
+  },
+  {
+   "id": "west-coast-services",
+   "client": "West Coast Services",
+   "ind": "professional-services",
+   "loc": "London, UK",
+   "svcs": [
+    "Website",
+    "SEO"
+   ],
+   "logo": "bada290e",
+   "url": "https://westcoastservices.co.uk/",
+   "one": "A London website that sorts out business bills and marketing in one place.",
+   "ch": "West Coast Services helps UK businesses with energy, gas, water and waste contracts, plus loans, card machines and digital marketing. They needed one website that explains all of it simply.",
+   "ap": "We built a clear, friendly website (\"We sort out the bills you hate opening\") with a page for each service, a savings estimator, a simple switching process and quote forms. Behind it, an admin panel for leads, articles and SEO.",
+   "did": [
+    "Website design",
+    "Savings estimator",
+    "Service pages",
+    "UK SEO",
+    "Lead CRM"
+   ],
+   "quote": "They built a clean, professional website that explains all our services simply and brings in quote requests from UK businesses.",
+   "qok": false,
+   "owner": [
+    "Ashish",
+    "Owner, UK"
+   ]
+  },
+  {
+   "id": "eco-utilities",
+   "client": "ECO Utilities",
+   "ind": "professional-services",
+   "loc": "London, UK",
+   "svcs": [
+    "Website",
+    "SEO"
+   ],
+   "logo": "3dd9ad49",
+   "url": "https://ecoutilitiesltd.co.uk/",
+   "one": "A business energy comparison site built to rank in the UK.",
+   "ch": "ECO Utilities is an independent UK broker. It gets business gas and electricity quotes, explains every charge and handles the paperwork, with no fees.",
+   "ap": "We built a clean comparison website (\"Compare business energy prices. Pay what you should.\") with pages for electricity and gas, room for broadband, water, waste and insurance, and a guides section for UK search.",
+   "did": [
+    "Website",
+    "Comparison pages",
+    "Guides",
+    "UK SEO"
+   ],
+   "quote": "Our new website makes comparing business energy easy for customers. Clear, fast and built to be found on Google in the UK.",
+   "qok": false,
+   "owner": [
+    "Amarjit Singh",
+    "Owner, UK"
+   ]
+  },
+  {
+   "id": "the-drive-clinic",
+   "client": "The Drive Clinic",
+   "ind": "automotive",
+   "loc": "Jammu",
+   "svcs": [
+    "Website"
+   ],
+   "logo": "f03c9f15",
+   "url": "https://thedriveclinic.com/",
+   "one": "A booking website for a premium car and bike detailing studio.",
+   "ch": "The Drive Clinic does detailing, paint protection film, ceramic coating and washes in Nanak Nagar, Jammu. Bookings and customer details were handled on calls and paper.",
+   "ap": "We built a bold website with online booking, a menu of 15 service packages, VIP memberships, a work gallery and a quiz that recommends the right service. Plus a staff and CRM system to manage bookings and customers.",
+   "did": [
+    "Website",
+    "Online booking",
+    "15 packages",
+    "VIP memberships",
+    "Service quiz",
+    "Staff CRM"
+   ],
+   "quote": "A bold website with online booking, our packages and memberships, plus a system to manage customers. Exactly what our studio needed.",
+   "qok": false,
+   "owner": [
+    "Karanveer Singh",
+    "Owner"
+   ]
+  },
+  {
+   "id": "shigeru-beauty",
+   "client": "Shigeru Beauty",
+   "ind": "beauty-salons",
+   "loc": "USA",
+   "svcs": [
+    "SEO"
+   ],
+   "logo": null,
+   "url": "https://shigerubeauty.com/",
+   "one": "Google's own answer for \"best 24k gold serum in USA\".",
+   "ch": "Shigeru Beauty sells 24k gold skincare online in the US, a crowded market full of big beauty brands.",
+   "ap": "We wrote answer-first guides for the exact questions buyers ask, structured so Google can lift the answer straight into its results. That's called AEO (answer engine optimisation).",
+   "did": [
+    "AI SEO",
+    "Answer-first guides",
+    "Featured snippets",
+    "E-commerce SEO"
+   ],
+   "res": [
+    [
+     "Position 0",
+     "featured snippet names Shigeru Beauty as the answer"
+    ],
+    [
+     "Cited",
+     "as a source in Google's AI Overview"
+    ]
+   ],
+   "cover": "s18",
+   "shots": [
+    [
+     "s18",
+     "\"best 24k gold serum in usa\": Google's answer box names Shigeru Beauty."
+    ],
+    [
+     "s19",
+     "\"best 24k gold elixir\": Shigeru Beauty's guide cited in the AI Overview."
+    ]
+   ],
+   "quote": "Their SEO got us into Google’s answer box and AI Overviews in a very competitive US beauty market.",
+   "qok": false,
+   "owner": [
+    "Rob Farber",
+    "Owner"
+   ]
+  },
+  {
+   "id": "thrive-gym",
+   "client": "Thrive Gym",
+   "ind": "healthcare-wellness",
+   "loc": "Gurugram",
+   "svcs": [
+    "Social Media",
+    "Ads",
+    "Video"
+   ],
+   "logo": "26a50833",
+   "one": "New gym admissions every month from Instagram, Facebook and Google ads.",
+   "ch": "Thrive Gym is on Dwarka Expressway. Lots of new housing societies there have free clubhouse gyms. The gym needed more people to sign up.",
+   "ap": "We manage Thrive Gym's social media every month: reels, posts and daily stories with real members and trainers, plus three 4K commercial reels we shot. We run Google ads for people searching for gyms nearby and Meta free-trial ads that open straight into WhatsApp, so new people walk in and take admission.",
+   "did": [
+    "Social media posts",
+    "Reels + stories",
+    "3 commercial reels",
+    "Google Search ads",
+    "Meta free-trial ads",
+    "Monthly report"
+   ],
+   "quote": "They handle our social media and ads every month, and we get new gym admissions from it. The reels they shot show the real energy of our gym.",
+   "qok": false,
+   "owner": [
+    "Rahul Ron & Ritik Punia",
+    "Owners"
+   ]
+  },
+  {
+   "id": "uk-barber",
+   "client": "UK Barber Shop",
+   "ind": "beauty-salons",
+   "loc": "Derby, UK",
+   "svcs": [
+    "Website",
+    "SEO"
+   ],
+   "logo": "56e25337",
+   "url": "https://derbyukbarber.com/",
+   "one": "A sharp website so people in Derby find the shop and walk in.",
+   "ch": "UK Barber Shop is a walk-in barbershop on Osmaston Road, Derby. If people nearby can't find it on Google, they walk into the next shop.",
+   "ap": "We made a bold website (\"Stay Sharp. Look Premium.\") with services, a price list, the team, reviews, a gallery and opening hours, and set it up for local search in Derby.",
+   "did": [
+    "Website",
+    "Price list",
+    "Gallery + reviews",
+    "Local SEO"
+   ],
+   "quote": "A sharp website that shows our services, prices and work. Easy for people in Derby to find us and walk in.",
+   "qok": false,
+   "owner": [
+    "Allen",
+    "Owner, Derby UK"
+   ]
+  },
+  {
+   "id": "krickscricket",
+   "client": "Krickscricket",
+   "ind": "ecommerce-d2c",
+   "loc": "India · ships worldwide",
+   "svcs": [
+    "Website"
+   ],
+   "logo": null,
+   "url": "https://krickscricket.com/",
+   "one": "A worldwide store for handmade cricket bats.",
+   "ch": "Krickscricket makes English and Kashmir willow bats by hand, plus custom-engraved bats and accessories. They needed a store that sells to players all over the world.",
+   "ap": "We built the e-commerce site (\"Built for the big hit.\") with shops for leather, tennis and custom bats, accessories, a bat size finder, a page on how the bats are made, and bulk enquiries.",
+   "did": [
+    "E-commerce site",
+    "Custom bat builder",
+    "Bat size finder",
+    "Bulk enquiry"
+   ],
+   "quote": "They built our online store for handmade cricket bats, including custom bats and a size finder. Customers order from all over the world.",
+   "qok": false,
+   "owner": [
+    "Rajdeep Singh",
+    "Owner"
+   ]
+  },
+  {
+   "id": "the-attic-storey",
+   "client": "The Attic Storey",
+   "ind": "interiors-design",
+   "loc": "Delhi",
+   "svcs": [
+    "Social Media",
+    "Video"
+   ],
+   "logo": "a5f3fa1c",
+   "one": "An active Instagram page and cinematic brand reels, even before projects were finished.",
+   "ch": "The Attic Storey (Tastorey) is a design studio. Most of their projects were still being built, so there were no finished photos to post.",
+   "ap": "We planned content around the process instead: materials, site visits and the team. We made a monthly calendar and 30 reel ideas, posted every week, and shot cinematic brand reels on a studio set with models and a full lighting rig.",
+   "did": [
+    "Monthly calendar",
+    "30 reel ideas",
+    "Weekly posting",
+    "Brand reels",
+    "Studio shoot"
+   ],
+   "quote": "Even before our projects were finished, they kept our Instagram active and shot cinematic brand reels that show our style.",
+   "qok": false,
+   "owner": [
+    "Kartik & Astha",
+    "Owners, Delhi"
+   ]
+  },
+  {
+   "id": "workstation-coworking",
+   "client": "Workstation",
+   "ind": "real-estate",
+   "loc": "Delhi NCR",
+   "svcs": [
+    "Video",
+    "Ads"
+   ],
+   "logo": null,
+   "one": "Seats rented out through Meta ads, with reels and ad videos we made.",
+   "ch": "Workstation is a coworking space. They needed to fill desks and cabins, and people want to feel the vibe before they book a visit.",
+   "ap": "We prepared reels and ad videos showing the desks, cabins and community, then ran Meta ads aimed at freelancers, founders and small teams nearby. The ads brought enquiries and visits, and the space got rented.",
+   "did": [
+    "Reels",
+    "Ad videos",
+    "Meta Ads",
+    "Local audiences"
+   ],
+   "res": [
+    [
+     "Rented",
+     "seats filled through Meta ads"
+    ]
+   ],
+   "owner": null
+  },
+  {
+   "id": "luxury-club",
+   "client": "Luxury Club",
+   "ind": "fashion-lifestyle",
+   "loc": "India",
+   "svcs": [
+    "Social Media",
+    "Video"
+   ],
+   "logo": "1539c868",
+   "one": "Social media, festive videos and an Amazon store for a fragrance brand.",
+   "ch": "Luxury Club sells car perfumes, attars, candles and gift sets. They needed a steady social media presence, premium festive content, and a way to sell on Amazon.",
+   "ap": "We set up and run their social media posts, made festive reels and cinematic product videos (always keeping the real product photos as they are), and set up their Amazon store with listings ready to sell.",
+   "did": [
+    "Social media setup",
+    "Festive reels",
+    "Product videos",
+    "Amazon store setup",
+    "Captions + posting plan"
+   ],
+   "quote": "They set up our social media and Amazon store, and make festive videos that keep our products looking premium.",
+   "qok": false,
+   "owner": [
+    "Deepak Vinayak",
+    "Owner"
+   ]
+  }
+ ],
+ "INDS": [
+  {
+   "id": "ecommerce-d2c",
+   "name": "Online Brands (D2C)",
+   "short": "Online Brands (D2C)",
+   "vis": "ads",
+   "h1": "Marketing for Online Brands That Want More Sales.",
+   "sub": "Fast stores, ads that sell at a good price, and content that brings people back to buy again.",
+   "issues": [
+    [
+     "Ads keep getting expensive",
+     "The same customers cost more every season.",
+     "We fix tracking first, then test new audiences and creatives every month so cost per sale stays in check.",
+     "performance-marketing"
+    ],
+    [
+     "People buy once and disappear",
+     "Most brands never see the customer again.",
+     "Retargeting, WhatsApp offers and content that gives people a reason to come back.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Slow product pages",
+     "Slow pages lose sales on phones.",
+     "A faster Shopify store with better product pages and a simpler checkout.",
+     "website-development-design"
+    ],
+    [
+     "Need new content every month",
+     "Ads die when creatives get old.",
+     "Product shoots and ad cuts from one shoot day, ready for the whole month.",
+     "video-production"
+    ]
+   ],
+   "cases": [
+    "pot-and-bloom",
+    "krickscricket"
+   ],
+   "faqs": [
+    [
+     "Do you work with Shopify stores?",
+     "Yes. We build and improve Shopify stores and run ads for them."
+    ],
+    [
+     "Can you do both ads and content?",
+     "Yes. Most online brands use both, so we plan them together."
+    ],
+    [
+     "Do you work with health products?",
+     "Yes, carefully. We keep claims honest and follow ad rules."
+    ]
+   ],
+   "svcs": [
+    "performance-marketing",
+    "social-media-marketing-management",
+    "website-development-design",
+    "video-production"
+   ]
+  },
+  {
+   "id": "healthcare-wellness",
+   "name": "Health & Fitness",
+   "short": "Health & fitness",
+   "vis": "dm",
+   "h1": "Marketing for Gyms, Clinics and Wellness Brands.",
+   "sub": "Show up on Google Maps, build trust with real content, and reply to every enquiry fast.",
+   "issues": [
+    [
+     "Lots of local competition",
+     "People pick from the first few results on Maps.",
+     "Local SEO and a complete Google profile, so you show up in the top 3 near you.",
+     "seo"
+    ],
+    [
+     "People need to trust you first",
+     "Nobody books a gym or clinic they don't feel good about.",
+     "Real reels of your space, trainers and members. Faces beat stock photos.",
+     "video-production"
+    ],
+    [
+     "Strict ad rules",
+     "Health ads get rejected if the claims are wrong.",
+     "Ads written within the rules, with free-trial offers that open WhatsApp.",
+     "performance-marketing"
+    ],
+    [
+     "Enquiries go cold",
+     "Leads that wait a day are usually gone.",
+     "We reply to DMs fast and pass serious leads to your team the same day.",
+     "social-media-marketing-management"
+    ]
+   ],
+   "cases": [
+    "healthcare-clinic",
+    "thrive-gym"
+   ],
+   "faqs": [
+    [
+     "Do you work with clinics?",
+     "Yes, and gyms, studios and wellness brands too. We follow the rules for each."
+    ],
+    [
+     "Can you handle WhatsApp enquiries?",
+     "Yes. We set up the flow and pass serious leads to your team."
+    ],
+    [
+     "Do you make medical claims?",
+     "No. We keep everything honest and within the rules."
+    ]
+   ],
+   "svcs": [
+    "seo",
+    "video-production",
+    "performance-marketing",
+    "social-media-marketing-management"
+   ]
+  },
+  {
+   "id": "interiors-design",
+   "name": "Interiors & Design",
+   "short": "Interiors",
+   "vis": "feed",
+   "h1": "Marketing for Interior Designers and Design Studios.",
+   "sub": "Show your style, show how you work, and get enquiries from clients with the right budget.",
+   "issues": [
+    [
+     "Projects aren't finished yet",
+     "Your best work is still being built.",
+     "We post the process: materials, site visits and your team, so your page never goes quiet.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Everyone looks the same",
+     "Most studio pages look alike.",
+     "Cinematic brand reels that show your taste, not just your rooms.",
+     "video-production"
+    ],
+    [
+     "Wrong-budget enquiries",
+     "Many leads don't match your minimum project size.",
+     "A portfolio website with budget questions on the form, so you only call the right people.",
+     "website-development-design"
+    ],
+    [
+     "Clients take months to decide",
+     "People compare many designers first.",
+     "SEO for searches like \"interior designer in Gurugram\" so you're found during that research.",
+     "seo"
+    ]
+   ],
+   "cases": [
+    "the-attic-storey"
+   ],
+   "faqs": [
+    [
+     "What if we don't have finished photos?",
+     "That's normal. We post about the process and your team until projects are done."
+    ],
+    [
+     "Can you help us get bigger clients?",
+     "Yes. We present your work better and filter enquiries by budget."
+    ],
+    [
+     "Do you build portfolio websites?",
+     "Yes, and you can add new projects yourself."
+    ]
+   ],
+   "svcs": [
+    "social-media-marketing-management",
+    "video-production",
+    "website-development-design",
+    "seo"
+   ]
+  },
+  {
+   "id": "startups",
+   "name": "Startups",
+   "short": "Startups",
+   "vis": "site",
+   "h1": "Marketing for Startups Getting Their First Customers.",
+   "sub": "A clear brand, a website that explains your product, and a first marketing plan you can afford.",
+   "issues": [
+    [
+     "Message isn't clear yet",
+     "Founders get it. Customers don't, yet.",
+     "A website that explains what you do in 5 seconds, tested with real visitors.",
+     "website-development-design"
+    ],
+    [
+     "Small budget",
+     "Every rupee needs to teach you something.",
+     "Small, focused ad tests that show which audience and message actually convert.",
+     "performance-marketing"
+    ],
+    [
+     "Nobody knows you yet",
+     "No brand, no reviews, no search traffic.",
+     "Content and SEO that build trust and bring free traffic month after month.",
+     "seo"
+    ],
+    [
+     "Doing too much",
+     "Trying every channel and mastering none.",
+     "One clear monthly content plan on the one platform your customers use.",
+     "social-media-marketing-management"
+    ]
+   ],
+   "cases": [],
+   "faqs": [
+    [
+     "Do you work with early startups?",
+     "Yes. We often start with the website and one focused campaign."
+    ],
+    [
+     "Can we start small?",
+     "Yes. We'll plan a starting size that fits your stage."
+    ],
+    [
+     "Do you help with branding?",
+     "Yes, as part of website and content work."
+    ]
+   ],
+   "svcs": [
+    "website-development-design",
+    "performance-marketing",
+    "seo",
+    "social-media-marketing-management"
+   ]
+  },
+  {
+   "id": "tech-saas",
+   "name": "Tech & SaaS",
+   "short": "Tech & SaaS",
+   "vis": "seo",
+   "h1": "Marketing for Tech and SaaS Companies.",
+   "sub": "Get found when people compare tools, explain your product simply, and turn trials into paying users.",
+   "issues": [
+    [
+     "People compare before they buy",
+     "Buyers read reviews and \"best tool\" lists first.",
+     "Comparison pages and guides that rank for those exact searches.",
+     "seo"
+    ],
+    [
+     "Product is hard to explain",
+     "Features don't sell. Outcomes do.",
+     "A website that shows the problem you solve, with clear demos and pricing.",
+     "website-development-design"
+    ],
+    [
+     "Expensive clicks",
+     "Software keywords cost a lot on Google.",
+     "Tight Google campaigns on high-intent searches, plus retargeting for trial users.",
+     "performance-marketing"
+    ],
+    [
+     "AI is answering for you",
+     "ChatGPT and Google AI now recommend tools.",
+     "AI search (GEO) work so your product gets named in AI answers.",
+     "seo"
+    ]
+   ],
+   "cases": [],
+   "faqs": [
+    [
+     "Do you do SaaS SEO?",
+     "Yes: comparison pages, use-case pages and guides that bring sign-ups."
+    ],
+    [
+     "Can you build our marketing site?",
+     "Yes, on Next.js or a CMS your team can edit."
+    ],
+    [
+     "Do you work with global SaaS?",
+     "Yes. We work with Indian and international audiences."
+    ]
+   ],
+   "svcs": [
+    "seo",
+    "website-development-design",
+    "performance-marketing"
+   ]
+  },
+  {
+   "id": "education",
+   "name": "Education & Coaching",
+   "short": "Education",
+   "vis": "seo",
+   "h1": "Marketing for Coaching Centres, Schools and Ed-tech.",
+   "sub": "Show up when students and parents search, and fill your batches before exam season.",
+   "issues": [
+    [
+     "Big brands own Google",
+     "Large coaching chains take the first page.",
+     "SEO for specific searches, like \"BITSAT crash course\", where you can win.",
+     "seo"
+    ],
+    [
+     "Seasonal rush",
+     "Most students decide in a few weeks before exams.",
+     "Ads planned around exam dates, so budget hits when students are searching.",
+     "performance-marketing"
+    ],
+    [
+     "Parents need trust",
+     "They want results, faculty and reviews before paying.",
+     "A website with results, faculty profiles and a clear course page for each batch.",
+     "website-development-design"
+    ],
+    [
+     "Students live on Instagram",
+     "Your posts compete with memes and toppers' reels.",
+     "Short, useful reels and tips that students save and share.",
+     "social-media-marketing-management"
+    ]
+   ],
+   "cases": [
+    "10q-challenge"
+   ],
+   "faqs": [
+    [
+     "Can you help us rank for exam searches?",
+     "Yes. 10Q Challenge reached #1 for \"bitsat mentorship program 2027\" with our SEO."
+    ],
+    [
+     "Do you run admission campaigns?",
+     "Yes, on Google and Instagram, timed to exam and admission dates."
+    ],
+    [
+     "Can you build a course website?",
+     "Yes, including course pages, payments and student logins."
+    ]
+   ],
+   "svcs": [
+    "seo",
+    "performance-marketing",
+    "website-development-design",
+    "social-media-marketing-management"
+   ]
+  },
+  {
+   "id": "real-estate",
+   "name": "Real Estate & B2B Spaces",
+   "short": "Real estate",
+   "vis": "ads",
+   "h1": "Marketing for Real Estate, Industrial Parks and Coworking.",
+   "sub": "Reach the right buyers and tenants at a low cost, and show your space before they visit.",
+   "issues": [
+    [
+     "Small, hard-to-reach audience",
+     "Business buyers and investors are a tiny group.",
+     "B2B ad audiences on Meta and Google that reach decision makers cheaply.",
+     "performance-marketing"
+    ],
+    [
+     "People want to see the space",
+     "Photos don't show the vibe or the scale.",
+     "Commercial reels and walkthrough films of the property or space.",
+     "video-production"
+    ],
+    [
+     "Lots of junk leads",
+     "Many enquiries are just browsing.",
+     "Lead forms with qualifying questions and a landing page per project.",
+     "website-development-design"
+    ],
+    [
+     "Local searches matter",
+     "\"Coworking near me\" and \"plots in [area]\" drive visits.",
+     "Local SEO and Google profiles for each site or location.",
+     "seo"
+    ]
+   ],
+   "cases": [
+    "allied-industrial-park",
+    "workstation-coworking"
+   ],
+   "faqs": [
+    [
+     "Can you reach business owners?",
+     "Yes. Allied Industrial Park reached 2.02M B2B users at ₹3.75 CPM."
+    ],
+    [
+     "Do you shoot property videos?",
+     "Yes: walkthroughs, commercial reels and drone shots when allowed."
+    ],
+    [
+     "Do you make project landing pages?",
+     "Yes, one page per project with a lead form."
+    ]
+   ],
+   "svcs": [
+    "performance-marketing",
+    "video-production",
+    "website-development-design",
+    "seo"
+   ]
+  },
+  {
+   "id": "hotels-travel",
+   "name": "Hotels & Travel",
+   "short": "Hotels",
+   "vis": "feed",
+   "h1": "Marketing for Hotels, Homestays and Travel Brands.",
+   "sub": "Get more direct bookings, fewer OTA commissions, and content that makes people want to visit.",
+   "issues": [
+    [
+     "Paying big OTA commissions",
+     "Most bookings come through MakeMyTrip or Booking.com.",
+     "A direct-booking website with offers that beat the OTA price.",
+     "website-development-design"
+    ],
+    [
+     "Guests decide by looks",
+     "Travellers book what looks beautiful on Instagram.",
+     "Cinematic property reels and room videos that sell the stay.",
+     "video-production"
+    ],
+    [
+     "Seasonal demand",
+     "Bookings spike and drop with seasons and holidays.",
+     "Ads planned around long weekends, festivals and travel seasons.",
+     "performance-marketing"
+    ],
+    [
+     "Not showing on Maps",
+     "Travellers search \"hotels near me\" on arrival.",
+     "A complete Google profile with photos, reviews and local SEO.",
+     "seo"
+    ]
+   ],
+   "cases": [],
+   "faqs": [
+    [
+     "Can you increase direct bookings?",
+     "Yes, with a booking-focused website, ads and retargeting."
+    ],
+    [
+     "Do you shoot hotel videos?",
+     "Yes: rooms, food, experiences and the property."
+    ],
+    [
+     "Do you manage reviews?",
+     "We help you get more reviews and reply to them properly."
+    ]
+   ],
+   "svcs": [
+    "website-development-design",
+    "video-production",
+    "performance-marketing",
+    "seo"
+   ]
+  },
+  {
+   "id": "fashion-lifestyle",
+   "name": "Fashion & Lifestyle",
+   "short": "Fashion",
+   "vis": "feed",
+   "h1": "Marketing for Fashion, Lifestyle and Gifting Brands.",
+   "sub": "Look premium on Instagram, sell through your store, and own every festive season.",
+   "issues": [
+    [
+     "Looking premium",
+     "Cheap-looking content makes good products look cheap.",
+     "Cinematic shoots with models, sets and lighting that match your price point.",
+     "video-production"
+    ],
+    [
+     "Festive rush",
+     "Most sales happen around Diwali, weddings and gifting days.",
+     "A festive content and ad calendar planned months ahead.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Ads stop working",
+     "The same creative burns out in weeks.",
+     "New ad cuts every month and constant testing of hooks and offers.",
+     "performance-marketing"
+    ],
+    [
+     "Store doesn't sell",
+     "Visitors browse but don't buy.",
+     "A store with strong product pages, reviews and easy checkout.",
+     "website-development-design"
+    ]
+   ],
+   "cases": [
+    "luxury-club"
+   ],
+   "faqs": [
+    [
+     "Do you shoot with models?",
+     "Yes. We cast models to fit your brand and handle the full shoot."
+    ],
+    [
+     "Can you plan festive campaigns?",
+     "Yes. We plan content and ads around every big season."
+    ],
+    [
+     "Do you work with Shopify?",
+     "Yes. We build and improve Shopify stores."
+    ]
+   ],
+   "svcs": [
+    "video-production",
+    "social-media-marketing-management",
+    "performance-marketing",
+    "website-development-design"
+   ]
+  },
+  {
+   "id": "beauty-salons",
+   "name": "Beauty & Salons",
+   "short": "Beauty",
+   "vis": "seo",
+   "h1": "Marketing for Salons, Barbers and Beauty Brands.",
+   "sub": "Fill your appointment book with people nearby, and show off your work every week.",
+   "issues": [
+    [
+     "People pick the nearest good one",
+     "\"Salon near me\" decides most bookings.",
+     "Local SEO and a strong Google profile with real reviews and photos.",
+     "seo"
+    ],
+    [
+     "No easy way to book",
+     "People leave if they have to call.",
+     "A website with prices and a simple booking button or WhatsApp link.",
+     "website-development-design"
+    ],
+    [
+     "Your work isn't shown well",
+     "Great haircuts lose to better photos.",
+     "Before-and-after reels and transformation videos.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Slow weekdays",
+     "Weekends are full. Weekdays are empty.",
+     "Local offers on Instagram and Google aimed at weekday slots.",
+     "performance-marketing"
+    ]
+   ],
+   "cases": [
+    "shigeru-beauty",
+    "uk-barber"
+   ],
+   "faqs": [
+    [
+     "Do you work with single salons?",
+     "Yes. Many of our clients are single-location businesses."
+    ],
+    [
+     "Can you set up online booking?",
+     "Yes, through your website or WhatsApp."
+    ],
+    [
+     "Do you help with Google reviews?",
+     "Yes. We set up a simple way for happy customers to leave reviews."
+    ]
+   ],
+   "svcs": [
+    "seo",
+    "website-development-design",
+    "social-media-marketing-management",
+    "performance-marketing"
+   ]
+  },
+  {
+   "id": "food-drinks",
+   "name": "Food & Drinks",
+   "short": "Food",
+   "vis": "dm",
+   "h1": "Marketing for Cafés, Restaurants and Cloud Kitchens.",
+   "sub": "Get found when people are hungry, show food that looks irresistible, and fill tables on slow days.",
+   "issues": [
+    [
+     "Hungry people search Maps",
+     "\"Cafe near me\" is a decision made in seconds.",
+     "Google profile, menu, photos and reviews kept fresh and complete.",
+     "seo"
+    ],
+    [
+     "Food photos fall flat",
+     "Phone photos don't do your food justice.",
+     "Food shoots and short reels that make people want to visit now.",
+     "video-production"
+    ],
+    [
+     "High aggregator commissions",
+     "Zomato and Swiggy take a big cut.",
+     "Instagram and WhatsApp ordering for regulars, plus direct offers.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Empty tables on weekdays",
+     "Weekends are packed, weekdays are not.",
+     "Local ads with weekday offers aimed at people nearby.",
+     "performance-marketing"
+    ]
+   ],
+   "cases": [],
+   "faqs": [
+    [
+     "Can you shoot our menu?",
+     "Yes: food photography and short reels."
+    ],
+    [
+     "Do you run ads for restaurants?",
+     "Yes, local ads aimed at people within a few kilometres."
+    ],
+    [
+     "Can you manage our Instagram?",
+     "Yes, including stories, reels and replies to DMs."
+    ]
+   ],
+   "svcs": [
+    "seo",
+    "video-production",
+    "social-media-marketing-management",
+    "performance-marketing"
+   ]
+  },
+  {
+   "id": "professional-services",
+   "name": "Professional Services",
+   "short": "Services",
+   "vis": "site",
+   "h1": "Marketing for Consultants, CAs, Lawyers and Agencies.",
+   "sub": "Look trustworthy online, rank for what clients search, and get enquiries from the right businesses.",
+   "issues": [
+    [
+     "Trust comes first",
+     "Clients judge you by your website before they call.",
+     "A professional website with clear services, proof and an easy way to contact you.",
+     "website-development-design"
+    ],
+    [
+     "Hard to stand out",
+     "Every firm says the same thing.",
+     "Helpful articles and pages that show you know your stuff, and rank on Google.",
+     "seo"
+    ],
+    [
+     "Referrals aren't enough",
+     "Word of mouth is slow and unpredictable.",
+     "Google ads for high-intent searches that bring new clients each month.",
+     "performance-marketing"
+    ],
+    [
+     "No time for social media",
+     "Busy professionals rarely post.",
+     "A simple LinkedIn and Instagram plan we run for you.",
+     "social-media-marketing-management"
+    ]
+   ],
+   "cases": [
+    "west-coast-services",
+    "eco-utilities"
+   ],
+   "faqs": [
+    [
+     "Do you work with UK businesses?",
+     "Yes. West Coast Services in the UK is one of our clients."
+    ],
+    [
+     "Can you write our content?",
+     "Yes. We write it, and you check it for accuracy."
+    ],
+    [
+     "Do you build lead systems?",
+     "Yes: forms, CRM and admin panels to manage enquiries."
+    ]
+   ],
+   "svcs": [
+    "website-development-design",
+    "seo",
+    "performance-marketing",
+    "social-media-marketing-management"
+   ]
+  },
+  {
+   "id": "automotive",
+   "name": "Automotive",
+   "short": "Automotive",
+   "vis": "site",
+   "h1": "Marketing for Car Detailing, Garages and Dealers.",
+   "sub": "Get bookings from people nearby, show off your work, and manage customers properly.",
+   "issues": [
+    [
+     "Bookings by phone only",
+     "Calls get missed and details get lost.",
+     "A website with packages and online booking, plus a CRM for your team.",
+     "website-development-design"
+    ],
+    [
+     "\"Near me\" searches",
+     "People search for car wash and detailing nearby.",
+     "Local SEO and a Google profile with real before-and-after photos.",
+     "seo"
+    ],
+    [
+     "Work looks the same in photos",
+     "A shiny car is hard to show in a photo.",
+     "Satisfying before-and-after reels that people love to watch.",
+     "video-production"
+    ],
+    [
+     "Repeat customers forget you",
+     "Cars need care every few months.",
+     "WhatsApp reminders and offers for past customers.",
+     "social-media-marketing-management"
+    ]
+   ],
+   "cases": [
+    "the-drive-clinic"
+   ],
+   "faqs": [
+    [
+     "Can you build a booking system?",
+     "Yes. The Drive Clinic uses a website and CRM we built."
+    ],
+    [
+     "Do you do local SEO for garages?",
+     "Yes, so you show up in \"near me\" searches."
+    ],
+    [
+     "Can you shoot our work?",
+     "Yes, before-and-after reels and detailing videos."
+    ]
+   ],
+   "svcs": [
+    "website-development-design",
+    "seo",
+    "video-production",
+    "social-media-marketing-management"
+   ]
+  }
+ ],
+ "LOCS": [
+  {
+   "id": "delhi",
+   "name": "Delhi",
+   "zone": "Delhi NCR",
+   "h1": "Digital Marketing Agency in Delhi.",
+   "sub": "A Delhi team based in Dwarka, working with businesses across the city and NCR.",
+   "land": "Delhi is many markets in one: shops and markets, doctors and clinics, schools, hotels, and lots of family businesses coming online. What people search changes from one area to the next, and they search in Hindi, English and Hinglish. We plan around the areas and the people that matter to your business.",
+   "biz": [
+    "Retail + markets",
+    "Clinics",
+    "Coaching",
+    "Restaurants",
+    "Real estate",
+    "Startups"
+   ],
+   "chal": [
+    [
+     "Very local searches",
+     "People search by area, not just \"Delhi\".",
+     "A page and Google profile for each area you serve.",
+     "seo"
+    ],
+    [
+     "Mixed languages",
+     "Hindi, English or Hinglish, depending on the customer.",
+     "Content and ads written the way your customers talk.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Old businesses going online",
+     "Great offline brands with weak websites.",
+     "A website that matches the trust you've built offline.",
+     "website-development-design"
+    ]
+   ],
+   "searches": [
+    "digital marketing agency in delhi",
+    "seo company delhi",
+    "website design delhi"
+   ],
+   "near": [
+    [
+     "Dwarka",
+     "dwarka"
+    ],
+    [
+     "Janakpuri",
+     "janakpuri"
+    ],
+    [
+     "Connaught Place",
+     "connaught-place"
+    ],
+    [
+     "Gurugram",
+     "gurugram"
+    ]
+   ],
+   "case": "the-attic-storey",
+   "office": false,
+   "parent": null
+  },
+  {
+   "id": "dwarka",
+   "name": "Dwarka",
+   "zone": "South West Delhi",
+   "h1": "Digital Marketing Agency in Dwarka.",
+   "sub": "Our office is in Dwarka. We work with businesses across Delhi NCR, in person or online.",
+   "land": "Dwarka is full of local businesses: clinics, schools, coaching centres, gyms, salons, cafés and shops. And it's growing fast, with new homes coming up along Dwarka Expressway. Most people here search on their phones, check Google Maps and Instagram, and message on WhatsApp before they visit. So a strong Maps listing, a fast website and quick replies matter more than big ad budgets.",
+   "biz": [
+    "Clinics",
+    "Schools + coaching",
+    "Gyms",
+    "Salons",
+    "Cafés",
+    "Real estate"
+   ],
+   "chal": [
+    [
+     "Fighting for Google Maps",
+     "Many businesses want the same \"near me\" searches.",
+     "Local SEO for your sector, so you rank in the Maps top 3.",
+     "seo"
+    ],
+    [
+     "New people moving in",
+     "New residents are picking their first gym, clinic and school.",
+     "Instagram and Meta ads aimed at new societies and sectors.",
+     "performance-marketing"
+    ],
+    [
+     "WhatsApp first",
+     "People message before they call.",
+     "Fast DM and WhatsApp replies, handled by our team.",
+     "social-media-marketing-management"
+    ]
+   ],
+   "searches": [
+    "gym in dwarka",
+    "clinic near dwarka sector 12",
+    "coaching in dwarka"
+   ],
+   "near": [
+    [
+     "Delhi",
+     "delhi"
+    ],
+    [
+     "Janakpuri",
+     "janakpuri"
+    ],
+    [
+     "Uttam Nagar",
+     "uttam-nagar"
+    ],
+    [
+     "Gurugram",
+     "gurugram"
+    ]
+   ],
+   "case": "thrive-gym",
+   "office": true,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "janakpuri",
+   "name": "Janakpuri",
+   "zone": "West Delhi",
+   "h1": "Digital Marketing in Janakpuri.",
+   "sub": "Ten minutes from our Dwarka office. We help Janakpuri businesses get found and get more enquiries.",
+   "land": "Janakpuri is one of West Delhi's busiest areas, with its District Centre, hospitals and clinics, coaching institutes and family-run shops. Many customers are families who compare reviews before they choose. Good reviews, a clear website and fast replies win here.",
+   "biz": [
+    "Hospitals + clinics",
+    "Coaching",
+    "Retail",
+    "Restaurants",
+    "Offices"
+   ],
+   "chal": [
+    [
+     "Lots of clinics nearby",
+     "Patients compare doctors on Google first.",
+     "Google profile, reviews and local pages for each speciality.",
+     "seo"
+    ],
+    [
+     "Coaching competition",
+     "Many institutes run the same ads.",
+     "Ads timed to admission season with clear results and offers.",
+     "performance-marketing"
+    ],
+    [
+     "Older websites",
+     "Many local sites look dated on phones.",
+     "A fast, modern website that builds trust.",
+     "website-development-design"
+    ]
+   ],
+   "searches": [
+    "dentist in janakpuri",
+    "coaching in janakpuri",
+    "restaurant janakpuri district centre"
+   ],
+   "near": [
+    [
+     "Dwarka",
+     "dwarka"
+    ],
+    [
+     "Uttam Nagar",
+     "uttam-nagar"
+    ],
+    [
+     "Rajouri Garden",
+     "rajouri-garden"
+    ]
+   ],
+   "case": "10q-challenge",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "uttam-nagar",
+   "name": "Uttam Nagar",
+   "zone": "West Delhi",
+   "h1": "Digital Marketing in Uttam Nagar.",
+   "sub": "Right next to Dwarka. We help Uttam Nagar businesses grow with local search, ads and social media.",
+   "land": "Uttam Nagar is busy and packed with local shops, coaching centres, clinics and small businesses that serve a huge local population. People here are price-aware and decide fast, often on WhatsApp. Being easy to find and quick to reply makes the biggest difference.",
+   "biz": [
+    "Coaching",
+    "Shops",
+    "Clinics",
+    "Gyms",
+    "Local services"
+   ],
+   "chal": [
+    [
+     "Price-aware customers",
+     "People compare prices before visiting.",
+     "Clear offers and prices in ads and on your Google profile.",
+     "performance-marketing"
+    ],
+    [
+     "Hard to stand out",
+     "Many similar shops on the same road.",
+     "Reels that show your shop, team and work.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Not on Google Maps",
+     "Many shops have incomplete listings.",
+     "A full Google profile with photos, hours and reviews.",
+     "seo"
+    ]
+   ],
+   "searches": [
+    "coaching in uttam nagar",
+    "gym uttam nagar",
+    "shop near uttam nagar metro"
+   ],
+   "near": [
+    [
+     "Dwarka",
+     "dwarka"
+    ],
+    [
+     "Janakpuri",
+     "janakpuri"
+    ]
+   ],
+   "case": "thrive-gym",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "rajouri-garden",
+   "name": "Rajouri Garden",
+   "zone": "West Delhi",
+   "h1": "Digital Marketing in Rajouri Garden.",
+   "sub": "For Rajouri Garden's fashion stores, restaurants and malls. A team just a short drive away in Dwarka.",
+   "land": "Rajouri Garden is one of West Delhi's biggest shopping and food spots, with its main market, malls and lots of restaurants. Shoppers here follow trends on Instagram and check out new places before they go. Great content and strong local search bring footfall.",
+   "biz": [
+    "Fashion",
+    "Restaurants",
+    "Jewellery",
+    "Salons",
+    "Retail"
+   ],
+   "chal": [
+    [
+     "Trend-driven shoppers",
+     "People discover new stores on Instagram.",
+     "Reels and shoots that make your store a must-visit.",
+     "video-production"
+    ],
+    [
+     "Weekend crowds, slow weekdays",
+     "Footfall drops midweek.",
+     "Local ads with weekday offers.",
+     "performance-marketing"
+    ],
+    [
+     "Big brands nearby",
+     "Mall brands have bigger budgets.",
+     "Local SEO so you win \"near me\" searches anyway.",
+     "seo"
+    ]
+   ],
+   "searches": [
+    "boutique in rajouri garden",
+    "restaurant rajouri garden",
+    "salon rajouri garden"
+   ],
+   "near": [
+    [
+     "Janakpuri",
+     "janakpuri"
+    ],
+    [
+     "Karol Bagh",
+     "karol-bagh"
+    ],
+    [
+     "Pitampura",
+     "pitampura"
+    ]
+   ],
+   "case": "luxury-club",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "rohini",
+   "name": "Rohini",
+   "zone": "North West Delhi",
+   "h1": "Digital Marketing in Rohini.",
+   "sub": "We help Rohini businesses, from clinics to coaching centres, show up when locals search.",
+   "land": "Rohini is a huge, planned area split into many sectors, with schools, coaching centres, hospitals, restaurants and shopping areas. People search by sector, like \"clinic in Rohini sector 7\". So local pages and a strong Maps listing for your exact sector matter a lot.",
+   "biz": [
+    "Schools + coaching",
+    "Clinics",
+    "Restaurants",
+    "Gyms",
+    "Retail"
+   ],
+   "chal": [
+    [
+     "Sector-level searches",
+     "People search for their own sector.",
+     "Local pages and Google profile set up for your sector and nearby ones.",
+     "seo"
+    ],
+    [
+     "Many schools and coaching",
+     "Parents compare a lot.",
+     "A website with results, reviews and an easy enquiry form.",
+     "website-development-design"
+    ],
+    [
+     "Families on Instagram",
+     "Parents and students both use Instagram.",
+     "Helpful content that parents and students share.",
+     "social-media-marketing-management"
+    ]
+   ],
+   "searches": [
+    "coaching in rohini sector 7",
+    "clinic in rohini",
+    "gym rohini"
+   ],
+   "near": [
+    [
+     "Pitampura",
+     "pitampura"
+    ],
+    [
+     "Delhi",
+     "delhi"
+    ]
+   ],
+   "case": "10q-challenge",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "pitampura",
+   "name": "Pitampura",
+   "zone": "North West Delhi",
+   "h1": "Digital Marketing in Pitampura.",
+   "sub": "For Pitampura's offices, restaurants and clinics, including the Netaji Subhash Place business hub.",
+   "land": "Pitampura mixes busy homes with Netaji Subhash Place, a big office and commercial hub, plus lots of restaurants and clinics. Office teams search for places nearby at lunch and after work, and local businesses compete for the same searches.",
+   "biz": [
+    "Offices",
+    "Restaurants",
+    "Clinics",
+    "Coaching",
+    "Real estate"
+   ],
+   "chal": [
+    [
+     "Office crowd at NSP",
+     "Office workers search during the day.",
+     "Ads and Maps listings aimed at the lunch and after-work crowd.",
+     "performance-marketing"
+    ],
+    [
+     "B2B businesses",
+     "Offices need to look credible online.",
+     "A professional website and LinkedIn presence.",
+     "website-development-design"
+    ],
+    [
+     "Busy food scene",
+     "Many restaurants compete nearby.",
+     "Food reels and Google profile with fresh photos.",
+     "video-production"
+    ]
+   ],
+   "searches": [
+    "restaurant netaji subhash place",
+    "office space pitampura",
+    "clinic pitampura"
+   ],
+   "near": [
+    [
+     "Rohini",
+     "rohini"
+    ],
+    [
+     "Rajouri Garden",
+     "rajouri-garden"
+    ]
+   ],
+   "case": "workstation-coworking",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "karol-bagh",
+   "name": "Karol Bagh",
+   "zone": "Central Delhi",
+   "h1": "Digital Marketing in Karol Bagh.",
+   "sub": "For Karol Bagh's shops, wholesalers, hotels and wedding businesses.",
+   "land": "Karol Bagh is one of Delhi's oldest and biggest markets, famous for wedding wear, jewellery, electronics and budget hotels. Many shops are family businesses with loyal customers but weak online presence. Going online opens up customers from across Delhi and India.",
+   "biz": [
+    "Wedding wear",
+    "Jewellery",
+    "Electronics",
+    "Hotels",
+    "Wholesale"
+   ],
+   "chal": [
+    [
+     "Great shop, weak online presence",
+     "Loyal customers, but no website or Instagram.",
+     "A website and Instagram that match the shop's reputation.",
+     "website-development-design"
+    ],
+    [
+     "Wedding season rush",
+     "Most sales happen in a few months.",
+     "Wedding-season ads and content planned ahead.",
+     "performance-marketing"
+    ],
+    [
+     "Hotels on OTAs",
+     "Most bookings come through booking sites.",
+     "Google profile and direct-booking setup for hotels.",
+     "seo"
+    ]
+   ],
+   "searches": [
+    "bridal lehenga karol bagh",
+    "hotel in karol bagh",
+    "jewellery shop karol bagh"
+   ],
+   "near": [
+    [
+     "Connaught Place",
+     "connaught-place"
+    ],
+    [
+     "Rajouri Garden",
+     "rajouri-garden"
+    ]
+   ],
+   "case": "luxury-club",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "connaught-place",
+   "name": "Connaught Place",
+   "zone": "Central Delhi",
+   "h1": "Digital Marketing in Connaught Place.",
+   "sub": "For CP's offices, restaurants, bars and retail brands in the heart of Delhi.",
+   "land": "Connaught Place is Delhi's central business district: offices, startups, famous restaurants and bars, and big retail brands. Competition is high, customers are premium, and people discover places on Instagram and Google before they go out.",
+   "biz": [
+    "Restaurants + bars",
+    "Offices",
+    "Startups",
+    "Retail",
+    "Hotels"
+   ],
+   "chal": [
+    [
+     "Premium competition",
+     "Everyone in CP looks good online.",
+     "Cinematic content and a premium website that holds up.",
+     "video-production"
+    ],
+    [
+     "Discovery on Instagram",
+     "Diners decide based on reels.",
+     "Reels, collabs and a steady posting plan.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Expensive ads",
+     "CP keywords cost more.",
+     "Tight ads aimed at the right times and people.",
+     "performance-marketing"
+    ]
+   ],
+   "searches": [
+    "restaurant in connaught place",
+    "coworking connaught place",
+    "bar in cp delhi"
+   ],
+   "near": [
+    [
+     "Karol Bagh",
+     "karol-bagh"
+    ],
+    [
+     "Delhi",
+     "delhi"
+    ]
+   ],
+   "case": "workstation-coworking",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "lajpat-nagar",
+   "name": "Lajpat Nagar",
+   "zone": "South Delhi",
+   "h1": "Digital Marketing in Lajpat Nagar.",
+   "sub": "For Lajpat Nagar's market shops, clinics and fashion brands.",
+   "land": "Lajpat Nagar's Central Market is one of South Delhi's busiest, known for fashion, wedding shopping and home decor, with lots of clinics and local services around it. Many shoppers check Instagram and Google first to see what's new.",
+   "biz": [
+    "Fashion",
+    "Wedding shopping",
+    "Home decor",
+    "Clinics",
+    "Food"
+   ],
+   "chal": [
+    [
+     "Crowded market",
+     "Hundreds of shops sell similar things.",
+     "A clear brand and reels that make your shop stand out.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Shoppers check online first",
+     "People look you up before visiting.",
+     "A strong Google profile and website.",
+     "seo"
+    ],
+    [
+     "Festival peaks",
+     "Diwali and wedding season bring most sales.",
+     "Festive ad campaigns planned ahead.",
+     "performance-marketing"
+    ]
+   ],
+   "searches": [
+    "boutique lajpat nagar",
+    "clinic in lajpat nagar",
+    "home decor lajpat nagar"
+   ],
+   "near": [
+    [
+     "Saket",
+     "saket"
+    ],
+    [
+     "Nehru Place",
+     "nehru-place"
+    ]
+   ],
+   "case": "luxury-club",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "saket",
+   "name": "Saket",
+   "zone": "South Delhi",
+   "h1": "Digital Marketing in Saket.",
+   "sub": "For Saket's premium brands, restaurants, hospitals and studios.",
+   "land": "Saket is a premium South Delhi area with big malls, major hospitals, restaurants and fitness studios. Customers here expect brands to look polished, and they compare reviews closely before they book or buy.",
+   "biz": [
+    "Restaurants",
+    "Hospitals + clinics",
+    "Fitness studios",
+    "Fashion",
+    "Salons"
+   ],
+   "chal": [
+    [
+     "High expectations",
+     "People judge you by how premium you look.",
+     "Premium shoots and a website that feels high-end.",
+     "video-production"
+    ],
+    [
+     "Review-driven decisions",
+     "Ratings decide bookings.",
+     "Review systems and a strong Google profile.",
+     "seo"
+    ],
+    [
+     "Busy, premium audience",
+     "Hard to get attention.",
+     "Targeted Meta ads with strong hooks.",
+     "performance-marketing"
+    ]
+   ],
+   "searches": [
+    "fitness studio saket",
+    "restaurant near select citywalk",
+    "dermatologist saket"
+   ],
+   "near": [
+    [
+     "Lajpat Nagar",
+     "lajpat-nagar"
+    ],
+    [
+     "Vasant Kunj",
+     "vasant-kunj"
+    ]
+   ],
+   "case": "thrive-gym",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "vasant-kunj",
+   "name": "Vasant Kunj",
+   "zone": "South West Delhi",
+   "h1": "Digital Marketing in Vasant Kunj.",
+   "sub": "Close to our Dwarka office. For Vasant Kunj's premium homes, malls and businesses.",
+   "land": "Vasant Kunj is a premium residential area near the airport, with malls, schools, clinics and lots of home-service businesses. Residents here research online, value quality and pay for convenience.",
+   "biz": [
+    "Home services",
+    "Clinics",
+    "Schools",
+    "Restaurants",
+    "Fitness"
+   ],
+   "chal": [
+    [
+     "Premium, research-heavy buyers",
+     "People compare a lot before choosing.",
+     "A detailed website with reviews and clear pricing.",
+     "website-development-design"
+    ],
+    [
+     "Local service searches",
+     "\"Near me\" searches decide home services.",
+     "Local SEO for Vasant Kunj and nearby areas.",
+     "seo"
+    ],
+    [
+     "Hard to reach residents",
+     "Gated societies are hard to market to.",
+     "Location-targeted Instagram and Meta ads.",
+     "performance-marketing"
+    ]
+   ],
+   "searches": [
+    "salon vasant kunj",
+    "clinic in vasant kunj",
+    "home cleaning vasant kunj"
+   ],
+   "near": [
+    [
+     "Saket",
+     "saket"
+    ],
+    [
+     "Dwarka",
+     "dwarka"
+    ]
+   ],
+   "case": "the-attic-storey",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "nehru-place",
+   "name": "Nehru Place",
+   "zone": "South Delhi",
+   "h1": "Digital Marketing in Nehru Place.",
+   "sub": "For Nehru Place's IT companies, offices and tech sellers.",
+   "land": "Nehru Place is Delhi's IT and electronics hub, full of tech sellers, service centres, startups and offices. Buyers here are often businesses, and they search, compare and ask for quotes online.",
+   "biz": [
+    "IT + electronics",
+    "Offices",
+    "Startups",
+    "B2B services"
+   ],
+   "chal": [
+    [
+     "B2B buyers",
+     "Businesses compare suppliers online.",
+     "A professional website with clear services and quote forms.",
+     "website-development-design"
+    ],
+    [
+     "Price-led competition",
+     "Lots of sellers offer the same thing.",
+     "SEO for specific products and services you're best at.",
+     "seo"
+    ],
+    [
+     "Low-trust market",
+     "Buyers worry about quality.",
+     "Content that shows your team, reviews and guarantees.",
+     "social-media-marketing-management"
+    ]
+   ],
+   "searches": [
+    "laptop repair nehru place",
+    "it company nehru place",
+    "office space nehru place"
+   ],
+   "near": [
+    [
+     "Lajpat Nagar",
+     "lajpat-nagar"
+    ],
+    [
+     "Saket",
+     "saket"
+    ]
+   ],
+   "case": "west-coast-services",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "laxmi-nagar",
+   "name": "Laxmi Nagar",
+   "zone": "East Delhi",
+   "h1": "Digital Marketing in Laxmi Nagar.",
+   "sub": "For Laxmi Nagar's coaching institutes, shops and local businesses.",
+   "land": "Laxmi Nagar is East Delhi's big coaching hub, especially for commerce and competitive exams, with busy markets around it. Students research institutes online and on YouTube and Instagram before they join.",
+   "biz": [
+    "Coaching",
+    "Retail",
+    "Clinics",
+    "Food",
+    "Local services"
+   ],
+   "chal": [
+    [
+     "Coaching competition",
+     "Dozens of institutes on the same streets.",
+     "SEO for course-specific searches where you can rank.",
+     "seo"
+    ],
+    [
+     "Students decide online",
+     "They watch reels and read reviews first.",
+     "Useful reels and student stories.",
+     "social-media-marketing-management"
+    ],
+    [
+     "Admission season",
+     "Most joins happen in a short window.",
+     "Ads timed to admission and exam dates.",
+     "performance-marketing"
+    ]
+   ],
+   "searches": [
+    "ca coaching laxmi nagar",
+    "coaching in laxmi nagar",
+    "pg near laxmi nagar"
+   ],
+   "near": [
+    [
+     "Noida",
+     "noida"
+    ],
+    [
+     "Delhi",
+     "delhi"
+    ]
+   ],
+   "case": "10q-challenge",
+   "office": false,
+   "parent": [
+    "Delhi",
+    "delhi"
+   ]
+  },
+  {
+   "id": "gurugram",
+   "name": "Gurugram",
+   "zone": "Haryana · NCR",
+   "h1": "Digital Marketing for Businesses in Gurugram.",
+   "sub": "We work with Gurugram businesses from our Dwarka office, just across Dwarka Expressway. Happy to meet in person.",
+   "land": "Gurugram has offices, online brands and fast-growing housing sectors along Golf Course Extension and Dwarka Expressway. People here compare a lot and research online before they buy. They expect brands to look premium. Marketing that works here looks polished and brings in leads you can measure.",
+   "biz": [
+    "Offices + startups",
+    "D2C brands",
+    "Gyms",
+    "Real estate",
+    "Restaurants"
+   ],
+   "chal": [
+    [
+     "High expectations",
+     "People judge you by your website and Instagram first.",
+     "A premium website and content that hold up.",
+     "website-development-design"
+    ],
+    [
+     "New housing sectors",
+     "New homes mean new local customers.",
+     "Ads aimed at new societies along the Expressway.",
+     "performance-marketing"
+    ],
+    [
+     "Expensive ads",
+     "Popular categories cost more per click.",
+     "SEO to bring steady traffic without paying per click.",
+     "seo"
+    ]
+   ],
+   "searches": [
+    "gym in gurugram sector 102",
+    "interior designer gurugram",
+    "digital marketing agency gurugram"
+   ],
+   "near": [
+    [
+     "Dwarka",
+     "dwarka"
+    ],
+    [
+     "Delhi",
+     "delhi"
+    ]
+   ],
+   "case": "thrive-gym",
+   "office": false,
+   "parent": null
+  },
+  {
+   "id": "noida",
+   "name": "Noida",
+   "zone": "Uttar Pradesh · NCR",
+   "h1": "Digital Marketing for Businesses in Noida.",
+   "sub": "We work with Noida businesses online and in person, from our Delhi team.",
+   "land": "Noida is full of IT companies, startups, offices and big housing sectors. Business buyers search for services online, and residents search by sector for everything from gyms to schools.",
+   "biz": [
+    "IT + startups",
+    "Offices",
+    "Real estate",
+    "Schools",
+    "Gyms"
+   ],
+   "chal": [
+    [
+     "B2B competition",
+     "Many companies offer the same service.",
+     "SEO and a website that make you the clear choice.",
+     "seo"
+    ],
+    [
+     "Sector-level searches",
+     "People search by sector.",
+     "Local pages and Google profiles per location.",
+     "website-development-design"
+    ],
+    [
+     "Busy professionals",
+     "Hard to get attention on social.",
+     "Targeted Meta and Google ads.",
+     "performance-marketing"
+    ]
+   ],
+   "searches": [
+    "it company noida sector 62",
+    "gym noida",
+    "coworking noida"
+   ],
+   "near": [
+    [
+     "Laxmi Nagar",
+     "laxmi-nagar"
+    ],
+    [
+     "Delhi",
+     "delhi"
+    ]
+   ],
+   "case": "allied-industrial-park",
+   "office": false,
+   "parent": null
+  }
+ ],
+ "VIDEOS": [
+  [
+   "1234553803",
+   "Thrive Gym High-Energy Commercial Reel",
+   "Fitness Reel · 4K Production",
+   "Thrive Gym",
+   "Fitness",
+   "thrive-gym"
+  ],
+  [
+   "1234553778",
+   "The Attic Storey Commercial Brand Reel",
+   "Brand Commercial · Studio Set",
+   "The Attic Storey",
+   "Brand & Fashion",
+   "the-attic-storey"
+  ],
+  [
+   "1234553779",
+   "Thrive Gym Model & Athlete Reel #2",
+   "Gym & Athletes · Sony FX3",
+   "Thrive Gym",
+   "Fitness",
+   "thrive-gym"
+  ],
+  [
+   "1234553801",
+   "Thrive Gym Dynamic Motion & Lighting",
+   "Fitness Model · Direct Response",
+   "Thrive Gym",
+   "Fitness",
+   "thrive-gym"
+  ],
+  [
+   "1234553780",
+   "Attic Cinematic Model & Narrative Reel",
+   "Cinematic Reel · Lighting Rig",
+   "The Attic Storey",
+   "Brand & Fashion",
+   "the-attic-storey"
+  ],
+  [
+   "1234553777",
+   "Attic Cinematic Commercial Shoot #2",
+   "Fashion & Lifestyle · 4K Master",
+   "The Attic Storey",
+   "Brand & Fashion",
+   "the-attic-storey"
+  ],
+  [
+   "1234561248",
+   "Workstation Coworking Promotion Reel",
+   "B2B Spaces · Commercial Ad",
+   "Workstation",
+   "B2B Spaces",
+   "workstation-coworking"
+  ]
+ ],
+ "ARTS": [
+  [
+   "seo-cost-india",
+   "How Much Does SEO Cost in India?",
+   "SEO",
+   "9 min",
+   "10 Nov 2026",
+   "SEO cost",
+   ""
+  ],
+  [
+   "choose-agency",
+   "How to Choose the Right Digital Marketing Agency in India",
+   "Digital Marketing",
+   "8 min",
+   "6 Nov 2026",
+   "Picking an agency",
+   "c"
+  ],
+  [
+   "google-vs-meta",
+   "Google Ads vs Meta Ads for Indian Businesses",
+   "Ads",
+   "7 min",
+   "4 Nov 2026",
+   "Google vs Meta",
+   "l"
+  ],
+  [
+   "website-mistakes",
+   "Common Website Mistakes That Reduce Enquiries",
+   "Websites",
+   "6 min",
+   "30 Oct 2026",
+   "Website mistakes",
+   ""
+  ],
+  [
+   "content-calendar",
+   "How to Build a Social Media Content Calendar",
+   "Social Media",
+   "8 min",
+   "27 Oct 2026",
+   "Content calendar",
+   "l"
+  ],
+  [
+   "local-seo-delhi",
+   "Local SEO Strategies for Businesses in Delhi",
+   "Local SEO",
+   "7 min",
+   "23 Oct 2026",
+   "Local SEO",
+   "c"
+  ],
+  [
+   "seo-vs-paid",
+   "SEO vs Paid Advertising: What Should Your Business Invest In?",
+   "Business Growth",
+   "6 min",
+   "20 Oct 2026",
+   "SEO vs Ads",
+   ""
+  ],
+  [
+   "startup-presence",
+   "How Startups Can Build Their Digital Presence",
+   "Business Growth",
+   "6 min",
+   "16 Oct 2026",
+   "Startups online",
+   "c"
+  ],
+  [
+   "social-trust",
+   "How Social Media Management Helps Businesses Build Trust",
+   "Social Media",
+   "5 min",
+   "13 Oct 2026",
+   "Trust",
+   "l"
+  ]
+ ],
+ "WORK_STATS": [
+  [
+   "3.51M",
+   "Google impressions for 10Q Challenge"
+  ],
+  [
+   "9,873",
+   "Google Maps actions for a clinic"
+  ],
+  [
+   "100%",
+   "plots sold for Allied Industrial Park"
+  ],
+  [
+   "2.02M",
+   "B2B reach at ₹3.75 CPM"
+  ]
+ ],
+ "HERO_TICK": [
+  [
+   "3.51M",
+   "Google impressions · 10Q Challenge"
+  ],
+  [
+   "#1",
+   "on Google for \"bitsat mentorship program 2027\""
+  ],
+  [
+   "100%",
+   "plots sold · Allied Industrial Park"
+  ],
+  [
+   "9,873",
+   "Google Maps actions · healthcare clinic"
+  ],
+  [
+   "2.02M",
+   "B2B reach · Allied Industrial Park"
+  ],
+  [
+   "Position 0",
+   "Google's answer · Shigeru Beauty"
+  ],
+  [
+   "27.3K",
+   "organic clicks · 10Q Challenge"
+  ]
+ ],
+ "MORE_SEO": [
+  [
+   "s20",
+   "6.18K clicks and 50.8K impressions in 24 hours · 12.2% CTR"
+  ],
+  [
+   "s21",
+   "3.08K clicks and 23.6K impressions in 24 hours · 13.1% CTR"
+  ],
+  [
+   "s22",
+   "4.38K clicks · 35.3K impressions · average position 4.9"
+  ],
+  [
+   "s23",
+   "Clicks 822 → 1.54K · impressions 94K → 371K · position 17.7 → 6.2"
+  ],
+  [
+   "s24",
+   "Clicks 194 → 664 · impressions 43K → 222K · position 22.4 → 7.2"
+  ],
+  [
+   "s25",
+   "After restructuring: position 26.9 → 7.2 · impressions 2.6×"
+  ]
+ ],
+ "OWNERS": {
+  "10q-challenge": [
+   "Harshal Jain",
+   "Owner"
+  ],
+  "allied-industrial-park": [
+   "Jeevan Singh",
+   "Owner"
+  ],
+  "uk-barber": [
+   "Allen",
+   "Owner, Derby UK"
+  ],
+  "eco-utilities": [
+   "Amarjit Singh",
+   "Owner, UK"
+  ],
+  "the-drive-clinic": [
+   "Karanveer Singh",
+   "Owner"
+  ],
+  "krickscricket": [
+   "Rajdeep Singh",
+   "Owner"
+  ],
+  "pot-and-bloom": [
+   "Anit Singh",
+   "Business Head"
+  ],
+  "west-coast-services": [
+   "Ashish",
+   "Owner, UK"
+  ],
+  "shigeru-beauty": [
+   "Rob Farber",
+   "Owner"
+  ],
+  "thrive-gym": [
+   "Rahul Ron & Ritik Punia",
+   "Owners"
+  ],
+  "the-attic-storey": [
+   "Kartik & Astha",
+   "Owners, Delhi"
+  ],
+  "luxury-club": [
+   "Deepak Vinayak",
+   "Owner"
+  ]
+ },
+ "REVIEWS": {
+  "10q-challenge": "AegisKoncept rebuilt our site and SEO. We now rank #1 for BITSAT mentorship, and Google’s AI answers recommend us. Daily clicks went from about 20 to over 1,000 in exam season.",
+  "allied-industrial-park": "Their Meta ads and retargeting helped us sell every industrial and residential plot. They reached the right business owners at a very low cost and kept improving the ads every week.",
+  "pot-and-bloom": "They redesigned our Shopify homepage, made our product photos and videos, and look after the site every month. Always quick to make changes.",
+  "west-coast-services": "They built a clean, professional website that explains all our services simply and brings in quote requests from UK businesses.",
+  "eco-utilities": "Our new website makes comparing business energy easy for customers. Clear, fast and built to be found on Google in the UK.",
+  "the-drive-clinic": "A bold website with online booking, our packages and memberships, plus a system to manage customers. Exactly what our studio needed.",
+  "shigeru-beauty": "Their SEO got us into Google’s answer box and AI Overviews in a very competitive US beauty market.",
+  "thrive-gym": "They handle our social media and ads every month, and we get new gym admissions from it. The reels they shot show the real energy of our gym.",
+  "uk-barber": "A sharp website that shows our services, prices and work. Easy for people in Derby to find us and walk in.",
+  "krickscricket": "They built our online store for handmade cricket bats, including custom bats and a size finder. Customers order from all over the world.",
+  "the-attic-storey": "Even before our projects were finished, they kept our Instagram active and shot cinematic brand reels that show our style.",
+  "luxury-club": "They set up our social media and Amazon store, and make festive videos that keep our products looking premium."
+ },
+ "LOGOS": [
+  [
+   "26a50833",
+   "Thrive Gym",
+   58
+  ],
+  [
+   "bada290e",
+   "West Coast Services",
+   58
+  ],
+  [
+   "3dd9ad49",
+   "Eco Utilities",
+   34
+  ],
+  [
+   "56e25337",
+   "UK Barber",
+   62
+  ],
+  [
+   "88f9434f",
+   "Pot & Bloom",
+   44
+  ],
+  [
+   "a5f3fa1c",
+   "The Attic Storey",
+   62
+  ],
+  [
+   "f03c9f15",
+   "The Drive Clinic",
+   40
+  ],
+  [
+   "1539c868",
+   "Luxury Club",
+   60
+  ],
+  [
+   "2306283a",
+   "Allied Industrial Park",
+   64
+  ],
+  [
+   "e0c7efa9",
+   "10Q Challenge",
+   66
+  ]
+ ],
+ "slides": [
+  [
+   "site",
+   "Website Design & Development",
+   [
+    "Websites",
+    "People Love",
+    "to Use."
+   ],
+   "Fast, good-looking websites that make it easy for people to contact you.",
+   "#services-website-development-design",
+   "Website"
+  ],
+  [
+   "seo",
+   "SEO",
+   [
+    "Show Up First",
+    "on Google."
+   ],
+   "Be the business people find when they search on Google and Google Maps.",
+   "#services-seo",
+   "SEO"
+  ],
+  [
+   "ads",
+   "Google + Meta Ads",
+   [
+    "Ads That Bring",
+    "Real Customers."
+   ],
+   "Ads on Google, Instagram and Facebook, measured on leads, not likes.",
+   "#services-performance-marketing",
+   "Ads (Google / Meta)"
+  ],
+  [
+   "dm",
+   "Social Media Management",
+   [
+    "We Post.",
+    "We Reply.",
+    "You Grow."
+   ],
+   "We make your content, post it, and reply to your DMs and comments too.",
+   "#services-social-media-marketing-management",
+   "Social Media"
+  ]
+ ],
+ "ALL_SECTORS": [
+  [
+   "ecommerce-d2c",
+   "Online Brands (D2C)"
+  ],
+  [
+   "healthcare-wellness",
+   "Health & Fitness"
+  ],
+  [
+   "interiors-design",
+   "Interiors & Design"
+  ],
+  [
+   "startups",
+   "Startups"
+  ],
+  [
+   "tech-saas",
+   "Tech & SaaS"
+  ],
+  [
+   "education",
+   "Education & Coaching"
+  ],
+  [
+   "real-estate",
+   "Real Estate & B2B Spaces"
+  ],
+  [
+   "hotels-travel",
+   "Hotels & Travel"
+  ],
+  [
+   "fashion-lifestyle",
+   "Fashion & Lifestyle"
+  ],
+  [
+   "beauty-salons",
+   "Beauty & Salons"
+  ],
+  [
+   "food-drinks",
+   "Food & Drinks"
+  ],
+  [
+   "professional-services",
+   "Professional Services"
+  ],
+  [
+   "automotive",
+   "Automotive"
+  ]
+ ],
+ "REVIEWS_STATUS": "All reviews are DRAFT until the client approves. APPROVED list is empty."
+}
