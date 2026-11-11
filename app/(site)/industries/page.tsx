@@ -4,6 +4,9 @@ import Link from 'next/link';
 import Breadcrumb from '@/components/site/Breadcrumb';
 import CtaBand from '@/components/site/CtaBand';
 import { db } from '@/lib/db';
+import { FALLBACK_INDUSTRIES, getFallbackIndustry } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Industries We Serve | AegisKoncept',
@@ -12,13 +15,18 @@ export const metadata: Metadata = {
 };
 
 export default async function IndustriesHubPage() {
-  const industries = await db.industry.findMany({
-    orderBy: { order: 'asc' },
-  });
+  let industries: any[] = [];
+  let allCases: any[] = [];
 
-  const allCases = await db.caseStudy.findMany({
-    select: { industryId: true },
-  });
+  try {
+    [industries, allCases] = await Promise.all([
+      db.industry.findMany({ orderBy: { order: 'asc' } }),
+      db.caseStudy.findMany({ select: { industryId: true } }),
+    ]);
+  } catch (err) {
+    console.warn('IndustriesHubPage database query failed, using static fallbacks:', err);
+    industries = FALLBACK_INDUSTRIES.map(getFallbackIndustry).filter(Boolean);
+  }
 
   return (
     <>

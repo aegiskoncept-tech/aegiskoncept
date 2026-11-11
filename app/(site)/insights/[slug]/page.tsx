@@ -8,7 +8,9 @@ import CtaBand from '@/components/site/CtaBand';
 import JsonLd from '@/components/seo/JsonLd';
 import { getArticleSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
-import { FALLBACK_INSIGHTS } from '@/lib/staticFallbacks';
+import { FALLBACK_INSIGHTS, getFallbackPost } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   try {
@@ -34,6 +36,7 @@ export async function generateMetadata({
       include: { category: true },
     });
   } catch {}
+  if (!post) post = getFallbackPost(params.slug);
   if (!post) return { title: 'Insights | AegisKoncept' };
 
   return {
@@ -58,6 +61,10 @@ export default async function BlogPostPage({
     });
   } catch {}
 
+  if (!post) {
+    post = getFallbackPost(params.slug);
+  }
+
   if (!post) notFound();
 
   // Related articles
@@ -70,6 +77,13 @@ export default async function BlogPostPage({
       include: { category: true },
     });
   } catch {}
+
+  if (!otherPosts || otherPosts.length === 0) {
+    otherPosts = FALLBACK_INSIGHTS.filter((s) => s !== post?.slug)
+      .slice(0, 3)
+      .map(getFallbackPost)
+      .filter(Boolean);
+  }
 
   const formattedOthers: ArtRowItem[] = otherPosts.map((p) => ({
     slug: p.slug,
@@ -98,8 +112,8 @@ export default async function BlogPostPage({
     title: post.title,
     description: post.excerpt,
     slug: post.slug,
-    publishedAt: post.publishAt ? post.publishAt.toISOString() : undefined,
-    updatedAt: post.updatedAt ? post.updatedAt.toISOString() : undefined,
+    publishedAt: post.publishAt ? new Date(post.publishAt).toISOString() : undefined,
+    updatedAt: post.updatedAt ? new Date(post.updatedAt).toISOString() : undefined,
   });
 
   return (
@@ -160,7 +174,7 @@ export default async function BlogPostPage({
           <div
             className="prose"
             style={{ maxWidth: '860px', margin: '0 auto' }}
-            dangerouslySetInnerHTML={{ __html: post.bodyHtml }}
+            dangerouslySetInnerHTML={{ __html: (post as any).bodyHtml || '' }}
           />
 
           {/* Author Box */}

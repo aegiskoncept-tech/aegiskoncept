@@ -4,6 +4,9 @@ import Link from 'next/link';
 import Breadcrumb from '@/components/site/Breadcrumb';
 import CtaBand from '@/components/site/CtaBand';
 import { db } from '@/lib/db';
+import { FALLBACK_LOCATIONS, getFallbackLocation } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Digital Marketing Across Delhi NCR | AegisKoncept',
@@ -12,9 +15,18 @@ export const metadata: Metadata = {
 };
 
 export default async function LocationsHubPage() {
-  const locations = await db.location.findMany({
-    orderBy: { order: 'asc' },
-  });
+  let locations: any[] = [];
+  try {
+    locations = await db.location.findMany({
+      orderBy: { order: 'asc' },
+    });
+  } catch (err) {
+    console.warn('[LocationsHub] DB unavailable, falling back to static locations:', err);
+  }
+
+  if (!locations || locations.length === 0) {
+    locations = FALLBACK_LOCATIONS.map((slug) => getFallbackLocation(slug)).filter(Boolean);
+  }
 
   const delhiHub = locations.find((l) => l.slug === 'delhi') || locations[0];
   const delhiAreas = locations.filter((l) => l.parentId === 'delhi' || (l.zone && l.slug !== 'delhi' && l.slug !== 'gurugram' && l.slug !== 'noida'));

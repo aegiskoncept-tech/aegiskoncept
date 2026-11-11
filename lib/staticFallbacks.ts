@@ -121,3 +121,47 @@ export function getFallbackCase(slug: string) {
   };
 }
 
+export function getFallbackPost(slug: string) {
+  const art = content.ARTS.find((a: any) => a[0] === slug);
+  if (!art) {
+    return {
+      id: slug,
+      slug,
+      title: slug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+      excerpt: 'Practical guide to digital marketing, SEO, and business growth.',
+      bodyHtml: '<p>A comprehensive walkthrough explaining step-by-step methodologies, cost factors, and execution strategies.</p>',
+      readMinutes: 5,
+      publishAt: new Date(),
+      updatedAt: new Date(),
+      category: { name: 'Digital Marketing' },
+      authorName: 'Ritesh Kumar',
+      authorRole: 'Founder & Head of Strategy',
+      focusKeyword: slug.replace(/-/g, ' '),
+      faqs: '[]',
+      headings: '[]',
+    };
+  }
+  return {
+    id: art[0],
+    slug: art[0],
+    title: art[1],
+    excerpt: `A practical, in-depth guide on ${art[1]} for Indian business owners and marketing leaders.`,
+    bodyHtml: `<p>A comprehensive walkthrough of ${art[1]}, explaining step-by-step methodologies, cost factors, and execution strategies.</p><p>We break down everything you need to know to make confident decisions for your business.</p>`,
+    readMinutes: parseInt(art[3]) || 7,
+    publishAt: new Date(),
+    updatedAt: new Date(),
+    category: { name: art[2] || 'Digital Marketing' },
+    authorName: 'Ritesh Kumar',
+    authorRole: 'Founder & Head of Strategy',
+    focusKeyword: art[5] || art[1],
+    faqs: JSON.stringify([
+      { q: `What is the key takeaway regarding ${art[1]}?`, a: `Having a clear strategy, measurable goals, and transparent execution yields the highest ROI.` }
+    ]),
+    headings: JSON.stringify([
+      { id: 'overview', text: 'Overview', level: 2 },
+      { id: 'strategy', text: 'Strategy and Execution', level: 2 },
+    ]),
+  };
+}
+
+

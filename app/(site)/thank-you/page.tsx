@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { Vis } from '@/components/site/Mockups';
 import CaseCard from '@/components/site/CaseCard';
 import { db } from '@/lib/db';
+import { FALLBACK_CASES, getFallbackCase } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Thank You | AegisKoncept',
@@ -15,10 +18,19 @@ export const metadata: Metadata = {
 };
 
 export default async function ThankYouPage() {
-  const casesData = await db.caseStudy.findMany({
-    take: 3,
-    orderBy: { order: 'asc' },
-  });
+  let casesData: any[] = [];
+  try {
+    casesData = await db.caseStudy.findMany({
+      take: 3,
+      orderBy: { order: 'asc' },
+    });
+  } catch (err) {
+    console.warn('[ThankYou] DB unavailable, using fallback cases:', err);
+  }
+
+  if (!casesData || casesData.length === 0) {
+    casesData = FALLBACK_CASES.slice(0, 3).map(getFallbackCase).filter(Boolean);
+  }
 
   return (
     <>

@@ -106,6 +106,13 @@ export default async function IndustryDetailPage({
     });
   } catch {}
 
+  if (!otherIndustries || otherIndustries.length === 0) {
+    otherIndustries = FALLBACK_INDUSTRIES.filter((s) => s !== ind.slug).map((s) => ({
+      slug: s,
+      name: getFallbackIndustry(s)?.name || s,
+    }));
+  }
+
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', url: '/' },
     { name: 'Industries', url: '/industries' },

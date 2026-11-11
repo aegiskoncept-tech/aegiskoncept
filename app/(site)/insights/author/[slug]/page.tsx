@@ -6,6 +6,9 @@ import Breadcrumb from '@/components/site/Breadcrumb';
 import ArtRows, { ArtRowItem } from '@/components/site/ArtRows';
 import CtaBand from '@/components/site/CtaBand';
 import { db } from '@/lib/db';
+import { FALLBACK_INSIGHTS, getFallbackPost } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   return [{ slug: 'ritesh-kumar' }];
@@ -42,6 +45,10 @@ export default async function AuthorProfilePage({
       include: { category: true },
     });
   } catch {}
+
+  if (!posts || posts.length === 0) {
+    posts = FALLBACK_INSIGHTS.map((slug) => getFallbackPost(slug)).filter(Boolean);
+  }
 
   const formattedArticles: ArtRowItem[] = posts.map((p) => ({
     slug: p.slug,

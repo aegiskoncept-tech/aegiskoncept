@@ -7,6 +7,9 @@ import CtaBand from '@/components/site/CtaBand';
 import { renderCaseVisual } from '@/components/site/CaseCard';
 import { Vis } from '@/components/site/Mockups';
 import { db } from '@/lib/db';
+import { FALLBACK_CASES, getFallbackCase } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Our Work | AegisKoncept',
@@ -49,11 +52,17 @@ const MORE_SEO = [
 ];
 
 export default async function OurWorkHubPage() {
-  const allCasesFromDb = await db.caseStudy.findMany({
-    orderBy: { order: 'asc' },
-  });
+  let allCasesFromDb: any[] = [];
+  try {
+    allCasesFromDb = await db.caseStudy.findMany({
+      orderBy: { order: 'asc' },
+    });
+  } catch (err) {
+    console.warn('OurWorkHubPage database query failed, using static fallbacks:', err);
+    allCasesFromDb = FALLBACK_CASES.map(getFallbackCase).filter(Boolean);
+  }
 
-  const featured = allCasesFromDb.find((c) => c.slug === '10q-challenge') || allCasesFromDb[0];
+  const featured = allCasesFromDb.find((c) => c.slug === '10q-challenge') || allCasesFromDb[0] || {};
   const gridCases = allCasesFromDb.filter((c) => c.slug !== '10q-challenge');
 
   const casesFormatted: CaseItem[] = gridCases.map((c) => {

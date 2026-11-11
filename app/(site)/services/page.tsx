@@ -5,6 +5,9 @@ import Breadcrumb from '@/components/site/Breadcrumb';
 import CtaBand from '@/components/site/CtaBand';
 import { Vis } from '@/components/site/Mockups';
 import { db } from '@/lib/db';
+import { FALLBACK_SERVICES, getFallbackService } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Our Services | AegisKoncept',
@@ -46,9 +49,15 @@ const GOALS = [
 ];
 
 export default async function ServicesHubPage() {
-  const services = await db.service.findMany({
-    orderBy: { order: 'asc' },
-  });
+  let services: any[] = [];
+  try {
+    services = await db.service.findMany({
+      orderBy: { order: 'asc' },
+    });
+  } catch (err) {
+    console.warn('ServicesHubPage database query failed, using static fallbacks:', err);
+    services = FALLBACK_SERVICES.map(getFallbackService).filter(Boolean);
+  }
 
   return (
     <>

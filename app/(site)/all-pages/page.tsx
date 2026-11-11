@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { db } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'All Pages Directory | AegisKoncept',
   description: 'Complete directory of all pages across AegisKoncept website.',

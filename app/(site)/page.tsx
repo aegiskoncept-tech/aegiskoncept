@@ -9,6 +9,9 @@ import CtaBand from '@/components/site/CtaBand';
 import { Vis, Cover } from '@/components/site/Mockups';
 import { ARCH_PATH } from '@/components/site/Icons';
 import { db } from '@/lib/db';
+import { FALLBACK_CASES, getFallbackCase } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 const SERVICES = [
   {
@@ -102,14 +105,19 @@ const WHY_US_TICKS = [
 
 export default async function HomePage() {
   // Query case studies with owner info for Reviews Spotlight
-  const caseStudies = await db.caseStudy.findMany({
-    orderBy: { order: 'asc' },
-  });
+  let caseStudies: any[] = [];
+  let approvedReviews: any[] = [];
 
-  // Query reviews from DB to check for approved ones (strictly DRAFT right now)
-  const approvedReviews = await db.review.findMany({
-    where: { status: 'APPROVED' },
-  });
+  try {
+    [caseStudies, approvedReviews] = await Promise.all([
+      db.caseStudy.findMany({ orderBy: { order: 'asc' } }),
+      db.review.findMany({ where: { status: 'APPROVED' } }),
+    ]);
+  } catch (err) {
+    console.warn('HomePage database query failed, using static fallbacks:', err);
+    caseStudies = FALLBACK_CASES.map((slug) => getFallbackCase(slug)).filter(Boolean);
+  }
+
   const approvedMap = new Map<string, string>();
   for (const r of approvedReviews) {
     if (r.caseId) approvedMap.set(r.caseId, r.text);

@@ -125,6 +125,13 @@ export default async function CaseStudyDetailPage({
     });
   } catch {}
 
+  if (!otherCases || otherCases.length === 0) {
+    otherCases = FALLBACK_CASES.filter((s) => s !== cs.slug)
+      .slice(0, 2)
+      .map(getFallbackCase)
+      .filter(Boolean);
+  }
+
   // Check for approved review
   const approvedReview = (cs.reviews || []).find((r: any) => r.status === 'APPROVED');
 

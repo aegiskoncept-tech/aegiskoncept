@@ -7,6 +7,9 @@ import CtaBand from '@/components/site/CtaBand';
 import JsonLd from '@/components/seo/JsonLd';
 import { getVideoObjectSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
+import content from '@/design-reference/content.json';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Commercial Reels & Video Shoots | AegisKoncept',
@@ -45,9 +48,24 @@ const WHAT_WE_SHOOT = [
 ];
 
 export default async function VideosPage() {
-  const allVideos = await db.video.findMany({
-    orderBy: { order: 'asc' },
-  });
+  let allVideos: any[] = [];
+  try {
+    allVideos = await db.video.findMany({
+      orderBy: { order: 'asc' },
+    });
+  } catch (err) {
+    console.warn('VideosPage database query failed, using static fallbacks:', err);
+    allVideos = content.VIDEOS.map((v: any, idx: number) => ({
+      id: v[0],
+      vimeoId: v[0],
+      title: v[1],
+      label: v[2],
+      client: v[3],
+      category: v[4],
+      posterMediaId: v[5],
+      order: idx,
+    }));
+  }
 
   const categories = [
     'All',

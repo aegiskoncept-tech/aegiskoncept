@@ -11,7 +11,13 @@ import { Stage, Serp } from '@/components/site/Mockups';
 import JsonLd from '@/components/seo/JsonLd';
 import { getLocalBusinessSchema, getFaqSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
-import { FALLBACK_LOCATIONS, getFallbackLocation } from '@/lib/staticFallbacks';
+import {
+  FALLBACK_LOCATIONS,
+  getFallbackLocation,
+  FALLBACK_SERVICES,
+  getFallbackService,
+  getFallbackCase,
+} from '@/lib/staticFallbacks';
 
 export async function generateStaticParams() {
   try {
@@ -106,6 +112,9 @@ export default async function LocationDetailPage({
       ? await db.caseStudy.findUnique({ where: { slug: loc.featuredCaseId } })
       : null;
   } catch {}
+  if (!featuredCase && loc.featuredCaseId) {
+    featuredCase = getFallbackCase(loc.featuredCaseId);
+  }
 
   // Local FAQs
   const localFaqs: FaqItem[] = loc.isOffice
@@ -145,6 +154,10 @@ export default async function LocationDetailPage({
       orderBy: { order: 'asc' },
     });
   } catch {}
+
+  if (!allServices || allServices.length === 0) {
+    allServices = FALLBACK_SERVICES.map(getFallbackService).filter(Boolean);
+  }
 
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: 'Home', url: '/' },

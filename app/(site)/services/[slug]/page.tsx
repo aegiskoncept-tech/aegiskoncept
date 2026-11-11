@@ -12,7 +12,14 @@ import { Vis } from '@/components/site/Mockups';
 import JsonLd from '@/components/seo/JsonLd';
 import { getServiceSchema, getFaqSchema, getBreadcrumbSchema } from '@/lib/jsonLd';
 import { db } from '@/lib/db';
-import { FALLBACK_SERVICES, getFallbackService } from '@/lib/staticFallbacks';
+import {
+  FALLBACK_SERVICES,
+  getFallbackService,
+  FALLBACK_CASES,
+  getFallbackCase,
+  FALLBACK_INDUSTRIES,
+  getFallbackIndustry,
+} from '@/lib/staticFallbacks';
 
 export async function generateStaticParams() {
   try {
@@ -164,6 +171,13 @@ export default async function ServiceDetailPage({
     });
   } catch {}
 
+  if (!otherServices || otherServices.length === 0) {
+    otherServices = FALLBACK_SERVICES.filter((s) => s !== service.slug).map((s) => ({
+      slug: s,
+      name: getFallbackService(s)?.name || s,
+    }));
+  }
+
   // Related cases
   let allCases: any[] = [];
   try {
@@ -173,6 +187,10 @@ export default async function ServiceDetailPage({
     });
   } catch {}
 
+  if (!allCases || allCases.length === 0) {
+    allCases = FALLBACK_CASES.slice(0, 4).map(getFallbackCase).filter(Boolean);
+  }
+
   // Industries related to this service
   let industries: any[] = [];
   try {
@@ -180,6 +198,13 @@ export default async function ServiceDetailPage({
       select: { slug: true, name: true },
     });
   } catch {}
+
+  if (!industries || industries.length === 0) {
+    industries = FALLBACK_INDUSTRIES.map((i) => ({
+      slug: i,
+      name: getFallbackIndustry(i)?.name || i,
+    }));
+  }
 
   // Recent blog articles
   const articles: ArtRowItem[] = [

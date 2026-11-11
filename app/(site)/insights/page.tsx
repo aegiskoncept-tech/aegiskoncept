@@ -5,6 +5,9 @@ import Breadcrumb from '@/components/site/Breadcrumb';
 import ArtRows, { ArtRowItem } from '@/components/site/ArtRows';
 import { Cover } from '@/components/site/Mockups';
 import { db } from '@/lib/db';
+import { FALLBACK_INSIGHTS, getFallbackPost } from '@/lib/staticFallbacks';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Blog & Practical Growth Guides | AegisKoncept',
@@ -13,10 +16,19 @@ export const metadata: Metadata = {
 };
 
 export default async function InsightsListingPage() {
-  const posts = await db.post.findMany({
-    orderBy: { publishAt: 'desc' },
-    include: { category: true },
-  });
+  let posts: any[] = [];
+  try {
+    posts = await db.post.findMany({
+      orderBy: { publishAt: 'desc' },
+      include: { category: true },
+    });
+  } catch (err) {
+    console.warn('[InsightsListing] DB unavailable, using fallback posts:', err);
+  }
+
+  if (!posts || posts.length === 0) {
+    posts = FALLBACK_INSIGHTS.map((slug) => getFallbackPost(slug)).filter(Boolean);
+  }
 
   const featured = posts.find((p) => p.slug === 'seo-cost-india') || posts[0];
   const listPosts = posts.filter((p) => p.slug !== featured?.slug);
