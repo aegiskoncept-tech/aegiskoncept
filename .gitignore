@@ -43,8 +43,8 @@ Thumbs.db
 *.db-journal
 *.sqlite
 *.sqlite-journal
-prisma/*.db
 prisma/*.db-journal
+!prisma/dev.db
 
 # Background task logs
 .system_generated/
