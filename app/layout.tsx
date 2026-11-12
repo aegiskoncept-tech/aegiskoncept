@@ -5,6 +5,7 @@ import HashRedirect from '@/components/site/HashRedirect';
 import JsonLd from '@/components/seo/JsonLd';
 import AnalyticsScripts from '@/components/seo/AnalyticsScripts';
 import { getOrganizationSchema, getWebSiteSchema } from '@/lib/jsonLd';
+import { getSiteIntegrationSettings } from '@/lib/siteSettings';
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://aegiskoncept.com'),
@@ -43,11 +44,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const integrations = await getSiteIntegrationSettings();
+
   return (
     <html lang="en">
       <head>
@@ -61,12 +64,20 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700&display=swap"
         />
+        {integrations.gscVerification && (
+          <meta name="google-site-verification" content={integrations.gscVerification} />
+        )}
         <JsonLd data={[getOrganizationSchema(), getWebSiteSchema()]} />
       </head>
       <body>
         <ArchClip />
         <HashRedirect />
-        <AnalyticsScripts />
+        <AnalyticsScripts
+          gaId={integrations.ga4Id}
+          gtmId={integrations.gtmId}
+          metaPixelId={integrations.metaPixelId}
+          clarityId={integrations.clarityId}
+        />
         {children}
       </body>
     </html>

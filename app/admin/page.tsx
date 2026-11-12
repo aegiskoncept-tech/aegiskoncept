@@ -36,6 +36,26 @@ export default function AdminDashboardPage() {
   // Robots editor state
   const [robotsTxt, setRobotsTxt] = useState('');
 
+  // Business & Contact Settings state
+  const [contactPhone, setContactPhone] = useState('+91 73034 68073');
+  const [contactWhatsapp, setContactWhatsapp] = useState('917303468073');
+  const [contactEmail, setContactEmail] = useState('hello@aegiskoncept.com');
+  const [contactEmailSecondary, setContactEmailSecondary] = useState('contact@aegiskoncept.com');
+  const [contactAddress, setContactAddress] = useState('Sector 7, Ramphal Chowk, Dwarka, New Delhi 110075');
+  const [contactHours, setContactHours] = useState('Mon – Sat: 10:00 AM – 7:00 PM');
+  const [contactMapsUrl, setContactMapsUrl] = useState('https://maps.google.com/?q=Ramphal+Chowk+Sector+7+Dwarka+Delhi');
+
+  // Integrations state
+  const [ga4Id, setGa4Id] = useState('');
+  const [gtmId, setGtmId] = useState('');
+  const [metaPixelId, setMetaPixelId] = useState('');
+  const [metaCapiToken, setMetaCapiToken] = useState('');
+  const [clarityId, setClarityId] = useState('');
+  const [gscVerification, setGscVerification] = useState('');
+  const [indexnowKey, setIndexnowKey] = useState('');
+  const [editingTool, setEditingTool] = useState<string | null>(null);
+  const [savingSettings, setSavingSettings] = useState(false);
+
   // Mobile menu
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -53,8 +73,23 @@ export default function AdminDashboardPage() {
       if (res.ok) {
         const json = await res.json();
         setData(json);
-        if (json.settings?.robots_txt) {
-          setRobotsTxt(json.settings.robots_txt);
+        if (json.settings) {
+          const s = json.settings;
+          if (s.robots_txt) setRobotsTxt(s.robots_txt);
+          if (s.contact_phone) setContactPhone(s.contact_phone);
+          if (s.contact_whatsapp) setContactWhatsapp(s.contact_whatsapp);
+          if (s.contact_email) setContactEmail(s.contact_email);
+          if (s.contact_email_secondary) setContactEmailSecondary(s.contact_email_secondary);
+          if (s.contact_address) setContactAddress(s.contact_address);
+          if (s.contact_hours) setContactHours(s.contact_hours);
+          if (s.contact_maps_url) setContactMapsUrl(s.contact_maps_url);
+          if (s.ga4_id) setGa4Id(s.ga4_id);
+          if (s.gtm_id) setGtmId(s.gtm_id);
+          if (s.meta_pixel_id) setMetaPixelId(s.meta_pixel_id);
+          if (s.meta_capi_token) setMetaCapiToken(s.meta_capi_token);
+          if (s.clarity_id) setClarityId(s.clarity_id);
+          if (s.gsc_verification) setGscVerification(s.gsc_verification);
+          if (s.indexnow_key) setIndexnowKey(s.indexnow_key);
         }
       }
     } catch (err) {
@@ -240,6 +275,101 @@ export default function AdminDashboardPage() {
       }
     } catch {
       showToast('Failed to update lead');
+    }
+  };
+
+  const handleSaveContactSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavingSettings(true);
+    try {
+      const updates = [
+        { key: 'contact_phone', value: contactPhone },
+        { key: 'contact_whatsapp', value: contactWhatsapp },
+        { key: 'contact_email', value: contactEmail },
+        { key: 'contact_email_secondary', value: contactEmailSecondary },
+        { key: 'contact_address', value: contactAddress },
+        { key: 'contact_hours', value: contactHours },
+        { key: 'contact_maps_url', value: contactMapsUrl },
+      ];
+
+      for (const item of updates) {
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(item),
+        });
+      }
+
+      showToast('Business & Contact details saved successfully!');
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to save contact details.');
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
+  const handleSaveIntegration = async (toolId: string) => {
+    setSavingSettings(true);
+    try {
+      if (toolId === 'ga4') {
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'ga4_id', value: ga4Id.trim() }),
+        });
+        showToast('Google Analytics 4 Measurement ID saved!');
+      } else if (toolId === 'gtm') {
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'gtm_id', value: gtmId.trim() }),
+        });
+        showToast('Google Tag Manager Container ID saved!');
+      } else if (toolId === 'meta') {
+        await Promise.all([
+          fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: 'meta_pixel_id', value: metaPixelId.trim() }),
+          }),
+          fetch('/api/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: 'meta_capi_token', value: metaCapiToken.trim() }),
+          }),
+        ]);
+        showToast('Meta Pixel & CAPI credentials saved!');
+      } else if (toolId === 'clarity') {
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'clarity_id', value: clarityId.trim() }),
+        });
+        showToast('Microsoft Clarity Project ID saved!');
+      } else if (toolId === 'gsc') {
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'gsc_verification', value: gscVerification.trim() }),
+        });
+        showToast('Google Search Console verification saved!');
+      } else if (toolId === 'indexnow') {
+        await fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: 'indexnow_key', value: indexnowKey.trim() }),
+        });
+        showToast('IndexNow API Key saved!');
+      }
+      setEditingTool(null);
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      showToast('Error saving integration setting.');
+    } finally {
+      setSavingSettings(false);
     }
   };
 
@@ -454,6 +584,20 @@ export default function AdminDashboardPage() {
             <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" ry="2" /></svg>
             <span>Videos</span>
             <span className="cnt">{data?.videos?.length || 0}</span>
+          </a>
+
+          {/* Settings Section */}
+          <div className="grp">Settings</div>
+          <a
+            href="#settings-contact"
+            aria-current={activeView === 'settings-contact' ? 'page' : undefined}
+            onClick={() => {
+              setActiveView('settings-contact');
+              setMenuOpen(false);
+            }}
+          >
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Business & Contact</span>
           </a>
         </nav>
 
@@ -1491,28 +1635,295 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
-                {[
-                  { name: 'Google Search Console', id: 'gsc', desc: 'Track organic keywords and indexation', status: 'Connected' },
-                  { name: 'Google Analytics 4', id: 'ga4', desc: 'Web traffic and conversion event measurement', status: 'Active' },
-                  { name: 'Google Tag Manager', id: 'gtm', desc: 'Container for dynamic marketing tag injection', status: 'Active' },
-                  { name: 'Meta Pixel & CAPI', id: 'meta', desc: 'Conversion API and pixel event tracking', status: 'Active' },
-                  { name: 'Microsoft Clarity', id: 'clarity', desc: 'Session recordings and user heatmaps', status: 'Active' },
-                  { name: 'IndexNow Protocol', id: 'indexnow', desc: 'Instant search engine crawler notifications', status: 'Verified' },
-                ].map((tool) => (
-                  <div key={tool.id} className="panel" style={{ padding: 20 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                      <b>{tool.name}</b>
-                      <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--ok)', background: '#E1F2E8', padding: '2px 8px', borderRadius: 4 }}>
-                        ✓ {tool.status}
-                      </span>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
+                {/* 1. GSC */}
+                <div className="panel" style={{ padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <b>Google Search Console</b>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: gscVerification ? 'var(--ok)' : 'var(--mute)', background: gscVerification ? '#E1F2E8' : '#eee', padding: '2px 8px', borderRadius: 4 }}>
+                      {gscVerification ? '✓ Connected' : '○ Not Configured'}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 12, color: 'var(--mute)', margin: '0 0 10px 0' }}>Track organic keywords, indexing status and crawl issues.</p>
+                  <div style={{ fontSize: 12, fontFamily: 'monospace', background: '#F8F6F2', border: '1px solid var(--line)', padding: '6px 8px', borderRadius: 4, marginBottom: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {gscVerification ? gscVerification : 'Verification code pending'}
+                  </div>
+                  <button className="btn sm ghost" onClick={() => setEditingTool('gsc')}>
+                    Settings
+                  </button>
+                </div>
+
+                {/* 2. GA4 */}
+                <div className="panel" style={{ padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <b>Google Analytics 4</b>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: ga4Id ? 'var(--ok)' : 'var(--mute)', background: ga4Id ? '#E1F2E8' : '#eee', padding: '2px 8px', borderRadius: 4 }}>
+                      {ga4Id ? '✓ Active' : '○ Not Configured'}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 12, color: 'var(--mute)', margin: '0 0 10px 0' }}>Web traffic and conversion event measurement.</p>
+                  <div style={{ fontSize: 12, fontFamily: 'monospace', background: '#F8F6F2', border: '1px solid var(--line)', padding: '6px 8px', borderRadius: 4, marginBottom: 14 }}>
+                    ID: {ga4Id || 'G-XXXXXXXXXX'}
+                  </div>
+                  <button className="btn sm ghost" onClick={() => setEditingTool('ga4')}>
+                    Settings
+                  </button>
+                </div>
+
+                {/* 3. GTM */}
+                <div className="panel" style={{ padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <b>Google Tag Manager</b>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: gtmId ? 'var(--ok)' : 'var(--mute)', background: gtmId ? '#E1F2E8' : '#eee', padding: '2px 8px', borderRadius: 4 }}>
+                      {gtmId ? '✓ Active' : '○ Not Configured'}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 12, color: 'var(--mute)', margin: '0 0 10px 0' }}>Container for dynamic marketing tag and conversion injection.</p>
+                  <div style={{ fontSize: 12, fontFamily: 'monospace', background: '#F8F6F2', border: '1px solid var(--line)', padding: '6px 8px', borderRadius: 4, marginBottom: 14 }}>
+                    Container: {gtmId || 'GTM-XXXXXXX'}
+                  </div>
+                  <button className="btn sm ghost" onClick={() => setEditingTool('gtm')}>
+                    Settings
+                  </button>
+                </div>
+
+                {/* 4. Meta Pixel */}
+                <div className="panel" style={{ padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <b>Meta Pixel & CAPI</b>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: metaPixelId ? 'var(--ok)' : 'var(--mute)', background: metaPixelId ? '#E1F2E8' : '#eee', padding: '2px 8px', borderRadius: 4 }}>
+                      {metaPixelId ? '✓ Active' : '○ Not Configured'}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 12, color: 'var(--mute)', margin: '0 0 10px 0' }}>Conversion API and pixel event tracking for Instagram & Facebook.</p>
+                  <div style={{ fontSize: 12, fontFamily: 'monospace', background: '#F8F6F2', border: '1px solid var(--line)', padding: '6px 8px', borderRadius: 4, marginBottom: 14 }}>
+                    Pixel: {metaPixelId || 'Not configured'}
+                  </div>
+                  <button className="btn sm ghost" onClick={() => setEditingTool('meta')}>
+                    Settings
+                  </button>
+                </div>
+
+                {/* 5. Microsoft Clarity */}
+                <div className="panel" style={{ padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <b>Microsoft Clarity</b>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: clarityId ? 'var(--ok)' : 'var(--mute)', background: clarityId ? '#E1F2E8' : '#eee', padding: '2px 8px', borderRadius: 4 }}>
+                      {clarityId ? '✓ Active' : '○ Not Configured'}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 12, color: 'var(--mute)', margin: '0 0 10px 0' }}>Session recordings, heatmaps, and rage click analytics.</p>
+                  <div style={{ fontSize: 12, fontFamily: 'monospace', background: '#F8F6F2', border: '1px solid var(--line)', padding: '6px 8px', borderRadius: 4, marginBottom: 14 }}>
+                    Project: {clarityId || 'Not configured'}
+                  </div>
+                  <button className="btn sm ghost" onClick={() => setEditingTool('clarity')}>
+                    Settings
+                  </button>
+                </div>
+
+                {/* 6. IndexNow */}
+                <div className="panel" style={{ padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <b>IndexNow Protocol</b>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: indexnowKey ? 'var(--ok)' : 'var(--mute)', background: indexnowKey ? '#E1F2E8' : '#eee', padding: '2px 8px', borderRadius: 4 }}>
+                      {indexnowKey ? '✓ Verified' : '○ Pending'}
+                    </span>
+                  </div>
+                  <p style={{ fontSize: 12, color: 'var(--mute)', margin: '0 0 10px 0' }}>Instant search engine crawler notifications for Bing, Yandex and Seznam.</p>
+                  <div style={{ fontSize: 12, fontFamily: 'monospace', background: '#F8F6F2', border: '1px solid var(--line)', padding: '6px 8px', borderRadius: 4, marginBottom: 14 }}>
+                    Key: {indexnowKey ? `${indexnowKey.slice(0, 14)}...` : 'Not configured'}
+                  </div>
+                  <button className="btn sm ghost" onClick={() => setEditingTool('indexnow')}>
+                    Settings
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* VIEW: BUSINESS & CONTACT SETTINGS */}
+          {activeView === 'settings-contact' && (
+            <div>
+              <div className="vh">
+                <div>
+                  <h1>Business & Contact Details</h1>
+                  <p>Manage official phone, WhatsApp, email, office address, and working hours across the website.</p>
+                </div>
+                <div className="acts">
+                  <button
+                    type="submit"
+                    form="contact-settings-form"
+                    className="btn lime"
+                    disabled={savingSettings}
+                  >
+                    {savingSettings ? 'Saving...' : 'Save Contact Details'}
+                  </button>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.3fr) minmax(0, 1fr)', gap: 24, alignItems: 'start' }}>
+                {/* Form Panel */}
+                <form id="contact-settings-form" onSubmit={handleSaveContactSettings} className="panel" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                        Official Phone Number
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={contactPhone}
+                        onChange={(e) => setContactPhone(e.target.value)}
+                        placeholder="+91 73034 68073"
+                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
+                      />
+                      <small style={{ color: 'var(--mute)', fontSize: 11, display: 'block', marginTop: 4 }}>
+                        Shown in header, footer and contact cards.
+                      </small>
                     </div>
-                    <p style={{ fontSize: 12, color: 'var(--mute)', margin: '0 0 14px 0' }}>{tool.desc}</p>
-                    <button className="btn sm ghost" onClick={() => showToast(`${tool.name} configuration active`)}>
-                      Settings
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                        WhatsApp Number
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={contactWhatsapp}
+                        onChange={(e) => setContactWhatsapp(e.target.value)}
+                        placeholder="917303468073"
+                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
+                      />
+                      <small style={{ color: 'var(--mute)', fontSize: 11, display: 'block', marginTop: 4 }}>
+                        Used for wa.me chat links (country code without +).
+                      </small>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                        Primary Contact Email
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={contactEmail}
+                        onChange={(e) => setContactEmail(e.target.value)}
+                        placeholder="hello@aegiskoncept.com"
+                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                        Enquiries / Lead Notification Email
+                      </label>
+                      <input
+                        type="email"
+                        value={contactEmailSecondary}
+                        onChange={(e) => setContactEmailSecondary(e.target.value)}
+                        placeholder="contact@aegiskoncept.com"
+                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
+                      />
+                      <small style={{ color: 'var(--mute)', fontSize: 11, display: 'block', marginTop: 4 }}>
+                        Receives new inbound lead notifications.
+                      </small>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                      Physical Office Address
+                    </label>
+                    <textarea
+                      required
+                      rows={2}
+                      value={contactAddress}
+                      onChange={(e) => setContactAddress(e.target.value)}
+                      placeholder="Sector 7, Ramphal Chowk, Dwarka, New Delhi 110075"
+                      style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
+                    />
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                        Working Hours & Days
+                      </label>
+                      <input
+                        type="text"
+                        value={contactHours}
+                        onChange={(e) => setContactHours(e.target.value)}
+                        placeholder="Mon – Sat: 10:00 AM – 7:00 PM"
+                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                        Google Maps Location URL
+                      </label>
+                      <input
+                        type="url"
+                        value={contactMapsUrl}
+                        onChange={(e) => setContactMapsUrl(e.target.value)}
+                        placeholder="https://maps.google.com/..."
+                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ paddingTop: 10, borderTop: '1px solid var(--line)', display: 'flex', justifyContent: 'flex-end' }}>
+                    <button type="submit" className="btn lime" disabled={savingSettings}>
+                      {savingSettings ? 'Saving...' : 'Save Contact Details'}
                     </button>
                   </div>
-                ))}
+                </form>
+
+                {/* Live Preview Panel */}
+                <div className="panel" style={{ padding: 24, background: '#191919', color: '#F4F0E8' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#D3E45B', display: 'block', marginBottom: 12 }}>
+                    Live Website Preview
+                  </span>
+                  <h3 style={{ fontSize: 20, margin: '0 0 16px 0', color: '#F4F0E8' }}>
+                    How Visitors See Your Details
+                  </h3>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 14 }}>
+                    <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Call & Inquiries</span>
+                      <b style={{ fontSize: 16 }}>{contactPhone || '+91 73034 68073'}</b>
+                    </div>
+
+                    <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>WhatsApp Direct Link</span>
+                      <a
+                        href={`https://wa.me/${(contactWhatsapp || '917303468073').replace(/\D/g, '')}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ color: '#D3E45B', textDecoration: 'underline' }}
+                      >
+                        wa.me/{(contactWhatsapp || '917303468073').replace(/\D/g, '')} ↗
+                      </a>
+                    </div>
+
+                    <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Email Address</span>
+                      <span>{contactEmail || 'hello@aegiskoncept.com'}</span>
+                    </div>
+
+                    <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Office Address</span>
+                      <span>{contactAddress || 'Sector 7, Ramphal Chowk, Dwarka, New Delhi 110075'}</span>
+                    </div>
+
+                    <div>
+                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Office Hours</span>
+                      <span>{contactHours || 'Mon – Sat: 10:00 AM – 7:00 PM'}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -1588,6 +1999,191 @@ export default function AdminDashboardPage() {
           )}
         </main>
       </div>
+
+      {/* INTEGRATION SETTINGS MODAL */}
+      {editingTool && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.65)',
+            backdropFilter: 'blur(3px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 100,
+            padding: 16,
+          }}
+          onClick={() => setEditingTool(null)}
+        >
+          <div
+            className="panel"
+            style={{
+              width: '100%',
+              maxWidth: 480,
+              background: '#fff',
+              padding: 24,
+              boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+              borderRadius: 8,
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h3 style={{ margin: 0, fontSize: 18 }}>
+                {editingTool === 'gsc' && 'Google Search Console Verification'}
+                {editingTool === 'ga4' && 'Google Analytics 4 Configuration'}
+                {editingTool === 'gtm' && 'Google Tag Manager Configuration'}
+                {editingTool === 'meta' && 'Meta Pixel & Conversions API'}
+                {editingTool === 'clarity' && 'Microsoft Clarity Setup'}
+                {editingTool === 'indexnow' && 'IndexNow Protocol Key'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setEditingTool(null)}
+                style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', lineHeight: 1 }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {editingTool === 'ga4' && (
+              <div>
+                <p style={{ fontSize: 13, color: 'var(--mute)', margin: '0 0 16px 0' }}>
+                  Enter your Google Analytics 4 Measurement ID. Starts with <code>G-</code>.
+                </p>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
+                  GA4 Measurement ID
+                </label>
+                <input
+                  type="text"
+                  value={ga4Id}
+                  onChange={(e) => setGa4Id(e.target.value)}
+                  placeholder="G-XXXXXXXXXX"
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14, marginBottom: 18 }}
+                />
+              </div>
+            )}
+
+            {editingTool === 'gtm' && (
+              <div>
+                <p style={{ fontSize: 13, color: 'var(--mute)', margin: '0 0 16px 0' }}>
+                  Enter your Google Tag Manager Container ID. Starts with <code>GTM-</code>.
+                </p>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
+                  GTM Container ID
+                </label>
+                <input
+                  type="text"
+                  value={gtmId}
+                  onChange={(e) => setGtmId(e.target.value)}
+                  placeholder="GTM-XXXXXXX"
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14, marginBottom: 18 }}
+                />
+              </div>
+            )}
+
+            {editingTool === 'meta' && (
+              <div>
+                <p style={{ fontSize: 13, color: 'var(--mute)', margin: '0 0 16px 0' }}>
+                  Enter your Meta (Facebook) Pixel ID and optional Conversions API (CAPI) access token.
+                </p>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
+                  Meta Pixel ID
+                </label>
+                <input
+                  type="text"
+                  value={metaPixelId}
+                  onChange={(e) => setMetaPixelId(e.target.value)}
+                  placeholder="123456789012345"
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14, marginBottom: 14 }}
+                />
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
+                  CAPI Access Token (Optional)
+                </label>
+                <textarea
+                  value={metaCapiToken}
+                  onChange={(e) => setMetaCapiToken(e.target.value)}
+                  placeholder="EAA..."
+                  rows={3}
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 13, marginBottom: 18 }}
+                />
+              </div>
+            )}
+
+            {editingTool === 'clarity' && (
+              <div>
+                <p style={{ fontSize: 13, color: 'var(--mute)', margin: '0 0 16px 0' }}>
+                  Enter your Microsoft Clarity Project ID from your Clarity project settings dashboard.
+                </p>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
+                  Clarity Project ID
+                </label>
+                <input
+                  type="text"
+                  value={clarityId}
+                  onChange={(e) => setClarityId(e.target.value)}
+                  placeholder="e.g. k4l5m6n7"
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14, marginBottom: 18 }}
+                />
+              </div>
+            )}
+
+            {editingTool === 'gsc' && (
+              <div>
+                <p style={{ fontSize: 13, color: 'var(--mute)', margin: '0 0 16px 0' }}>
+                  Enter your Google Search Console verification meta tag or token (e.g. <code>google-site-verification=...</code>).
+                </p>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
+                  Verification Code / Meta Tag
+                </label>
+                <input
+                  type="text"
+                  value={gscVerification}
+                  onChange={(e) => setGscVerification(e.target.value)}
+                  placeholder="google-site-verification=XYZ..."
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14, marginBottom: 18 }}
+                />
+              </div>
+            )}
+
+            {editingTool === 'indexnow' && (
+              <div>
+                <p style={{ fontSize: 13, color: 'var(--mute)', margin: '0 0 16px 0' }}>
+                  Enter your IndexNow API Key generated from Bing Webmaster Tools.
+                </p>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
+                  IndexNow API Key
+                </label>
+                <input
+                  type="text"
+                  value={indexnowKey}
+                  onChange={(e) => setIndexnowKey(e.target.value)}
+                  placeholder="e.g. 7f8a9b0c1d2e3f4a5b6c"
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14, marginBottom: 18 }}
+                />
+              </div>
+            )}
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+              <button
+                type="button"
+                className="btn ghost sm"
+                onClick={() => setEditingTool(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn lime sm"
+                disabled={savingSettings}
+                onClick={() => handleSaveIntegration(editingTool)}
+              >
+                {savingSettings ? 'Saving...' : 'Save Configuration'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toast Notification */}
       {toastMsg && (

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { SiteContactSettings, DEFAULT_CONTACT } from '@/lib/siteConfig';
 
 const SERVICES = [
   {
@@ -35,12 +36,15 @@ const SERVICES = [
 export default function MobileMenu({
   isOpen,
   setIsOpen,
+  contact = DEFAULT_CONTACT,
 }: {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  contact?: SiteContactSettings;
 }) {
   const [servicesOpen, setServicesOpen] = useState(false);
   const pathname = usePathname();
+  const cleanWa = (contact.whatsapp || '917303468073').replace(/\D/g, '');
 
   useEffect(() => {
     if (isOpen) {
@@ -184,14 +188,14 @@ export default function MobileMenu({
           </Link>
           <a
             className="btn b-o"
-            href="https://wa.me/917303468073"
+            href={`https://wa.me/${cleanWa}`}
             target="_blank"
             rel="noopener noreferrer"
           >
             WhatsApp Us
           </a>
           <p className="xs" style={{ color: 'var(--mute-d)', marginTop: '6px' }}>
-            hello@aegiskoncept.com · Dwarka, New Delhi
+            {contact.email} · {contact.address.split(',')[0] || 'Dwarka'}, New Delhi
           </p>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArchMark } from './Icons';
+import { SiteContactSettings, DEFAULT_CONTACT } from '@/lib/siteConfig';
 
 const SERVICES = [
   { id: 'website-development-design', nav: 'Websites' },
@@ -36,7 +37,8 @@ const DELHI_AREAS = [
   { id: 'laxmi-nagar', name: 'Laxmi Nagar' },
 ];
 
-export default function Footer() {
+export default function Footer({ contact = DEFAULT_CONTACT }: { contact?: SiteContactSettings }) {
+  const cleanWa = (contact.whatsapp || '917303468073').replace(/\D/g, '');
   return (
     <footer className="site-f">
       <div className="in">
@@ -112,18 +114,18 @@ export default function Footer() {
           <div>
             <h4>Say hello</h4>
             <ul>
-              <li>hello@aegiskoncept.com</li>
-              <li>+91 73034 68073</li>
+              <li>{contact.email}</li>
+              <li>{contact.phone}</li>
               <li>
                 <a
-                  href="https://wa.me/917303468073"
+                  href={`https://wa.me/${cleanWa}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   WhatsApp us
                 </a>
               </li>
-              <li>Dwarka, New Delhi 110075</li>
+              <li>{contact.address}</li>
             </ul>
           </div>
         </div>

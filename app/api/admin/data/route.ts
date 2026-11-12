@@ -40,8 +40,26 @@ export async function GET(req: NextRequest) {
     caseStudies = await db.caseStudy.findMany({ orderBy: { order: 'asc' } }).catch(() => []);
     leads = await db.lead.findMany({ orderBy: { createdAt: 'desc' } }).catch(() => []);
 
+    // Default contact & integration settings
+    const defaultSettings: Record<string, any> = {
+      contact_phone: '+91 73034 68073',
+      contact_whatsapp: '917303468073',
+      contact_email: 'hello@aegiskoncept.com',
+      contact_email_secondary: 'contact@aegiskoncept.com',
+      contact_address: 'Sector 7, Ramphal Chowk, Dwarka, New Delhi 110075',
+      contact_hours: 'Mon – Sat: 10:00 AM – 7:00 PM',
+      contact_maps_url: 'https://maps.google.com/?q=Ramphal+Chowk+Sector+7+Dwarka+Delhi',
+      ga4_id: process.env.NEXT_PUBLIC_GA_ID || '',
+      gtm_id: process.env.NEXT_PUBLIC_GTM_ID || '',
+      meta_pixel_id: process.env.NEXT_PUBLIC_META_PIXEL_ID || '',
+      meta_capi_token: process.env.META_CAPI_ACCESS_TOKEN || '',
+      clarity_id: process.env.NEXT_PUBLIC_CLARITY_ID || '',
+      gsc_verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION || '',
+      indexnow_key: process.env.INDEXNOW_KEY || '',
+    };
+
     // Format settings into a key-value dictionary
-    const settingsMap: Record<string, any> = {};
+    const settingsMap: Record<string, any> = { ...defaultSettings };
     settings.forEach((s) => {
       try {
         settingsMap[s.key] = JSON.parse(s.value);

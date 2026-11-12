@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import ContactForm from '@/components/site/ContactForm';
 import { Vis } from '@/components/site/Mockups';
+import { getSiteContactSettings } from '@/lib/siteSettings';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Contact Us | AegisKoncept - Digital Marketing Agency Dwarka, Delhi',
@@ -25,7 +28,10 @@ const nextSteps = [
   },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const contact = await getSiteContactSettings();
+  const cleanWa = contact.whatsapp.replace(/\D/g, '') || '917303468073';
+
   return (
     <>
       {/* Hero & Form Section */}
@@ -52,7 +58,7 @@ export default function ContactPage() {
                   >
                     <span className="xs mu">Email</span>
                     <span className="h4 sf" style={{ userSelect: 'all' }}>
-                      hello@aegiskoncept.com
+                      {contact.email}
                     </span>
                   </div>
 
@@ -62,11 +68,11 @@ export default function ContactPage() {
                   >
                     <span className="xs mu">Call or WhatsApp</span>
                     <span className="h4 sf" style={{ userSelect: 'all' }}>
-                      +91 73034 68073
+                      {contact.phone}
                     </span>
                     <a
                       className="tl arr sm"
-                      href="https://wa.me/917303468073?text=Hi%20AegisKoncept%2C%20I%20want%20to%20talk%20about%20my%20business"
+                      href={`https://wa.me/${cleanWa}?text=Hi%20AegisKoncept%2C%20I%20want%20to%20talk%20about%20my%20business`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -79,8 +85,19 @@ export default function ContactPage() {
                     style={{ gap: 2, borderTop: '1px solid var(--line-d)', paddingTop: 14 }}
                   >
                     <span className="xs mu">Office</span>
-                    <span>[Street address], Dwarka, New Delhi 110075</span>
-                    <span className="mu sm">Mon–Sat, [hours] · Please book before visiting</span>
+                    <span>{contact.address}</span>
+                    <span className="mu sm">{contact.hours} · Please book before visiting</span>
+                    {contact.mapsUrl && (
+                      <a
+                        className="tl arr sm"
+                        href={contact.mapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ marginTop: 4 }}
+                      >
+                        View on Google Maps ↗
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
