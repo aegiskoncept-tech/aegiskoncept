@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="ak-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E1D19"/>
+      <stop offset="100%" stop-color="#0E0D0C"/>
+    </linearGradient>
+  </defs>
+  <!-- Dark squircle container for crisp visibility across light and dark browser tabs -->
+  <rect width="128" height="128" rx="28" fill="url(#ak-bg)"/>
+  <rect width="126" height="126" x="1" y="1" rx="27" fill="none" stroke="#2E2C28" stroke-width="1.5"/>
+
+  <!-- AegisKoncept Signature Brand Arch in Lime -->
+  <g transform="translate(64, 65) scale(0.72) translate(-50, -55)">
+    <path
+      d="M8 110 V54 C8 28 28 10 50 0 C72 10 92 28 92 54 V110 H70 V56 C70 42 62 31 50 24 C38 31 30 42 30 56 V110 Z"
+      fill="#D4E956"
+    />
+  </g>
+</svg>
+
