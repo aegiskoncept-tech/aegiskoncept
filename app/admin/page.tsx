@@ -1,10 +1,64 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { analysePost, SeoAnalysisResult } from '@/lib/seoAnalyzer';
+
+function scls(s: number | null | undefined) {
+  if (s == null) return 'sc-none';
+  if (s >= 75) return 'sc-good';
+  if (s >= 50) return 'sc-ok';
+  return 'sc-bad';
+}
+
+function MeterBar({ val, lo, hi }: { val: number; lo: number; hi: number }) {
+  const p = Math.min(100, (val / hi) * 100);
+  const c = val === 0 ? 'var(--line)' : val >= lo && val <= hi ? 'var(--ok)' : val > hi ? 'var(--bad)' : 'var(--warn)';
+  return (
+    <div className="meter">
+      <i style={{ width: `${p}%`, background: c }} />
+    </div>
+  );
+}
+
+function CharCount({ val, lo, hi }: { val: string; lo: number; hi: number }) {
+  const n = (val || '').length;
+  return (
+    <span className={n >= lo && n <= hi ? 'cnt-ok' : 'cnt-bad'}>
+      {n} / {hi}
+    </span>
+  );
+}
+
+function SerpPreview({ title, desc, slug, mobile }: { title?: string; desc?: string; slug?: string; mobile: boolean }) {
+  const displayTitle = (title || '').length > 60 ? title?.slice(0, 58) + '…' : title || 'Your Google title';
+  const displayDesc = (desc || '').length > 158 ? desc?.slice(0, 155) + '…' : desc || 'Your Google description shows here. Write one or two plain sentences.';
+  const pathParts = (slug || '').replace(/^\//, '').split('/').filter(Boolean);
+  return (
+    <div className={`gprev ${mobile ? 'mob' : ''}`} style={{ marginTop: 8 }}>
+      <div className="u">
+        <i></i>
+        <span>
+          AegisKoncept
+          <small>
+            aegiskoncept.com {pathParts.length ? '› ' + pathParts.join(' › ') : '› insights'}
+          </small>
+        </span>
+      </div>
+      <div className="ti">{displayTitle}</div>
+      <div className="de">{displayDesc}</div>
+    </div>
+  );
+}
+
+const SERVICE_OPTIONS = [
+  { id: 'search-engine-optimization', name: 'SEO & Search Rankings', url: '/services/search-engine-optimization' },
+  { id: 'website-design-development', name: 'Website Design & Development', url: '/services/website-design-development' },
+  { id: 'performance-marketing', name: 'Performance Marketing (Meta & Google Ads)', url: '/services/performance-marketing' },
+  { id: 'social-media-marketing', name: 'Social Media Marketing & Management', url: '/services/social-media-marketing' },
+];
 
 export default function AdminDashboardPage() {
   const { data: session, status } = useSession();
@@ -18,8 +72,29 @@ export default function AdminDashboardPage() {
 
   // Post Editor State
   const [editingPost, setEditingPost] = useState<any>(null);
-  const [seoTab, setSeoTab] = useState<'basics' | 'analysis' | 'social' | 'publish'>('basics');
+  const [postEditorSeoTab, setPostEditorSeoTab] = useState<'seo' | 'check' | 'social' | 'adv'>('seo');
+  const [postEditorGmob, setPostEditorGmob] = useState(false);
+  const [codeMode, setCodeMode] = useState(false);
+  const [tagInput, setTagInput] = useState('');
+  const [currentBlockStyle, setCurrentBlockStyle] = useState('p');
   const [seoAnalysis, setSeoAnalysis] = useState<SeoAnalysisResult>({ score: 0, list: [] });
+
+  // Post Editor Modals & Tools
+  const [linkModalOpen, setLinkModalOpen] = useState(false);
+  const [linkUrl, setLinkUrl] = useState('');
+  const [linkSel, setLinkSel] = useState('');
+  const [linkNewTab, setLinkNewTab] = useState(false);
+  const [imgModalOpen, setImgModalOpen] = useState(false);
+  const [imagePickerForFeatured, setImagePickerForFeatured] = useState(false);
+  const [imgSrc, setImgSrc] = useState('');
+  const [imgAlt, setImgAlt] = useState('');
+  const [svcModalOpen, setSvcModalOpen] = useState(false);
+  const [svcSel, setSvcSel] = useState(SERVICE_OPTIONS[0].id);
+  const [previewModalOpen, setPreviewModalOpen] = useState(false);
+  const [newCatName, setNewCatName] = useState('');
+
+  const rteRef = useRef<HTMLDivElement | null>(null);
+  const savedRangeRef = useRef<Range | null>(null);
 
   // Filters & search
   const [postSearch, setPostSearch] = useState('');
@@ -105,6 +180,63 @@ export default function AdminDashboardPage() {
     }
   }, [status]);
 
+  // Open Post helper
+  const openPostForEdit = (p: any) => {
+    let parsedTags: string[] = [];
+    if (Array.isArray(p.tags)) {
+      parsedTags = p.tags;
+    } else if (typeof p.tags === 'string' && p.tags) {
+      try {
+        parsedTags = JSON.parse(p.tags);
+        if (!Array.isArray(parsedTags)) parsedTags = [p.tags];
+      } catch {
+        parsedTags = p.tags.split(',').map((t: string) => t.trim()).filter(Boolean);
+      }
+    }
+    setEditingPost({
+      ...p,
+      tags: parsedTags,
+      author: p.authorName || p.author || 'Ritesh Kumar',
+      date: p.publishAt ? new Date(p.publishAt).toISOString().split('T')[0] : (p.date || new Date().toISOString().split('T')[0]),
+      status: p.status ? p.status.charAt(0).toUpperCase() + p.status.slice(1).toLowerCase() : 'Draft',
+      image: p.featuredMediaId || p.image || '',
+      seoDesc: p.seoDesc || p.seoDescription || '',
+      canonical: p.canonical || '',
+      robots: p.robots || 'index',
+      schemaType: p.schemaType || 'BlogPosting',
+      ogTitle: p.ogTitle || '',
+      ogDesc: p.ogDesc || p.ogDescription || '',
+    });
+    setActiveView('post');
+    window.location.hash = 'post';
+  };
+
+  const initNewPost = () => {
+    setEditingPost({
+      id: '',
+      title: '',
+      slug: '',
+      excerpt: '',
+      bodyHtml: '<p></p>',
+      focusKeyword: '',
+      seoTitle: '',
+      seoDesc: '',
+      status: 'Draft',
+      categoryId: data?.categories?.[0]?.id || '',
+      tags: [],
+      author: 'Ritesh Kumar',
+      date: new Date().toISOString().split('T')[0],
+      canonical: '',
+      robots: 'index',
+      schemaType: 'BlogPosting',
+      image: '',
+      ogTitle: '',
+      ogDesc: '',
+    });
+    setActiveView('post');
+    window.location.hash = 'post';
+  };
+
   // URL hash sync
   useEffect(() => {
     const handleHash = () => {
@@ -112,14 +244,17 @@ export default function AdminDashboardPage() {
       if (h) {
         if (h === 'post-new') {
           initNewPost();
-        } else if (h.startsWith('post-edit-')) {
-          const id = h.replace('post-edit-', '');
-          if (data?.posts) {
+        } else if (h === 'post' || h.startsWith('post-edit-')) {
+          const id = h.startsWith('post-edit-') ? h.replace('post-edit-', '') : null;
+          if (id && data?.posts) {
             const found = data.posts.find((p: any) => p.id === id);
             if (found) {
-              setEditingPost({ ...found });
-              setActiveView('post');
+              openPostForEdit(found);
             }
+          } else if (!editingPost && data?.posts?.length) {
+            openPostForEdit(data.posts[0]);
+          } else {
+            setActiveView('post');
           }
         } else {
           setActiveView(h);
@@ -152,30 +287,226 @@ export default function AdminDashboardPage() {
       });
       setSeoAnalysis(res);
     }
-  }, [editingPost]);
+  }, [
+    editingPost?.title,
+    editingPost?.slug,
+    editingPost?.focusKeyword,
+    editingPost?.seoTitle,
+    editingPost?.seoDesc,
+    editingPost?.bodyHtml,
+    editingPost?.image,
+  ]);
 
-  const initNewPost = () => {
-    setEditingPost({
-      id: '',
-      title: '',
-      slug: '',
-      excerpt: '',
-      bodyHtml: '<p>Start writing your article here...</p>',
-      focusKeyword: '',
-      seoTitle: '',
-      seoDesc: '',
-      status: 'DRAFT',
-      categoryId: data?.categories?.[0]?.id || '',
-    });
-    setActiveView('post');
+  // Sync RTE DOM on post switch or codeMode toggle
+  useEffect(() => {
+    if (activeView === 'post' && rteRef.current && editingPost) {
+      if (!codeMode && rteRef.current.innerHTML !== (editingPost.bodyHtml || '')) {
+        rteRef.current.innerHTML = editingPost.bodyHtml || '<p></p>';
+      }
+    }
+  }, [activeView, editingPost?.id, codeMode]);
+
+  // RTE Selection & Command Helpers
+  const saveSelection = () => {
+    if (typeof window === 'undefined') return;
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && rteRef.current?.contains(sel.anchorNode)) {
+      savedRangeRef.current = sel.getRangeAt(0);
+    }
   };
+
+  const restoreSelection = () => {
+    if (typeof window === 'undefined') return;
+    const sel = window.getSelection();
+    if (sel && savedRangeRef.current) {
+      sel.removeAllRanges();
+      sel.addRange(savedRangeRef.current);
+    }
+  };
+
+  const insertHtml = (html: string) => {
+    if (!rteRef.current) return;
+    rteRef.current.focus();
+    restoreSelection();
+    if (document.queryCommandSupported('insertHTML')) {
+      document.execCommand('insertHTML', false, html);
+    }
+    const updatedHtml = rteRef.current.innerHTML;
+    setEditingPost((prev: any) => ({ ...prev, bodyHtml: updatedHtml }));
+    setDirty(true);
+  };
+
+  const handleBlockChange = (tag: string) => {
+    setCurrentBlockStyle(tag);
+    if (!rteRef.current) return;
+    rteRef.current.focus();
+    restoreSelection();
+    try {
+      document.execCommand('formatBlock', false, tag);
+    } catch {
+      document.execCommand('formatBlock', false, `<${tag}>`);
+    }
+    const html = rteRef.current.innerHTML;
+    setEditingPost((prev: any) => ({ ...prev, bodyHtml: html }));
+    setDirty(true);
+  };
+
+  const handleFormatCmd = (cmd: string) => {
+    if (!rteRef.current) return;
+    rteRef.current.focus();
+    document.execCommand(cmd, false, undefined);
+    const html = rteRef.current.innerHTML;
+    setEditingPost((prev: any) => ({ ...prev, bodyHtml: html }));
+    setDirty(true);
+  };
+
+  const handleRteInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const html = e.currentTarget.innerHTML;
+    setEditingPost((prev: any) => ({ ...prev, bodyHtml: html }));
+    setDirty(true);
+  };
+
+  const handleRteKeyUp = () => {
+    if (typeof document === 'undefined') return;
+    const b = (document.queryCommandValue('formatBlock') || 'p').toLowerCase();
+    setCurrentBlockStyle(['h2', 'h3', 'blockquote'].includes(b) ? b : 'p');
+  };
+
+  const handleInsertTable = () => {
+    insertHtml('<table><thead><tr><th>Column</th><th>Column</th><th>Column</th></tr></thead><tbody><tr><td>…</td><td>…</td><td>…</td></tr><tr><td>…</td><td>…</td><td>…</td></tr></tbody></table><p></p>');
+  };
+
+  const handleInsertFaq = () => {
+    insertHtml('<h2>Quick questions</h2><h3>Question people ask?</h3><p>Short, direct answer in one or two sentences.</p><h3>Another common question?</h3><p>Short, direct answer.</p>');
+  };
+
+  const handleInsertCta = () => {
+    insertHtml('<blockquote><b>Want this done for you?</b> Get a free quote from AegisKoncept. We reply within 1 working day. <a href="/contact">Get a Free Quote</a></blockquote><p></p>');
+  };
+
+  const jumpToHeading = (text: string) => {
+    if (!rteRef.current) return;
+    const headings = Array.from(rteRef.current.querySelectorAll('h2, h3'));
+    const found = headings.find((h) => h.textContent?.trim() === text.trim());
+    if (found) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  const handleApplyLink = () => {
+    const url = linkUrl.trim() || linkSel;
+    if (!url) {
+      showToast('Choose a page or paste a web address');
+      return;
+    }
+    setLinkModalOpen(false);
+    restoreSelection();
+    const sel = typeof window !== 'undefined' ? window.getSelection()?.toString() : '';
+    if (sel) {
+      document.execCommand('createLink', false, url);
+    } else {
+      const label = linkSel ? (linkSel.split('/').pop() || url) : url;
+      insertHtml(`<a href="${url}" ${linkNewTab ? 'target="_blank" rel="noopener"' : ''}>${label}</a>`);
+    }
+    if (rteRef.current && linkNewTab) {
+      rteRef.current.querySelectorAll(`a[href="${url}"]`).forEach((x) => {
+        x.setAttribute('target', '_blank');
+        x.setAttribute('rel', 'noopener');
+      });
+    }
+    if (rteRef.current) {
+      setEditingPost((prev: any) => ({ ...prev, bodyHtml: rteRef.current?.innerHTML }));
+      setDirty(true);
+    }
+    setLinkUrl('');
+    setLinkSel('');
+    setLinkNewTab(false);
+  };
+
+  const handleApplyImage = () => {
+    const src = imgSrc.trim();
+    if (!src) {
+      showToast('Choose or enter an image URL');
+      return;
+    }
+    setImgModalOpen(false);
+    if (imagePickerForFeatured) {
+      setEditingPost((prev: any) => ({ ...prev, image: src }));
+      setDirty(true);
+    } else {
+      insertHtml(`<img src="${src}" alt="${imgAlt.replace(/"/g, '&quot;')}" /><p></p>`);
+    }
+    setImgSrc('');
+    setImgAlt('');
+    setImagePickerForFeatured(false);
+  };
+
+  const handleApplySvcBox = () => {
+    setSvcModalOpen(false);
+    const chosen = SERVICE_OPTIONS.find((s) => s.id === svcSel) || SERVICE_OPTIONS[0];
+    insertHtml(`<div class="svcbox" contenteditable="false"><b>Service box</b> · ${chosen.name} → <span>${chosen.url}</span></div><p></p>`);
+  };
+
+  // Word count & Reading time
+  const wordsCount = useMemo(() => {
+    return (editingPost?.bodyHtml || '')
+      .replace(/<[^>]+>/g, ' ')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean).length;
+  }, [editingPost?.bodyHtml]);
+
+  const readTimeMinutes = useMemo(() => {
+    return Math.max(1, Math.round(wordsCount / 220));
+  }, [wordsCount]);
+
+  // Outline headings
+  const headingsList = useMemo(() => {
+    const html = editingPost?.bodyHtml || '';
+    const list: Array<{ tag: 'h2' | 'h3'; text: string }> = [];
+    const re = /<(h[23])[^>]*>(.*?)<\/\1>/gi;
+    let match;
+    while ((match = re.exec(html)) !== null) {
+      const text = match[2].replace(/<[^>]+>/g, '').trim();
+      if (text) {
+        list.push({ tag: match[1].toLowerCase() as 'h2' | 'h3', text });
+      }
+    }
+    return list;
+  }, [editingPost?.bodyHtml]);
+
+  // Tags in use for categories & tags view
+  const tagsInUse = useMemo(() => {
+    const map: Record<string, number> = {};
+    (data?.posts || []).forEach((p: any) => {
+      let pt: string[] = [];
+      if (Array.isArray(p.tags)) pt = p.tags;
+      else if (typeof p.tags === 'string' && p.tags) {
+        try {
+          const parsed = JSON.parse(p.tags);
+          if (Array.isArray(parsed)) pt = parsed;
+        } catch {
+          pt = p.tags.split(',').map((t: string) => t.trim());
+        }
+      }
+      pt.forEach((t) => {
+        if (t) map[t] = (map[t] || 0) + 1;
+      });
+    });
+    return map;
+  }, [data?.posts]);
 
   const handleSavePost = async (targetStatus?: string) => {
     if (!editingPost?.title?.trim()) {
       showToast('Please enter an article title');
       return;
     }
-    const finalStatus = targetStatus || editingPost.status || 'DRAFT';
+    const finalStatus = targetStatus || editingPost.status || 'Draft';
+    if (finalStatus.toLowerCase() === 'published' && seoAnalysis.score < 50) {
+      if (!confirm(`The SEO score is ${seoAnalysis.score}/100. Do you want to publish anyway, or fix the red checks first?`)) {
+        return;
+      }
+    }
     try {
       const res = await fetch('/api/admin/posts', {
         method: 'POST',
@@ -183,17 +514,22 @@ export default function AdminDashboardPage() {
         body: JSON.stringify({
           ...editingPost,
           status: finalStatus,
+          tags: editingPost.tags || [],
+          authorName: editingPost.author || 'Ritesh Kumar',
+          publishAt: editingPost.date || new Date().toISOString(),
+          seoScore: seoAnalysis.score,
         }),
       });
 
       if (res.ok) {
-        showToast(finalStatus === 'PUBLISHED' ? 'Post published!' : 'Draft saved!');
+        showToast(finalStatus.toLowerCase() === 'published' ? `Published to /insights/${editingPost.slug}` : 'Draft saved!');
         setDirty(false);
         await loadData();
         setActiveView('posts');
         window.location.hash = 'posts';
       } else {
-        showToast('Failed to save post.');
+        const err = await res.json().catch(() => ({}));
+        showToast(err.error || 'Failed to save post.');
       }
     } catch {
       showToast('Error saving post.');
@@ -637,9 +973,43 @@ export default function AdminDashboardPage() {
           </button>
 
           <div className="crumbs" id="crumbs">
-            <Link href="/admin">Admin</Link>
-            <span>/</span>
-            <b>{activeView.toUpperCase()}</b>
+            {activeView === 'post' && editingPost ? (
+              <>
+                <a
+                  href="#posts"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveView('posts');
+                    window.location.hash = 'posts';
+                  }}
+                >
+                  Blog
+                </a>
+                <span>/</span>
+                <b>{editingPost.title || 'New post'}</b>
+              </>
+            ) : activeView === 'cats' ? (
+              <>
+                <a
+                  href="#posts"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActiveView('posts');
+                    window.location.hash = 'posts';
+                  }}
+                >
+                  Blog
+                </a>
+                <span>/</span>
+                <b>Categories & tags</b>
+              </>
+            ) : (
+              <>
+                <Link href="/admin">Admin</Link>
+                <span>/</span>
+                <b>{activeView.toUpperCase()}</b>
+              </>
+            )}
           </div>
 
           <span className="sp"></span>
@@ -730,8 +1100,7 @@ export default function AdminDashboardPage() {
                                   href={`#post-edit-${p.id}`}
                                   onClick={(e) => {
                                     e.preventDefault();
-                                    setEditingPost({ ...p });
-                                    setActiveView('post');
+                                    openPostForEdit(p);
                                   }}
                                   style={{ fontWeight: 600, color: 'var(--ink)' }}
                                 >
@@ -778,10 +1147,7 @@ export default function AdminDashboardPage() {
                               <div style={{ display: 'flex', gap: 6 }}>
                                 <button
                                   className="btn sm"
-                                  onClick={() => {
-                                    setEditingPost({ ...p });
-                                    setActiveView('post');
-                                  }}
+                                  onClick={() => openPostForEdit(p)}
                                 >
                                   Edit
                                 </button>
@@ -813,325 +1179,949 @@ export default function AdminDashboardPage() {
 
           {/* VIEW: POST EDITOR */}
           {activeView === 'post' && editingPost && (
-            <div>
-              <div className="vh">
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <button
-                      className="btn sm ghost"
-                      onClick={() => setActiveView('posts')}
+            <div className="ed">
+              {/* Stack on the left: Title, Slug, Paper (Toolbar + RTE + Foot), Excerpt */}
+              <div className="stack" style={{ display: 'flex', flexDirection: 'column', gap: 14, minWidth: 0 }}>
+                {/* Title Input */}
+                <input
+                  className="titlein"
+                  id="pTitle"
+                  placeholder="Add a title"
+                  value={editingPost.title || ''}
+                  aria-label="Post title"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    const auto = !editingPost.slug || editingPost.slug === (editingPost._lastTitle || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                    const newSlug = auto
+                      ? val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+                      : editingPost.slug;
+                    setEditingPost((prev: any) => ({
+                      ...prev,
+                      title: val,
+                      slug: newSlug,
+                      _lastTitle: val,
+                    }));
+                    setDirty(true);
+                  }}
+                />
+
+                {/* Slug Bar */}
+                <div className="slugin">
+                  <span>aegiskoncept.com/insights/</span>
+                  <input
+                    id="pSlug"
+                    value={editingPost.slug || ''}
+                    aria-label="Web address"
+                    onChange={(e) => {
+                      const s = e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-');
+                      setEditingPost((prev: any) => ({ ...prev, slug: s }));
+                      setDirty(true);
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="btn sm ghost"
+                    id="pSlugAuto"
+                    style={{ height: 34, border: 0, borderLeft: '1px solid var(--line)' }}
+                    onClick={() => {
+                      const s = (editingPost.title || '')
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/(^-|-$)/g, '');
+                      setEditingPost((prev: any) => ({ ...prev, slug: s }));
+                      setDirty(true);
+                    }}
+                  >
+                    From title
+                  </button>
+                </div>
+
+                {/* Paper Canvas */}
+                <div className="paper">
+                  {/* Sticky Toolbar (.etb) */}
+                  <div className="etb" role="toolbar" aria-label="Formatting">
+                    <select
+                      id="blk"
+                      aria-label="Text style"
+                      value={currentBlockStyle}
+                      onChange={(e) => handleBlockChange(e.target.value)}
                     >
-                      ← Back to posts
+                      <option value="p">Paragraph</option>
+                      <option value="h2">Heading 2</option>
+                      <option value="h3">Heading 3</option>
+                      <option value="blockquote">Quote</option>
+                    </select>
+                    <span className="sep"></span>
+
+                    <button
+                      type="button"
+                      title="Bold"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleFormatCmd('bold')}
+                    >
+                      <b>B</b>
                     </button>
-                    <h1>{editingPost.id ? 'Edit post' : 'Create new post'}</h1>
+                    <button
+                      type="button"
+                      title="Italic"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleFormatCmd('italic')}
+                    >
+                      <i>I</i>
+                    </button>
+                    <button
+                      type="button"
+                      title="Underline"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleFormatCmd('underline')}
+                    >
+                      <u>U</u>
+                    </button>
+                    <span className="sep"></span>
+
+                    <button
+                      type="button"
+                      title="Bullet list"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleFormatCmd('insertUnorderedList')}
+                    >
+                      • List
+                    </button>
+                    <button
+                      type="button"
+                      title="Numbered list"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleFormatCmd('insertOrderedList')}
+                    >
+                      1. List
+                    </button>
+                    <span className="sep"></span>
+
+                    <button
+                      type="button"
+                      title="Add link"
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        saveSelection();
+                      }}
+                      onClick={() => setLinkModalOpen(true)}
+                    >
+                      Link
+                    </button>
+                    <button
+                      type="button"
+                      title="Insert image"
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        saveSelection();
+                      }}
+                      onClick={() => {
+                        setImagePickerForFeatured(false);
+                        setImgModalOpen(true);
+                      }}
+                    >
+                      Image
+                    </button>
+                    <button
+                      type="button"
+                      title="Insert table"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={handleInsertTable}
+                    >
+                      Table
+                    </button>
+                    <button
+                      type="button"
+                      title="Insert service box"
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        saveSelection();
+                      }}
+                      onClick={() => setSvcModalOpen(true)}
+                    >
+                      Service box
+                    </button>
+                    <button
+                      type="button"
+                      title="Insert FAQ"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={handleInsertFaq}
+                    >
+                      FAQ
+                    </button>
+                    <button
+                      type="button"
+                      title="Insert call to action"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={handleInsertCta}
+                    >
+                      CTA
+                    </button>
+                    <span className="sep"></span>
+
+                    <button
+                      type="button"
+                      title="Undo"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleFormatCmd('undo')}
+                    >
+                      ↶
+                    </button>
+                    <button
+                      type="button"
+                      title="Redo"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleFormatCmd('redo')}
+                    >
+                      ↷
+                    </button>
+                    <button
+                      type="button"
+                      title="Clear formatting"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleFormatCmd('removeFormat')}
+                    >
+                      Clear
+                    </button>
+                    <span className="sep"></span>
+
+                    <button
+                      type="button"
+                      title="Toggle between Visual Rich Text and HTML Code"
+                      className="btn sm ghost"
+                      style={{ height: 32, padding: '0 8px', fontSize: 11, fontWeight: 600 }}
+                      onClick={() => setCodeMode(!codeMode)}
+                    >
+                      {codeMode ? 'Visual' : '</> HTML'}
+                    </button>
+                  </div>
+
+                  {/* Body surface */}
+                  {codeMode ? (
+                    <textarea
+                      className="code"
+                      style={{ minHeight: 480, width: '100%', border: 0, padding: 20 }}
+                      value={editingPost.bodyHtml || ''}
+                      onChange={(e) => {
+                        setEditingPost((prev: any) => ({ ...prev, bodyHtml: e.target.value }));
+                        setDirty(true);
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="rte"
+                      id="rte"
+                      ref={rteRef}
+                      contentEditable
+                      spellCheck
+                      aria-label="Article body"
+                      onInput={handleRteInput}
+                      onKeyUp={handleRteKeyUp}
+                      onMouseUp={handleRteKeyUp}
+                    />
+                  )}
+
+                  {/* Word count & Reading time footer */}
+                  <div className="edfoot">
+                    <span id="wc">{wordsCount} words</span>
+                    <span id="rt">{readTimeMinutes} min read</span>
                   </div>
                 </div>
-                <div className="acts">
-                  <button
-                    className="btn"
-                    onClick={() => handleSavePost('DRAFT')}
-                  >
-                    Save draft
-                  </button>
-                  <button
-                    className="btn lime"
-                    onClick={() => handleSavePost('PUBLISHED')}
-                  >
-                    {editingPost.status === 'PUBLISHED' ? 'Update post' : 'Publish post'}
-                  </button>
-                </div>
+
+                {/* Excerpt */}
+                <label className="f">
+                  Excerpt{' '}
+                  <span className="hint">
+                    <span>Shown on blog cards and when people share the link</span>
+                  </span>
+                  <textarea
+                    id="pEx"
+                    rows={2}
+                    value={editingPost.excerpt || ''}
+                    onChange={(e) => {
+                      setEditingPost((prev: any) => ({ ...prev, excerpt: e.target.value }));
+                      setDirty(true);
+                    }}
+                  />
+                </label>
               </div>
 
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'minmax(0, 1.8fr) minmax(320px, 1.2fr)',
-                  gap: 24,
-                }}
-              >
-                {/* Left: Article Writing Area */}
-                <div className="panel" style={{ padding: 24 }}>
-                  <div className="stack" style={{ gap: 18 }}>
-                    <div>
-                      <label style={{ display: 'block', fontWeight: 600, fontSize: 13, marginBottom: 6 }}>
-                        Article Title *
-                      </label>
-                      <input
-                        className="inp"
-                        style={{ fontSize: 18, fontWeight: 600, width: '100%' }}
-                        value={editingPost.title}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setEditingPost((prev: any) => ({
-                            ...prev,
-                            title: val,
-                            slug: prev.id ? prev.slug : val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-                          }));
-                          setDirty(true);
-                        }}
-                        placeholder="e.g. How Much Does SEO Cost in India?"
-                      />
-                    </div>
-
-                    <div>
-                      <label style={{ display: 'block', fontWeight: 600, fontSize: 13, marginBottom: 6 }}>
-                        Web Address (Slug) *
-                      </label>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span style={{ color: 'var(--mute)', fontSize: 13 }}>/insights/</span>
-                        <input
-                          className="inp"
-                          style={{ flex: 1 }}
-                          value={editingPost.slug}
-                          onChange={(e) => {
-                            setEditingPost((prev: any) => ({ ...prev, slug: e.target.value }));
-                            setDirty(true);
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label style={{ display: 'block', fontWeight: 600, fontSize: 13, marginBottom: 6 }}>
-                        Excerpt / Summary
-                      </label>
-                      <textarea
-                        className="inp"
-                        rows={2}
-                        value={editingPost.excerpt}
-                        onChange={(e) => {
-                          setEditingPost((prev: any) => ({ ...prev, excerpt: e.target.value }));
-                          setDirty(true);
-                        }}
-                        placeholder="Short summary for the blog card and search snippet"
-                      />
-                    </div>
-
-                    <div>
-                      <label style={{ display: 'block', fontWeight: 600, fontSize: 13, marginBottom: 6 }}>
-                        Article HTML Content
-                      </label>
-                      <textarea
-                        className="inp"
-                        rows={16}
-                        style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 1.6 }}
-                        value={editingPost.bodyHtml}
-                        onChange={(e) => {
-                          setEditingPost((prev: any) => ({ ...prev, bodyHtml: e.target.value }));
-                          setDirty(true);
-                        }}
-                      />
-                    </div>
+              {/* Sidebar (.ed-side) */}
+              <aside className="ed-side">
+                {/* 1. Publish Panel */}
+                <section className="panel">
+                  <div className="ph">
+                    <h3>Publish</h3>
+                    <span className={`st st-${editingPost.status || 'Draft'}`} id="pStBadge">
+                      {editingPost.status || 'Draft'}
+                    </span>
                   </div>
-                </div>
-
-                {/* Right: SEO Inspector Tabs */}
-                <div className="panel" style={{ padding: 20 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <span
-                        style={{
-                          fontSize: 24,
-                          fontWeight: 700,
-                          color: seoAnalysis.score >= 75 ? 'var(--ok)' : seoAnalysis.score >= 50 ? 'var(--warn)' : 'var(--bad)',
-                        }}
-                      >
-                        {seoAnalysis.score}
-                      </span>
-                      <div>
-                        <b style={{ fontSize: 13 }}>SEO Score</b>
-                        <small style={{ display: 'block', color: 'var(--mute)' }}>Out of 100 points</small>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* SEO Tabs Navigation */}
-                  <div className="tabs" style={{ marginBottom: 16 }}>
-                    {(['basics', 'analysis', 'social', 'publish'] as const).map((t) => (
-                      <button
-                        key={t}
-                        role="tab"
-                        aria-selected={seoTab === t}
-                        onClick={() => setSeoTab(t)}
-                        style={{ fontSize: 12, padding: '6px 10px', textTransform: 'capitalize' }}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Tab 1: Basics */}
-                  {seoTab === 'basics' && (
-                    <div className="stack" style={{ gap: 14 }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 600, fontSize: 12, marginBottom: 4 }}>
-                          Focus Keyword
-                        </label>
-                        <input
-                          className="inp"
-                          value={editingPost.focusKeyword || ''}
-                          onChange={(e) => {
-                            setEditingPost((prev: any) => ({ ...prev, focusKeyword: e.target.value }));
-                            setDirty(true);
-                          }}
-                          placeholder="e.g. seo cost in india"
-                        />
-                      </div>
-
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <label style={{ fontWeight: 600, fontSize: 12 }}>Google Title</label>
-                          <span style={{ fontSize: 11, color: 'var(--mute)' }}>
-                            {(editingPost.seoTitle || editingPost.title || '').length}/60
-                          </span>
-                        </div>
-                        <input
-                          className="inp"
-                          value={editingPost.seoTitle || ''}
-                          onChange={(e) => {
-                            setEditingPost((prev: any) => ({ ...prev, seoTitle: e.target.value }));
-                            setDirty(true);
-                          }}
-                          placeholder={editingPost.title || 'Google Title'}
-                        />
-                      </div>
-
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <label style={{ fontWeight: 600, fontSize: 12 }}>Google Description</label>
-                          <span style={{ fontSize: 11, color: 'var(--mute)' }}>
-                            {(editingPost.seoDesc || '').length}/155
-                          </span>
-                        </div>
-                        <textarea
-                          className="inp"
-                          rows={3}
-                          value={editingPost.seoDesc || ''}
-                          onChange={(e) => {
-                            setEditingPost((prev: any) => ({ ...prev, seoDesc: e.target.value }));
-                            setDirty(true);
-                          }}
-                          placeholder="Meta description shown in Google search results"
-                        />
-                      </div>
-
-                      {/* SERP Preview Box */}
-                      <div
-                        style={{
-                          background: '#fff',
-                          border: '1px solid var(--line)',
-                          padding: 12,
-                          borderRadius: 8,
-                          fontSize: 12,
-                        }}
-                      >
-                        <span style={{ color: '#202124', fontSize: 11 }}>https://aegiskoncept.com/insights/{editingPost.slug}</span>
-                        <div style={{ color: '#1a0dab', fontSize: 15, fontWeight: 500, margin: '2px 0' }}>
-                          {editingPost.seoTitle || editingPost.title || 'Post Title'}
-                        </div>
-                        <div style={{ color: '#4d5156', fontSize: 12, lineHeight: 1.4 }}>
-                          {editingPost.seoDesc || editingPost.excerpt || 'Add a description to see how it appears on Google.'}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tab 2: 13-Point Analysis List */}
-                  {seoTab === 'analysis' && (
-                    <div className="stack" style={{ gap: 8, maxHeight: 420, overflowY: 'auto' }}>
-                      {seoAnalysis.list.map(([st, msg], idx) => (
-                        <div
-                          key={idx}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                            gap: 8,
-                            padding: '6px 8px',
-                            borderRadius: 6,
-                            background: st === 'good' ? '#F2F8F4' : st === 'ok' ? '#FCF7ED' : '#FDF3F2',
-                            fontSize: 12,
-                          }}
-                        >
-                          <span style={{ fontWeight: 700, color: st === 'good' ? 'var(--ok)' : st === 'ok' ? 'var(--warn)' : 'var(--bad)' }}>
-                            {st === 'good' ? '✓' : st === 'ok' ? '•' : '✕'}
-                          </span>
-                          <span style={{ color: 'var(--ink)' }}>{msg}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Tab 3: Social Preview */}
-                  {seoTab === 'social' && (
-                    <div>
-                      <p style={{ fontSize: 12, color: 'var(--mute)', marginBottom: 12 }}>
-                        Preview when shared on WhatsApp, LinkedIn and Meta
-                      </p>
-                      <div style={{ border: '1px solid var(--line)', borderRadius: 8, overflow: 'hidden', background: '#fff' }}>
-                        <div style={{ height: 120, background: '#191919', display: 'grid', placeItems: 'center', color: '#D3E45B' }}>
-                          AegisKoncept Share Image
-                        </div>
-                        <div style={{ padding: 12 }}>
-                          <small style={{ color: 'var(--mute)', textTransform: 'uppercase' }}>aegiskoncept.com</small>
-                          <b style={{ display: 'block', fontSize: 14, margin: '4px 0' }}>{editingPost.title}</b>
-                          <p style={{ fontSize: 12, color: 'var(--mute)', margin: 0 }}>
-                            {editingPost.excerpt || 'AegisKoncept article'}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tab 4: Publish & Meta Settings */}
-                  {seoTab === 'publish' && (
-                    <div className="stack" style={{ gap: 14 }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 600, fontSize: 12, marginBottom: 4 }}>
-                          Category
-                        </label>
+                  <div className="pb">
+                    <div className="row2">
+                      <label className="f">
+                        Status
                         <select
                           className="inp"
-                          value={editingPost.categoryId}
-                          onChange={(e) => {
-                            setEditingPost((prev: any) => ({ ...prev, categoryId: e.target.value }));
-                            setDirty(true);
-                          }}
-                        >
-                          {(data?.categories || []).map((c: any) => (
-                            <option key={c.id} value={c.id}>
-                              {c.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 600, fontSize: 12, marginBottom: 4 }}>
-                          Author
-                        </label>
-                        <input className="inp" value="Ritesh Kumar (Founder)" disabled />
-                      </div>
-
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 600, fontSize: 12, marginBottom: 4 }}>
-                          Current Status
-                        </label>
-                        <select
-                          className="inp"
-                          value={editingPost.status}
+                          id="pSt"
+                          value={editingPost.status || 'Draft'}
                           onChange={(e) => {
                             setEditingPost((prev: any) => ({ ...prev, status: e.target.value }));
                             setDirty(true);
                           }}
                         >
-                          <option value="DRAFT">Draft</option>
-                          <option value="PUBLISHED">Published</option>
-                          <option value="SCHEDULED">Scheduled</option>
+                          <option value="Draft">Draft</option>
+                          <option value="Published">Published</option>
+                          <option value="Scheduled">Scheduled</option>
                         </select>
-                      </div>
+                      </label>
+                      <label className="f">
+                        Date
+                        <input
+                          className="inp"
+                          id="pDate"
+                          type="date"
+                          value={editingPost.date || ''}
+                          onChange={(e) => {
+                            setEditingPost((prev: any) => ({ ...prev, date: e.target.value }));
+                            setDirty(true);
+                          }}
+                        />
+                      </label>
                     </div>
-                  )}
+                    <label className="f">
+                      Author
+                      <select
+                        className="inp"
+                        id="pAu"
+                        value={editingPost.author || 'Ritesh Kumar'}
+                        onChange={(e) => {
+                          setEditingPost((prev: any) => ({ ...prev, author: e.target.value }));
+                          setDirty(true);
+                        }}
+                      >
+                        <option value="Ritesh Kumar">Ritesh Kumar</option>
+                        <option value="Yogeesh Gahlot">Yogeesh Gahlot</option>
+                      </select>
+                    </label>
+                    <div className="acts">
+                      <button
+                        type="button"
+                        className="btn ghost sm"
+                        id="pDraft"
+                        onClick={() => handleSavePost('Draft')}
+                      >
+                        Save draft
+                      </button>
+                      <button
+                        type="button"
+                        className="btn ghost sm"
+                        onClick={() => setPreviewModalOpen(true)}
+                      >
+                        Preview
+                      </button>
+                      <button
+                        type="button"
+                        className="btn lime sm"
+                        id="pPub"
+                        style={{ marginLeft: 'auto' }}
+                        onClick={() => handleSavePost('Published')}
+                      >
+                        {editingPost.status === 'Published' ? 'Update' : 'Publish'}
+                      </button>
+                    </div>
+                  </div>
+                </section>
+
+                {/* 2. SEO Panel */}
+                <section className="panel">
+                  <div className="ph">
+                    <h3>SEO</h3>
+                    <span id="pScoreS">
+                      <span className={`score ${scls(seoAnalysis.score)}`}>{seoAnalysis.score}</span>
+                    </span>
+                  </div>
+                  <div className="tabs" style={{ padding: '0 8px' }} role="tablist">
+                    {[
+                      ['seo', 'Basics'],
+                      ['check', 'Check'],
+                      ['social', 'Social'],
+                      ['adv', 'Advanced'],
+                    ].map(([tKey, tLabel]) => (
+                      <button
+                        key={tKey}
+                        role="tab"
+                        aria-selected={postEditorSeoTab === tKey}
+                        onClick={() => setPostEditorSeoTab(tKey as any)}
+                      >
+                        {tLabel}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="pb" id="seoPane">
+                    {/* Basics */}
+                    {postEditorSeoTab === 'seo' && (
+                      <div className="stack" style={{ gap: 14 }}>
+                        <label className="f">
+                          Focus keyword
+                          <input
+                            className="inp"
+                            id="sKw"
+                            value={editingPost.focusKeyword || ''}
+                            placeholder="e.g. seo cost in india"
+                            onChange={(e) => {
+                              setEditingPost((prev: any) => ({ ...prev, focusKeyword: e.target.value }));
+                              setDirty(true);
+                            }}
+                          />
+                          <span className="hint">
+                            <span>The main search this post should rank for</span>
+                          </span>
+                        </label>
+
+                        <label className="f">
+                          Google title
+                          <input
+                            className="inp"
+                            id="sT"
+                            value={editingPost.seoTitle || ''}
+                            placeholder={editingPost.title || 'Post title'}
+                            onChange={(e) => {
+                              setEditingPost((prev: any) => ({ ...prev, seoTitle: e.target.value }));
+                              setDirty(true);
+                            }}
+                          />
+                          <MeterBar val={(editingPost.seoTitle || editingPost.title || '').length} lo={30} hi={60} />
+                          <span className="hint">
+                            <span>Leave empty to use the template</span>
+                            <CharCount val={editingPost.seoTitle || editingPost.title || ''} lo={30} hi={60} />
+                          </span>
+                        </label>
+
+                        <label className="f">
+                          Google description
+                          <textarea
+                            id="sD"
+                            rows={3}
+                            placeholder="One or two plain sentences with the keyword"
+                            value={editingPost.seoDesc || ''}
+                            onChange={(e) => {
+                              setEditingPost((prev: any) => ({ ...prev, seoDesc: e.target.value }));
+                              setDirty(true);
+                            }}
+                          />
+                          <MeterBar val={(editingPost.seoDesc || '').length} lo={120} hi={155} />
+                          <span className="hint">
+                            <span>Aim for 120–155 characters</span>
+                            <CharCount val={editingPost.seoDesc || ''} lo={120} hi={155} />
+                          </span>
+                        </label>
+
+                        <div className="f">
+                          <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            Google preview
+                            <span className="acts">
+                              <button
+                                type="button"
+                                className={`btn sm ${postEditorGmob ? 'ghost' : 'dark'}`}
+                                onClick={() => setPostEditorGmob(false)}
+                              >
+                                Desktop
+                              </button>
+                              <button
+                                type="button"
+                                className={`btn sm ${postEditorGmob ? 'dark' : 'ghost'}`}
+                                onClick={() => setPostEditorGmob(true)}
+                              >
+                                Mobile
+                              </button>
+                            </span>
+                          </span>
+                          <SerpPreview
+                            title={editingPost.seoTitle || editingPost.title}
+                            desc={editingPost.seoDesc || editingPost.excerpt}
+                            slug={editingPost.slug}
+                            mobile={postEditorGmob}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Check */}
+                    {postEditorSeoTab === 'check' && (
+                      <div>
+                        <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 16 }}>
+                          <span
+                            className="ring big"
+                            style={{
+                              '--p': seoAnalysis.score,
+                              '--c': seoAnalysis.score >= 75 ? 'var(--ok)' : seoAnalysis.score >= 50 ? 'var(--warn)' : 'var(--bad)',
+                            } as any}
+                          >
+                            <b>{seoAnalysis.score}</b>
+                          </span>
+                          <div>
+                            <b>
+                              {seoAnalysis.score >= 75
+                                ? 'Good to publish'
+                                : seoAnalysis.score >= 50
+                                ? 'Nearly there'
+                                : 'Needs work'}
+                            </b>
+                            <div className="s" style={{ color: 'var(--mute)', fontSize: 13, marginTop: 2 }}>
+                              {seoAnalysis.list.filter(([st]) => st === 'good').length} of {seoAnalysis.list.length} checks passed
+                            </div>
+                          </div>
+                        </div>
+                        <div className="checks">
+                          {seoAnalysis.list
+                            .slice()
+                            .sort(([a], [b]) => {
+                              const order: Record<string, number> = { bad: 0, ok: 1, good: 2 };
+                              return order[a] - order[b];
+                            })
+                            .map(([st, msg], idx) => (
+                              <div key={idx} className={`ck ${st}`}>
+                                <i></i>
+                                <span>{msg}</span>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Social */}
+                    {postEditorSeoTab === 'social' && (
+                      <div className="stack" style={{ gap: 14 }}>
+                        <label className="f">
+                          Share title
+                          <input
+                            className="inp"
+                            id="sOT"
+                            value={editingPost.ogTitle || ''}
+                            placeholder={editingPost.seoTitle || editingPost.title || ''}
+                            onChange={(e) => {
+                              setEditingPost((prev: any) => ({ ...prev, ogTitle: e.target.value }));
+                              setDirty(true);
+                            }}
+                          />
+                        </label>
+
+                        <label className="f">
+                          Share description
+                          <textarea
+                            id="sOD"
+                            rows={2}
+                            value={editingPost.ogDesc || ''}
+                            placeholder={editingPost.seoDesc || editingPost.excerpt || ''}
+                            onChange={(e) => {
+                              setEditingPost((prev: any) => ({ ...prev, ogDesc: e.target.value }));
+                              setDirty(true);
+                            }}
+                          />
+                        </label>
+
+                        <div className="f">
+                          <span>Preview on WhatsApp, LinkedIn and Facebook</span>
+                          <div className="og" style={{ marginTop: 6 }}>
+                            <div
+                              className="im"
+                              style={{
+                                backgroundImage: editingPost.image ? `url(${editingPost.image})` : undefined,
+                              }}
+                            >
+                              {!editingPost.image && 'AegisKoncept'}
+                            </div>
+                            <div className="tx">
+                              <span className="s" style={{ textTransform: 'uppercase', fontSize: 11, color: 'var(--mute)' }}>
+                                AEGISKONCEPT.COM
+                              </span>
+                              <b>{editingPost.ogTitle || editingPost.seoTitle || editingPost.title || 'Post Title'}</b>
+                              <span className="s" style={{ color: 'var(--mute)' }}>
+                                {(editingPost.ogDesc || editingPost.seoDesc || editingPost.excerpt || '').slice(0, 110)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Advanced */}
+                    {postEditorSeoTab === 'adv' && (
+                      <div className="stack" style={{ gap: 14 }}>
+                        <label className="f">
+                          Canonical link
+                          <input
+                            className="inp"
+                            id="sC"
+                            value={editingPost.canonical || ''}
+                            placeholder={`https://aegiskoncept.com/insights/${editingPost.slug || ''}`}
+                            onChange={(e) => {
+                              setEditingPost((prev: any) => ({ ...prev, canonical: e.target.value }));
+                              setDirty(true);
+                            }}
+                          />
+                          <span className="hint">
+                            <span>Only change this if the article was first published elsewhere</span>
+                          </span>
+                        </label>
+
+                        <label className="check" style={{ marginTop: 6 }}>
+                          <input
+                            type="checkbox"
+                            id="sR"
+                            checked={editingPost.robots !== 'noindex'}
+                            onChange={(e) => {
+                              setEditingPost((prev: any) => ({ ...prev, robots: e.target.checked ? 'index,follow' : 'noindex' }));
+                              setDirty(true);
+                            }}
+                          />
+                          Show in Google (index)
+                        </label>
+
+                        <label className="f" style={{ marginTop: 6 }}>
+                          Schema type
+                          <select
+                            className="inp"
+                            id="sS"
+                            value={editingPost.schemaType || 'BlogPosting'}
+                            onChange={(e) => {
+                              setEditingPost((prev: any) => ({ ...prev, schemaType: e.target.value }));
+                              setDirty(true);
+                            }}
+                          >
+                            {['BlogPosting', 'Article', 'HowTo', 'FAQPage'].map((x) => (
+                              <option key={x} value={x}>
+                                {x}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+
+                        <div className="f" style={{ marginTop: 6 }}>
+                          <span>Structured data (added to the page automatically)</span>
+                          <pre className="code">
+                            {JSON.stringify(
+                              {
+                                '@context': 'https://schema.org',
+                                '@type': editingPost.schemaType || 'BlogPosting',
+                                headline: editingPost.title || '',
+                                description: editingPost.seoDesc || editingPost.excerpt || '',
+                                author: {
+                                  '@type': 'Person',
+                                  name: editingPost.author || 'Ritesh Kumar',
+                                },
+                                publisher: {
+                                  '@type': 'Organization',
+                                  name: 'AegisKoncept',
+                                },
+                                datePublished: editingPost.date || new Date().toISOString().split('T')[0],
+                                mainEntityOfPage: `https://aegiskoncept.com/insights/${editingPost.slug || ''}`,
+                              },
+                              null,
+                              2
+                            )}
+                          </pre>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* 3. Featured Image Panel */}
+                <section className="panel">
+                  <div className="ph">
+                    <h3>Featured image</h3>
+                    {editingPost.image && (
+                      <button
+                        type="button"
+                        className="btn sm ghost"
+                        id="pImgX"
+                        onClick={() => {
+                          setEditingPost((prev: any) => ({ ...prev, image: '' }));
+                          setDirty(true);
+                        }}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                  <div className="pb">
+                    {editingPost.image ? (
+                      <div>
+                        <div
+                          style={{
+                            aspectRatio: '1.91/1',
+                            background: `#EDE8DF url(${editingPost.image}) top center/cover`,
+                            border: '1px solid var(--line)',
+                          }}
+                        />
+                        <span className="s" style={{ fontSize: 12, color: 'var(--mute)', display: 'block', marginTop: 6, wordBreak: 'break-all' }}>
+                          {editingPost.image}
+                        </span>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        className="drop"
+                        id="pImg"
+                        onClick={() => {
+                          setImagePickerForFeatured(true);
+                          setImgModalOpen(true);
+                        }}
+                      >
+                        <b>Choose or upload</b>
+                        <br />
+                        1200 × 630 works best
+                      </button>
+                    )}
+                  </div>
+                </section>
+
+                {/* 4. Category & Tags Panel */}
+                <section className="panel">
+                  <div className="ph">
+                    <h3>Category & tags</h3>
+                  </div>
+                  <div className="pb">
+                    <label className="f">
+                      Category
+                      <select
+                        className="inp"
+                        id="pCat"
+                        value={editingPost.categoryId || ''}
+                        onChange={(e) => {
+                          setEditingPost((prev: any) => ({ ...prev, categoryId: e.target.value }));
+                          setDirty(true);
+                        }}
+                      >
+                        {(data?.categories || [
+                          { id: 'cat-seo', name: 'SEO' },
+                          { id: 'cat-dev', name: 'Web Development' },
+                          { id: 'cat-ads', name: 'Performance Marketing' },
+                        ]).map((c: any) => (
+                          <option key={c.id} value={c.id}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <div className="f" style={{ marginTop: 12 }}>
+                      <span>Tags</span>
+                      <div className="chips" id="pTags">
+                        {(editingPost.tags || []).map((t: string, i: number) => (
+                          <span className="chip" key={i}>
+                            {t}
+                            <button
+                              type="button"
+                              aria-label="Remove tag"
+                              onClick={() => {
+                                const next = [...(editingPost.tags || [])];
+                                next.splice(i, 1);
+                                setEditingPost((prev: any) => ({ ...prev, tags: next }));
+                                setDirty(true);
+                              }}
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                      <input
+                        className="inp"
+                        id="pTagIn"
+                        placeholder="Add a tag and press Enter"
+                        value={tagInput}
+                        onChange={(e) => setTagInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && tagInput.trim()) {
+                            e.preventDefault();
+                            const nt = tagInput.trim();
+                            const curr = editingPost.tags || [];
+                            if (!curr.includes(nt)) {
+                              setEditingPost((prev: any) => ({ ...prev, tags: [...curr, nt] }));
+                              setDirty(true);
+                            }
+                            setTagInput('');
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                {/* 5. Outline Panel */}
+                <section className="panel">
+                  <div className="ph">
+                    <h3>Outline</h3>
+                    <span className="note">From your headings</span>
+                  </div>
+                  <div className="pb toc" id="toc">
+                    {headingsList.length > 0 ? (
+                      headingsList.map((h, i) => (
+                        <a
+                          key={i}
+                          href="#jump"
+                          style={{ paddingLeft: h.tag === 'h3' ? 14 : 0 }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            jumpToHeading(h.text);
+                          }}
+                        >
+                          {h.text}
+                        </a>
+                      ))
+                    ) : (
+                      <span className="note" style={{ color: 'var(--mute)', fontSize: 13 }}>
+                        Add Heading 2 sections to build the outline.
+                      </span>
+                    )}
+                  </div>
+                </section>
+              </aside>
+            </div>
+          )}
+
+          {/* VIEW: CATEGORIES & TAGS */}
+          {activeView === 'cats' && (
+            <div>
+              <div className="vh">
+                <div>
+                  <h1>Categories & tags</h1>
+                  <p>Categories group your articles on the blog page. Tags are smaller topics inside a post.</p>
                 </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.3fr) minmax(0, 1fr)', gap: 20 }}>
+                {/* Categories Table */}
+                <section className="panel">
+                  <div className="ph">
+                    <h2>Categories</h2>
+                  </div>
+                  <div className="pb">
+                    <form
+                      className="toolbar"
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        if (!newCatName.trim()) return;
+                        try {
+                          const res = await fetch('/api/admin/categories', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name: newCatName.trim() }),
+                          });
+                          if (res.ok) {
+                            showToast('Category added!');
+                            setNewCatName('');
+                            await loadData();
+                          } else {
+                            const err = await res.json();
+                            showToast(err.error || 'Failed to add category');
+                          }
+                        } catch {
+                          showToast('Error adding category');
+                        }
+                      }}
+                    >
+                      <input
+                        className="inp"
+                        placeholder="New category name"
+                        style={{ flex: 1 }}
+                        value={newCatName}
+                        onChange={(e) => setNewCatName(e.target.value)}
+                      />
+                      <button type="submit" className="btn dark">
+                        Add category
+                      </button>
+                    </form>
+                  </div>
+                  <div className="tw">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Web address</th>
+                          <th className="num">Posts</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(data?.categories || []).map((c: any) => {
+                          const postCount = (data?.posts || []).filter((p: any) => p.categoryId === c.id).length;
+                          return (
+                            <tr key={c.id}>
+                              <td>
+                                <input
+                                  className="inl"
+                                  defaultValue={c.name}
+                                  style={{ fontWeight: 600 }}
+                                  onBlur={async (e) => {
+                                    const val = e.target.value.trim();
+                                    if (val && val !== c.name) {
+                                      await fetch('/api/admin/categories', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ id: c.id, name: val }),
+                                      });
+                                      showToast('Category renamed');
+                                      await loadData();
+                                    }
+                                  }}
+                                />
+                              </td>
+                              <td className="s" style={{ color: 'var(--mute)', fontSize: 13 }}>
+                                /insights/category/{c.slug || c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}
+                              </td>
+                              <td className="num">{postCount}</td>
+                              <td className="num">
+                                <button
+                                  className="btn sm ghost"
+                                  disabled={postCount > 0}
+                                  title={postCount > 0 ? 'Move its posts first' : 'Delete category'}
+                                  onClick={async () => {
+                                    if (confirm(`Delete category "${c.name}"?`)) {
+                                      await fetch('/api/admin/categories', {
+                                        method: 'DELETE',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ id: c.id }),
+                                      });
+                                      showToast('Category deleted');
+                                      await loadData();
+                                    }
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+
+                {/* Tags in use */}
+                <section className="panel">
+                  <div className="ph">
+                    <h2>Tags in use</h2>
+                  </div>
+                  <div className="pb">
+                    {Object.keys(tagsInUse).length > 0 ? (
+                      <div className="chips">
+                        {Object.entries(tagsInUse).map(([t, count]) => (
+                          <span className="chip" key={t}>
+                            {t} <span className="s" style={{ color: 'var(--mute)', fontSize: 11, marginLeft: 4 }}>{count}</span>
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="note" style={{ color: 'var(--mute)', fontSize: 13 }}>
+                        No tags yet. Add them from a post&apos;s sidebar.
+                      </p>
+                    )}
+                  </div>
+                </section>
               </div>
             </div>
           )}
@@ -2183,6 +3173,278 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* 1. LINK MODAL */}
+      {linkModalOpen && (
+        <>
+          <div className="scrim on" onClick={() => setLinkModalOpen(false)} />
+          <div className="modal small on">
+            <div className="ph" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3>Add a link</h3>
+              <button type="button" className="x" onClick={() => setLinkModalOpen(false)}>×</button>
+            </div>
+            <div className="mb">
+              <label className="f">
+                Link to one of your pages
+                <select
+                  className="inp"
+                  value={linkSel}
+                  onChange={(e) => {
+                    setLinkSel(e.target.value);
+                    if (e.target.value) setLinkUrl('');
+                  }}
+                >
+                  <option value="">Choose a page…</option>
+                  <option value="/services/search-engine-optimization">SEO service</option>
+                  <option value="/services/website-design-development">Website service</option>
+                  <option value="/services/performance-marketing">Ads service</option>
+                  <option value="/services/social-media-marketing">Social media service</option>
+                  <option value="/contact">Contact page</option>
+                  {(data?.posts || [])
+                    .filter((x: any) => x.id !== editingPost?.id && x.slug)
+                    .map((x: any) => (
+                      <option key={x.id} value={`/insights/${x.slug}`}>
+                        Post: {x.title}
+                      </option>
+                    ))}
+                </select>
+              </label>
+              <label className="f" style={{ marginTop: 12 }}>
+                Or paste any web address
+                <input
+                  className="inp"
+                  placeholder="https://"
+                  value={linkUrl}
+                  onChange={(e) => {
+                    setLinkUrl(e.target.value);
+                    if (e.target.value) setLinkSel('');
+                  }}
+                />
+              </label>
+              <label className="check" style={{ marginTop: 12 }}>
+                <input
+                  type="checkbox"
+                  checked={linkNewTab}
+                  onChange={(e) => setLinkNewTab(e.target.checked)}
+                />
+                Open in a new tab
+              </label>
+            </div>
+            <div className="pf" style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', padding: '12px 16px', borderTop: '1px solid var(--line)' }}>
+              <button type="button" className="btn ghost" onClick={() => setLinkModalOpen(false)}>
+                Cancel
+              </button>
+              <button type="button" className="btn lime" onClick={handleApplyLink}>
+                Add link
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* 2. IMAGE / MEDIA PICKER MODAL */}
+      {imgModalOpen && (
+        <>
+          <div className="scrim on" onClick={() => setImgModalOpen(false)} />
+          <div className="modal on" style={{ maxWidth: 720 }}>
+            <div className="ph" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3>{imagePickerForFeatured ? 'Choose Featured Image' : 'Insert Image'}</h3>
+              <button type="button" className="x" onClick={() => setImgModalOpen(false)}>×</button>
+            </div>
+            <div className="mb">
+              {/* Upload directly */}
+              <div style={{ marginBottom: 16 }}>
+                <label
+                  className="drop"
+                  style={{ display: 'block', cursor: 'pointer' }}
+                >
+                  <b>Upload image from computer</b> · JPG, PNG, WebP or SVG up to 5 MB
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      if (!file.type.startsWith('image/')) {
+                        showToast('Please select a valid image file');
+                        return;
+                      }
+                      if (file.size > 5 * 1024 * 1024) {
+                        showToast('Image file size exceeds 5 MB');
+                        return;
+                      }
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        const res = reader.result as string;
+                        setImgSrc(res);
+                        if (!imgAlt) setImgAlt(file.name.replace(/\.[^/.]+$/, '').replace(/[-_]+/g, ' '));
+                        showToast('Image loaded successfully');
+                      };
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                </label>
+              </div>
+
+              {/* Media Library Items */}
+              {data?.media && data.media.length > 0 && (
+                <div style={{ marginBottom: 16 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 8 }}>
+                    Or select from Media Library:
+                  </span>
+                  <div className="mgrid" style={{ maxHeight: 200, overflowY: 'auto' }}>
+                    {data.media.map((m: any) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        className="mi"
+                        aria-pressed={imgSrc === (m.file || m.src)}
+                        onClick={() => {
+                          setImgSrc(m.file || m.src);
+                          if (!imgAlt && m.alt) setImgAlt(m.alt);
+                        }}
+                      >
+                        <span
+                          className="th"
+                          style={{ backgroundImage: `url(${m.file || m.src})` }}
+                        />
+                        <span>{m.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <label className="f" style={{ marginTop: 12 }}>
+                Or enter image web address / URL:
+                <input
+                  className="inp"
+                  placeholder="https://... or /assets/..."
+                  value={imgSrc}
+                  onChange={(e) => setImgSrc(e.target.value)}
+                />
+              </label>
+
+              {imgSrc && (
+                <div
+                  style={{
+                    aspectRatio: '16/9',
+                    background: `#EDE8DF url(${imgSrc}) center/contain no-repeat`,
+                    border: '1px solid var(--line)',
+                    marginTop: 12,
+                  }}
+                />
+              )}
+
+              {!imagePickerForFeatured && (
+                <label className="f" style={{ marginTop: 12 }}>
+                  Alt text (describe the image for Google and screen readers)
+                  <input
+                    className="inp"
+                    value={imgAlt}
+                    onChange={(e) => setImgAlt(e.target.value)}
+                    placeholder="e.g. SEO ranking results chart for e-commerce client"
+                  />
+                </label>
+              )}
+            </div>
+            <div className="pf" style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', padding: '12px 16px', borderTop: '1px solid var(--line)' }}>
+              <button type="button" className="btn ghost" onClick={() => setImgModalOpen(false)}>
+                Cancel
+              </button>
+              <button type="button" className="btn lime" onClick={handleApplyImage}>
+                {imagePickerForFeatured ? 'Set Featured Image' : 'Insert image'}
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* 3. SERVICE BOX MODAL */}
+      {svcModalOpen && (
+        <>
+          <div className="scrim on" onClick={() => setSvcModalOpen(false)} />
+          <div className="modal small on">
+            <div className="ph" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3>Insert a service box</h3>
+              <button type="button" className="x" onClick={() => setSvcModalOpen(false)}>×</button>
+            </div>
+            <div className="mb">
+              <label className="f">
+                Which service?
+                <select
+                  className="inp"
+                  value={svcSel}
+                  onChange={(e) => setSvcSel(e.target.value)}
+                >
+                  {SERVICE_OPTIONS.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <div className="pf" style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', padding: '12px 16px', borderTop: '1px solid var(--line)' }}>
+              <button type="button" className="btn ghost" onClick={() => setSvcModalOpen(false)}>
+                Cancel
+              </button>
+              <button type="button" className="btn lime" onClick={handleApplySvcBox}>
+                Insert
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* 4. POST PREVIEW MODAL */}
+      {previewModalOpen && editingPost && (
+        <>
+          <div className="scrim on" onClick={() => setPreviewModalOpen(false)} />
+          <div className="modal on" style={{ maxWidth: 840, maxHeight: '90vh' }}>
+            <div className="ph" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3>Preview: {editingPost.title || 'Untitled Post'}</h3>
+              <button type="button" className="x" onClick={() => setPreviewModalOpen(false)}>×</button>
+            </div>
+            <div className="mb" style={{ padding: 0 }}>
+              <div style={{ maxWidth: 720, margin: '0 auto', background: 'var(--white)', padding: 'clamp(20px, 4vw, 44px)' }}>
+                <span className="s" style={{ color: 'var(--mute)', fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  {data?.categories?.find((c: any) => c.id === editingPost.categoryId)?.name || 'SEO'} · {readTimeMinutes} min read
+                </span>
+                <h1 style={{ font: '400 clamp(28px, 4vw, 44px)/1.1 var(--serif)', margin: '10px 0 14px' }}>
+                  {editingPost.title || 'Post Title'}
+                </h1>
+                <p className="s" style={{ color: 'var(--mute)', fontSize: 13, margin: '0 0 20px' }}>
+                  {editingPost.author || 'Ritesh Kumar'} · {editingPost.date || new Date().toISOString().split('T')[0]}
+                </p>
+                {editingPost.image && (
+                  <div
+                    style={{
+                      aspectRatio: '1.91/1',
+                      backgroundImage: `url(${editingPost.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'top center',
+                      marginBottom: 24,
+                      border: '1px solid var(--line)',
+                    }}
+                  />
+                )}
+                <div
+                  className="rte"
+                  style={{ padding: 0, minHeight: 0 }}
+                  dangerouslySetInnerHTML={{ __html: editingPost.bodyHtml || '<p>No content written yet.</p>' }}
+                />
+              </div>
+            </div>
+            <div className="pf" style={{ display: 'flex', justifyContent: 'flex-end', padding: '12px 16px', borderTop: '1px solid var(--line)' }}>
+              <button type="button" className="btn lime" onClick={() => setPreviewModalOpen(false)}>
+                Close preview
+              </button>
+            </div>
+          </div>
+        </>
       )}
 
       {/* Toast Notification */}

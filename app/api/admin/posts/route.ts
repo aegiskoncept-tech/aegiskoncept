@@ -23,8 +23,19 @@ export async function POST(req: NextRequest) {
       focusKeyword,
       seoTitle,
       seoDesc,
+      seoDescription,
       status = 'DRAFT',
       publishAt,
+      tags,
+      canonical,
+      robots,
+      schemaType,
+      featuredMediaId,
+      image,
+      ogTitle,
+      ogDesc,
+      ogDescription,
+      seoScore,
     } = json;
 
     if (!title || !slug) {
@@ -38,41 +49,44 @@ export async function POST(req: NextRequest) {
     const words = (bodyHtml || '').replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
     const readMinutes = Math.max(1, Math.ceil(words / 200));
 
+    const finalStatus = (status || 'DRAFT').toUpperCase();
+    const tagsString = Array.isArray(tags) ? JSON.stringify(tags) : (typeof tags === 'string' ? tags : null);
+    const finalSeoDesc = seoDesc || seoDescription || null;
+    const finalOgDesc = ogDesc || ogDescription || null;
+    const finalMediaId = featuredMediaId || image || null;
+
+    const postData = {
+      title,
+      slug,
+      excerpt: excerpt || '',
+      bodyHtml: bodyHtml || '',
+      bodyJson: json.bodyJson || null,
+      categoryId: categoryId || null,
+      tags: tagsString,
+      focusKeyword: focusKeyword || null,
+      seoTitle: seoTitle || null,
+      seoDescription: finalSeoDesc,
+      canonical: canonical || null,
+      robots: robots || 'index,follow',
+      schemaType: schemaType || 'BlogPosting',
+      featuredMediaId: finalMediaId,
+      ogTitle: ogTitle || null,
+      ogDescription: finalOgDesc,
+      seoScore: typeof seoScore === 'number' ? seoScore : 0,
+      status: finalStatus,
+      publishAt: publishAt ? new Date(publishAt) : (finalStatus === 'PUBLISHED' ? new Date() : null),
+      readMinutes,
+    };
+
     let post;
     if (id) {
       post = await db.post.update({
         where: { id },
-        data: {
-          title,
-          slug,
-          excerpt,
-          bodyHtml: bodyHtml || '',
-          bodyJson: json.bodyJson || null,
-          categoryId: categoryId || null,
-          focusKeyword: focusKeyword || null,
-          seoTitle: seoTitle || null,
-          seoDescription: seoDesc || null,
-          status,
-          publishAt: publishAt ? new Date(publishAt) : (status === 'PUBLISHED' ? new Date() : null),
-          readMinutes,
-        },
+        data: postData,
       });
     } else {
       post = await db.post.create({
-        data: {
-          title,
-          slug,
-          excerpt: excerpt || '',
-          bodyHtml: bodyHtml || '',
-          bodyJson: json.bodyJson || null,
-          categoryId: categoryId || null,
-          focusKeyword: focusKeyword || null,
-          seoTitle: seoTitle || null,
-          seoDescription: seoDesc || null,
-          status,
-          publishAt: publishAt ? new Date(publishAt) : (status === 'PUBLISHED' ? new Date() : null),
-          readMinutes,
-        },
+        data: postData,
       });
     }
 
