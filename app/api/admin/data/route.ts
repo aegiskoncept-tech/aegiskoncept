@@ -61,9 +61,14 @@ export async function GET(req: NextRequest) {
     // Format settings into a key-value dictionary
     const settingsMap: Record<string, any> = { ...defaultSettings };
     settings.forEach((s) => {
-      try {
-        settingsMap[s.key] = JSON.parse(s.value);
-      } catch {
+      const trimmed = (s.value || '').trim();
+      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+        try {
+          settingsMap[s.key] = JSON.parse(s.value);
+        } catch {
+          settingsMap[s.key] = s.value;
+        }
+      } else {
         settingsMap[s.key] = s.value;
       }
     });

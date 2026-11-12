@@ -150,21 +150,21 @@ export default function AdminDashboardPage() {
         setData(json);
         if (json.settings) {
           const s = json.settings;
-          if (s.robots_txt) setRobotsTxt(s.robots_txt);
-          if (s.contact_phone) setContactPhone(s.contact_phone);
-          if (s.contact_whatsapp) setContactWhatsapp(s.contact_whatsapp);
-          if (s.contact_email) setContactEmail(s.contact_email);
-          if (s.contact_email_secondary) setContactEmailSecondary(s.contact_email_secondary);
-          if (s.contact_address) setContactAddress(s.contact_address);
-          if (s.contact_hours) setContactHours(s.contact_hours);
-          if (s.contact_maps_url) setContactMapsUrl(s.contact_maps_url);
-          if (s.ga4_id) setGa4Id(s.ga4_id);
-          if (s.gtm_id) setGtmId(s.gtm_id);
-          if (s.meta_pixel_id) setMetaPixelId(s.meta_pixel_id);
-          if (s.meta_capi_token) setMetaCapiToken(s.meta_capi_token);
-          if (s.clarity_id) setClarityId(s.clarity_id);
-          if (s.gsc_verification) setGscVerification(s.gsc_verification);
-          if (s.indexnow_key) setIndexnowKey(s.indexnow_key);
+          if (s.robots_txt !== undefined) setRobotsTxt(String(s.robots_txt ?? ''));
+          if (s.contact_phone !== undefined) setContactPhone(String(s.contact_phone ?? ''));
+          if (s.contact_whatsapp !== undefined) setContactWhatsapp(String(s.contact_whatsapp ?? ''));
+          if (s.contact_email !== undefined) setContactEmail(String(s.contact_email ?? ''));
+          if (s.contact_email_secondary !== undefined) setContactEmailSecondary(String(s.contact_email_secondary ?? ''));
+          if (s.contact_address !== undefined) setContactAddress(String(s.contact_address ?? ''));
+          if (s.contact_hours !== undefined) setContactHours(String(s.contact_hours ?? ''));
+          if (s.contact_maps_url !== undefined) setContactMapsUrl(String(s.contact_maps_url ?? ''));
+          if (s.ga4_id !== undefined) setGa4Id(String(s.ga4_id ?? ''));
+          if (s.gtm_id !== undefined) setGtmId(String(s.gtm_id ?? ''));
+          if (s.meta_pixel_id !== undefined) setMetaPixelId(String(s.meta_pixel_id ?? ''));
+          if (s.meta_capi_token !== undefined) setMetaCapiToken(String(s.meta_capi_token ?? ''));
+          if (s.clarity_id !== undefined) setClarityId(String(s.clarity_id ?? ''));
+          if (s.gsc_verification !== undefined) setGscVerification(String(s.gsc_verification ?? ''));
+          if (s.indexnow_key !== undefined) setIndexnowKey(String(s.indexnow_key ?? ''));
         }
       }
     } catch (err) {
@@ -464,12 +464,14 @@ export default function AdminDashboardPage() {
   const headingsList = useMemo(() => {
     const html = editingPost?.bodyHtml || '';
     const list: Array<{ tag: 'h2' | 'h3'; text: string }> = [];
+    if (!html) return list;
     const re = /<(h[23])[^>]*>(.*?)<\/\1>/gi;
     let match;
     while ((match = re.exec(html)) !== null) {
-      const text = match[2].replace(/<[^>]+>/g, '').trim();
+      const rawText = match[2] || '';
+      const text = rawText.replace(/<[^>]+>/g, '').trim();
       if (text) {
-        list.push({ tag: match[1].toLowerCase() as 'h2' | 'h3', text });
+        list.push({ tag: (match[1] || 'h2').toLowerCase() as 'h2' | 'h3', text });
       }
     }
     return list;
@@ -619,21 +621,24 @@ export default function AdminDashboardPage() {
     setSavingSettings(true);
     try {
       const updates = [
-        { key: 'contact_phone', value: contactPhone },
-        { key: 'contact_whatsapp', value: contactWhatsapp },
-        { key: 'contact_email', value: contactEmail },
-        { key: 'contact_email_secondary', value: contactEmailSecondary },
-        { key: 'contact_address', value: contactAddress },
-        { key: 'contact_hours', value: contactHours },
-        { key: 'contact_maps_url', value: contactMapsUrl },
+        { key: 'contact_phone', value: String(contactPhone || '').trim() },
+        { key: 'contact_whatsapp', value: String(contactWhatsapp || '').trim() },
+        { key: 'contact_email', value: String(contactEmail || '').trim() },
+        { key: 'contact_email_secondary', value: String(contactEmailSecondary || '').trim() },
+        { key: 'contact_address', value: String(contactAddress || '').trim() },
+        { key: 'contact_hours', value: String(contactHours || '').trim() },
+        { key: 'contact_maps_url', value: String(contactMapsUrl || '').trim() },
       ];
 
       for (const item of updates) {
-        await fetch('/api/admin/settings', {
+        const res = await fetch('/api/admin/settings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(item),
         });
+        if (!res.ok) {
+          throw new Error('Failed to save ' + item.key);
+        }
       }
 
       showToast('Business & Contact details saved successfully!');
@@ -729,13 +734,18 @@ export default function AdminDashboardPage() {
 
   // Filter posts
   const filteredPosts = (data?.posts || []).filter((p: any) => {
-    const matchStatus = postStatusFilter === 'All' || p.status.toUpperCase() === postStatusFilter.toUpperCase();
-    const matchCat = postCatFilter === 'All' || p.category?.name === postCatFilter;
+    const postStatus = (p.status || '').toUpperCase();
+    const matchStatus = postStatusFilter === 'All' || postStatus === postStatusFilter.toUpperCase();
+    const matchCat = postCatFilter === 'All' || (p.category?.name || p.cat || '') === postCatFilter;
+    const pTitle = (p.title || '').toLowerCase();
+    const pSlug = (p.slug || '').toLowerCase();
+    const pKw = (p.focusKeyword || p.kw || '').toLowerCase();
+    const searchLow = (postSearch || '').toLowerCase();
     const matchSearch =
-      !postSearch ||
-      p.title.toLowerCase().includes(postSearch.toLowerCase()) ||
-      p.slug.toLowerCase().includes(postSearch.toLowerCase()) ||
-      (p.focusKeyword && p.focusKeyword.toLowerCase().includes(postSearch.toLowerCase()));
+      !searchLow ||
+      pTitle.includes(searchLow) ||
+      pSlug.includes(searchLow) ||
+      pKw.includes(searchLow);
     return matchStatus && matchCat && matchSearch;
   });
 
@@ -2751,169 +2761,170 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.3fr) minmax(0, 1fr)', gap: 24, alignItems: 'start' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.3fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' }}>
                 {/* Form Panel */}
-                <form id="contact-settings-form" onSubmit={handleSaveContactSettings} className="panel" style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 18 }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                <form id="contact-settings-form" onSubmit={handleSaveContactSettings} className="panel">
+                  <div className="ph">
+                    <h2>Contact Information</h2>
+                  </div>
+                  <div className="pb">
+                    <div className="row2">
+                      <label className="f">
                         Official Phone Number
+                        <input
+                          type="text"
+                          required
+                          className="inp"
+                          value={String(contactPhone || '')}
+                          onChange={(e) => setContactPhone(e.target.value)}
+                          placeholder="+91 73034 68073"
+                        />
+                        <span className="hint">
+                          <span>Shown in header, footer and contact cards</span>
+                        </span>
                       </label>
-                      <input
-                        type="text"
-                        required
-                        value={contactPhone}
-                        onChange={(e) => setContactPhone(e.target.value)}
-                        placeholder="+91 73034 68073"
-                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
-                      />
-                      <small style={{ color: 'var(--mute)', fontSize: 11, display: 'block', marginTop: 4 }}>
-                        Shown in header, footer and contact cards.
-                      </small>
-                    </div>
 
-                    <div>
-                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                      <label className="f">
                         WhatsApp Number
+                        <input
+                          type="text"
+                          required
+                          className="inp"
+                          value={String(contactWhatsapp || '')}
+                          onChange={(e) => setContactWhatsapp(e.target.value)}
+                          placeholder="917303468073"
+                        />
+                        <span className="hint">
+                          <span>Used for wa.me chat links (country code without +)</span>
+                        </span>
                       </label>
-                      <input
-                        type="text"
-                        required
-                        value={contactWhatsapp}
-                        onChange={(e) => setContactWhatsapp(e.target.value)}
-                        placeholder="917303468073"
-                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
-                      />
-                      <small style={{ color: 'var(--mute)', fontSize: 11, display: 'block', marginTop: 4 }}>
-                        Used for wa.me chat links (country code without +).
-                      </small>
                     </div>
-                  </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                    <div className="row2">
+                      <label className="f">
                         Primary Contact Email
+                        <input
+                          type="email"
+                          required
+                          className="inp"
+                          value={String(contactEmail || '')}
+                          onChange={(e) => setContactEmail(e.target.value)}
+                          placeholder="hello@aegiskoncept.com"
+                        />
                       </label>
-                      <input
-                        type="email"
-                        required
-                        value={contactEmail}
-                        onChange={(e) => setContactEmail(e.target.value)}
-                        placeholder="hello@aegiskoncept.com"
-                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
-                      />
+
+                      <label className="f">
+                        Enquiries / Notification Email
+                        <input
+                          type="email"
+                          className="inp"
+                          value={String(contactEmailSecondary || '')}
+                          onChange={(e) => setContactEmailSecondary(e.target.value)}
+                          placeholder="contact@aegiskoncept.com"
+                        />
+                        <span className="hint">
+                          <span>Receives new inbound lead notifications</span>
+                        </span>
+                      </label>
                     </div>
 
-                    <div>
-                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
-                        Enquiries / Lead Notification Email
-                      </label>
-                      <input
-                        type="email"
-                        value={contactEmailSecondary}
-                        onChange={(e) => setContactEmailSecondary(e.target.value)}
-                        placeholder="contact@aegiskoncept.com"
-                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
-                      />
-                      <small style={{ color: 'var(--mute)', fontSize: 11, display: 'block', marginTop: 4 }}>
-                        Receives new inbound lead notifications.
-                      </small>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                    <label className="f">
                       Physical Office Address
+                      <textarea
+                        required
+                        rows={2}
+                        className="inp"
+                        style={{ height: 'auto', minHeight: 72, padding: '9px 11px' }}
+                        value={String(contactAddress || '')}
+                        onChange={(e) => setContactAddress(e.target.value)}
+                        placeholder="Sector 7, Ramphal Chowk, Dwarka, New Delhi 110075"
+                      />
                     </label>
-                    <textarea
-                      required
-                      rows={2}
-                      value={contactAddress}
-                      onChange={(e) => setContactAddress(e.target.value)}
-                      placeholder="Sector 7, Ramphal Chowk, Dwarka, New Delhi 110075"
-                      style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
-                    />
-                  </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                    <div className="row2">
+                      <label className="f">
                         Working Hours & Days
+                        <input
+                          type="text"
+                          className="inp"
+                          value={String(contactHours || '')}
+                          onChange={(e) => setContactHours(e.target.value)}
+                          placeholder="Mon – Sat: 10:00 AM – 7:00 PM"
+                        />
                       </label>
-                      <input
-                        type="text"
-                        value={contactHours}
-                        onChange={(e) => setContactHours(e.target.value)}
-                        placeholder="Mon – Sat: 10:00 AM – 7:00 PM"
-                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
-                      />
-                    </div>
 
-                    <div>
-                      <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', color: 'var(--mute)' }}>
+                      <label className="f">
                         Google Maps Location URL
+                        <input
+                          type="text"
+                          className="inp"
+                          value={String(contactMapsUrl || '')}
+                          onChange={(e) => setContactMapsUrl(e.target.value)}
+                          placeholder="https://maps.google.com/..."
+                        />
                       </label>
-                      <input
-                        type="url"
-                        value={contactMapsUrl}
-                        onChange={(e) => setContactMapsUrl(e.target.value)}
-                        placeholder="https://maps.google.com/..."
-                        style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 6, fontSize: 14 }}
-                      />
                     </div>
-                  </div>
 
-                  <div style={{ paddingTop: 10, borderTop: '1px solid var(--line)', display: 'flex', justifyContent: 'flex-end' }}>
-                    <button type="submit" className="btn lime" disabled={savingSettings}>
-                      {savingSettings ? 'Saving...' : 'Save Contact Details'}
-                    </button>
+                    <div className="acts" style={{ justifyContent: 'flex-end', paddingTop: 8, borderTop: '1px solid var(--line-2)' }}>
+                      <button type="submit" className="btn lime" disabled={savingSettings}>
+                        {savingSettings ? 'Saving...' : 'Save Contact Details'}
+                      </button>
+                    </div>
                   </div>
                 </form>
 
                 {/* Live Preview Panel */}
-                <div className="panel" style={{ padding: 24, background: '#191919', color: '#F4F0E8' }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#D3E45B', display: 'block', marginBottom: 12 }}>
-                    Live Website Preview
-                  </span>
-                  <h3 style={{ fontSize: 20, margin: '0 0 16px 0', color: '#F4F0E8' }}>
-                    How Visitors See Your Details
-                  </h3>
+                <section className="panel" style={{ background: 'var(--paper)' }}>
+                  <div className="ph">
+                    <h2>Live Website Preview</h2>
+                    <span className="note">Header, Footer & Contact Page</span>
+                  </div>
+                  <div className="pb">
+                    <div style={{ background: 'var(--ink)', color: 'var(--cream)', padding: 20, borderRadius: 2 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--lime)', display: 'block', marginBottom: 12 }}>
+                        AegisKoncept Contact Card
+                      </span>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 14 }}>
+                        <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                          <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Call & Inquiries</span>
+                          <b style={{ fontSize: 16 }}>{String(contactPhone || '+91 73034 68073')}</b>
+                        </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 14 }}>
-                    <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
-                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Call & Inquiries</span>
-                      <b style={{ fontSize: 16 }}>{contactPhone || '+91 73034 68073'}</b>
-                    </div>
+                        <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                          <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>WhatsApp Direct Link</span>
+                          <a
+                            href={`https://wa.me/${String(contactWhatsapp || '917303468073').replace(/\D/g, '')}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{ color: 'var(--lime)', textDecoration: 'underline' }}
+                          >
+                            wa.me/{String(contactWhatsapp || '917303468073').replace(/\D/g, '')} ↗
+                          </a>
+                        </div>
 
-                    <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
-                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>WhatsApp Direct Link</span>
-                      <a
-                        href={`https://wa.me/${(contactWhatsapp || '917303468073').replace(/\D/g, '')}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ color: '#D3E45B', textDecoration: 'underline' }}
-                      >
-                        wa.me/{(contactWhatsapp || '917303468073').replace(/\D/g, '')} ↗
-                      </a>
-                    </div>
+                        <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                          <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Primary Email</span>
+                          <span>{String(contactEmail || 'hello@aegiskoncept.com')}</span>
+                        </div>
 
-                    <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
-                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Email Address</span>
-                      <span>{contactEmail || 'hello@aegiskoncept.com'}</span>
-                    </div>
+                        <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                          <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Notification Email</span>
+                          <span>{String(contactEmailSecondary || 'contact@aegiskoncept.com')}</span>
+                        </div>
 
-                    <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
-                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Office Address</span>
-                      <span>{contactAddress || 'Sector 7, Ramphal Chowk, Dwarka, New Delhi 110075'}</span>
-                    </div>
+                        <div style={{ borderBottom: '1px solid #3A3734', paddingBottom: 10 }}>
+                          <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Office Address</span>
+                          <span>{String(contactAddress || 'Sector 7, Ramphal Chowk, Dwarka, New Delhi 110075')}</span>
+                        </div>
 
-                    <div>
-                      <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Office Hours</span>
-                      <span>{contactHours || 'Mon – Sat: 10:00 AM – 7:00 PM'}</span>
+                        <div>
+                          <span style={{ fontSize: 11, color: '#8E877F', display: 'block' }}>Office Hours</span>
+                          <span>{String(contactHours || 'Mon – Sat: 10:00 AM – 7:00 PM')}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </section>
               </div>
             </div>
           )}

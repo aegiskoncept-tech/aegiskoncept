@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
     });
 
     revalidatePath('/');
+    revalidatePath('/contact');
 
     return NextResponse.json({ success: true, setting });
   } catch (err: any) {
